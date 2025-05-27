@@ -3,8 +3,8 @@
 {{-- Extend and customize the browser title --}}
 
 @section('title')
-  {{ config('adminlte.title') }}
-  @hasSection('subTitle') | @yield('subtitle') @endif
+  {{ 'ICBA' }}
+  @hasSection('subtitle') | @yield('subtitle') @endif
 @stop
 
 {{-- Extend and customize the page content header --}}
@@ -38,8 +38,8 @@
   </div>
 
   <strong>
-    <a href="{{ config('app.company_url', '#') }}">
-      {{ config('app.company_name', 'My Company') }}
+    <a href="{{ config('app.company_url', 'https://nvrrcors.pro') }}">
+      {{ config('app.company_name', 'NvrrCors') }}
     </a>
   </strong>
 @stop

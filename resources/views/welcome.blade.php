@@ -2,9 +2,9 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Home')
-@section('content_header_title', 'Home')
-@section('content_header_subtitle', 'Welcome')
+@section('subtitle', 'Principal')
+@section('content_header_title', 'Principal')
+@section('content_header_subtitle', 'Bienvenido')
 
 {{-- Content body: main page content --}}
 
