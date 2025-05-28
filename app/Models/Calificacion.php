@@ -15,4 +15,9 @@ class Calificacion extends Model
         'nota',
         'fecha_registro',
     ];
+
+    public function inscripcion()
+    {
+        return $this->belongsTo(Inscripcion::class);
+    }
 }

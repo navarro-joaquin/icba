@@ -16,4 +16,9 @@ class Gestion extends Model
         'fecha_fin',
         'estado'
     ];
+
+    public function cursoGestiones()
+    {
+        return $this->hasMany(CursoGestion::class);
+    }
 }

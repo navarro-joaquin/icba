@@ -15,4 +15,14 @@ class Asistencia extends Model
         'clase_id',
         'presente',
     ];
+
+    public function inscripcion()
+    {
+        return $this->belongsTo(Inscripcion::class);
+    }
+
+    public function clase()
+    {
+        return $this->belongsTo(Clase::class);
+    }
 }

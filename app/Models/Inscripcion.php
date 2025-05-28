@@ -16,4 +16,29 @@ class Inscripcion extends Model
         'fecha_inscripcion',
         'monto_total'
     ];
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class);
+    }
+
+    public function cursoGestion()
+    {
+        return $this->belongsTo(CursoGestion::class);
+    }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
+
+    public function asistencias()
+    {
+        return $this->hasMany(Asistencia::class);
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
 }

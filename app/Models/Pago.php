@@ -17,4 +17,14 @@ class Pago extends Model
         'monto',
         'descripcion'
     ];
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class);
+    }
+
+    public function inscripcion()
+    {
+        return $this->belongsTo(Inscripcion::class);
+    }
 }

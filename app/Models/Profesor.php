@@ -15,4 +15,14 @@ class Profesor extends Model
         'especialidad',
         'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function cursoProfesores()
+    {
+        return $this->hasMany(CursoProfesor::class);
+    }
 }

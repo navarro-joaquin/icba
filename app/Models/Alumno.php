@@ -15,4 +15,19 @@ class Alumno extends Model
         'fecha_nacimiento',
         'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsto(User::class);
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
 }

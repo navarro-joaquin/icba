@@ -14,4 +14,9 @@ class Curso extends Model
         'nombre',
         'descripcion'
     ];
+
+    public function cursoGestiones()
+    {
+        return $this->hasMany(CursoGestion::class);
+    }
 }

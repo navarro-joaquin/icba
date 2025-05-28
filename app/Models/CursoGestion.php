@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CursoGestion extends Model
+{
+    protected $table = 'curso_gestion';
+
+    protected $id = 'id';
+
+    protected $fillable = [
+        'curso_id',
+        'gestion_id'
+    ];
+
+    public function curso()
+    {
+        return $this->belongsTo(Curso::class);
+    }
+
+    public function gestion()
+    {
+        return $this->belongsTo(Gestion::class);
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
+    public function cursoProfesores()
+    {
+        return $this->hasMany(CursoProfesor::class);
+    }
+
+    public function clases()
+    {
+        return $this->hasMany(Clase::class);
+    }
+}

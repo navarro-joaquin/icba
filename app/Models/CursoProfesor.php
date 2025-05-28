@@ -4,17 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Clase extends Model
+class CursoProfesor extends Model
 {
-    protected $table = 'clases';
+    protected $table = 'curso_profesor';
 
     protected $id = 'id';
 
     protected $fillable = [
         'curso_gestion_id',
-        'numero_clase',
-        'fecha_clase',
-        'tema'
+        'profesor_id'
     ];
 
     public function cursoGestion()
@@ -22,8 +20,8 @@ class Clase extends Model
         return $this->belongsTo(CursoGestion::class);
     }
 
-    public function asistencias()
+    public function profesor()
     {
-        return $this->hasMany(Asistencia::class);
+        return $this->belongsTo(Profesor::class);
     }
 }
