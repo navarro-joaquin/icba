@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class UsuarioController extends Controller
 {
@@ -12,9 +13,19 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios = User::all();
+        return view('usuarios.index');
+    }
 
-        return view('usuarios.index', ['usuarios' => $usuarios]);
+    public function data(Request $request)
+    {
+        // $users = User::select('id', 'username', 'email', 'role')->get();
+        // return response()->json($users);
+        return DataTables::of(User::query())
+            ->addColumn('actions', function($user) {
+                return view('usuarios.partials._actions', compact('user'))->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**

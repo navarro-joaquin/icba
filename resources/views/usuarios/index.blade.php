@@ -15,8 +15,43 @@
             </div>
         </div>
         <div class="card-body">
-            Usuarios
+            <table class="table table-bordered table-striped" id="usuarios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 
 @stop
+
+@push('js')
+<script>
+    $(function () {
+        $('#usuarios-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{{ route('usuarios.data') }}',
+                dataSrc: function (json) {
+                    console.log(json)
+                    return json.data
+                }
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'username', name: 'username' },
+                { data: 'email', name: 'email' },
+                { data: 'role', name: 'role' },
+                { data: 'actions', name: 'actions', orderable: false, searchable: false }
+            ]
+        })
+    })
+</script>
+@endpush
