@@ -9,5 +9,5 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Usuarios
+Route::get('usuarios/data', [UsuarioController::class, 'data'])->name('usuarios.data');
 Route::resource('usuarios', UsuarioController::class);
-Route::get('/usuarios/data', [UsuarioController::class, 'data'])->name('usuarios.data');
