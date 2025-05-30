@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Usuarios')
-@section('content_header_title', 'Usuarios')
+@section('title', 'Alumnos')
+@section('content_header_title', 'Alumnos')
 @section('content_header_subtitle', 'Listado')
 
 @section('content_body')
@@ -9,25 +9,20 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title mb-0">Listado de Usuarios</h3>
+                <h3 class="card-title mb-0">Listado de Alumnos</h3>
             </div>
-            <a href="{{ route('usuarios.create') }}" class="btn btn-success">
-                <i class="fas fa-user-plus"></i> Nuevo Usuario
+            <a href="{{ route('alumnos.create') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Nuevo Alumno
             </a>
         </div>
-        {{-- <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div> --}}
         <div class="card-body">
-            <table class="table table-bordered table-striped" id="usuarios-table">
+            <table class="table table-bordered table-striped" id="alumnos-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Usuario</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -39,42 +34,43 @@
 
 @push('js')
 <script>
-    // DataTable de Usuarios con Ajax
+    // DataTable de Alumnos con Ajax
     $(function () {
-        $('#usuarios-table').DataTable({
+        $('#alumnos-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('usuarios.data') }}',
+                url: '{{ route('alumnos.data') }}',
                 dataSrc: function (json) {
                     return json.data
                 }
             },
+            responsive: true,
             columns: [
-                { data: 'id', name: 'id' },
-                { data: 'username', name: 'username' },
-                { data: 'email', name: 'email' },
-                { data: 'role', name: 'role' },
-                { data: 'actions', name: 'actions', orderable: false, searchable: false }
+                {data: 'id', name: 'id'},
+                {data: 'nombre', name: 'nombre'},
+                {data: 'fecha_nacimiento', name: 'fecha_nacimiento'},
+                {data: 'nombre_usuario', name: 'nombre_usuario'},
+                {data: 'actions', name: 'actions', orderable: false, searchable: false}
             ],
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
             }
-        })
-    })
+        });
+    });
 
-    // SweetAlert2 para eliminar Usuarios
+    // SweetAlert2 para eliminar Alumnos
     $(document).on('click', '.btn-delete', function() {
         const id = $(this).data('id')
         Swal.fire({
-            title: '¿Desea eliminar el usuario?',
+            title: '¿Desea eliminar el alumno?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Sí, eliminar',
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('usuarios.destroy', ':id') }}'.replace(':id', id),
+                    url: '{{ route('alumnos.destroy', ':id') }}'.replace(':id', id),
                     method: 'POST',
                     data: {
                         _method: 'DELETE',
@@ -82,10 +78,10 @@
                     },
                     success: (response) => {
                         Swal.fire('Eliminado', response.message, 'success')
-                        $('#usuarios-table').DataTable().ajax.reload()
+                        $('#alumnos-table').DataTable().ajax.reload()
                     },
                     error: () => {
-                        Swal.fire('Error', 'Ha ocurrido un error al eliminar el usuario', 'error')
+                        Swal.fire('Error', 'Ha ocurrido un error al eliminar el alumno', 'error')
                     }
                 })
             }
