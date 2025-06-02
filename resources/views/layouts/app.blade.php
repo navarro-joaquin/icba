@@ -54,7 +54,7 @@
       icon: 'success',
       title: '{{ session('success') }}',
       showConfirmButton: false,
-      timer: 2000
+      timer: 1000
     })  
   </script>
 @endif

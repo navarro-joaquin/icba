@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,16 +15,62 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        return view('usuarios.index');
+        $heads = [
+            'ID',
+            'Nombre de usuario',
+            'Correo electrónico',
+            'Rol',
+            'Estado',
+            ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
+        ];
+
+        $config = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('usuarios.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'id', 'name' => 'id'],
+                ['data' => 'username', 'name' => 'username'],
+                ['data' => 'email', 'name' => 'email'],
+                ['data' => 'role', 'name' => 'role'],
+                ['data' => 'status', 'name' => 'status'],
+                ['data' => 'actions', 'name' => 'actions', 'searchable' => false, 'orderable' => false],
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('usuarios.index', compact('heads', 'config'));
     }
 
-    public function data(Request $request)
+    public function data()
     {
-        return DataTables::of(User::query())
+        $query = User::query();
+        return DataTables::of($query)
+            ->addColumn('status', function($user) {
+                $statusValue = $user->status;
+                $badgeClass = '';
+                $displayText = '';
+
+                if ($statusValue === 'active') {
+                    $badgeClass = 'badge-success';
+                    $displayText = 'Activo';
+                } elseif ($statusValue === 'inactive') {
+                    $badgeClass = 'badge-secondary';
+                    $displayText = 'Inactivo';
+                }
+
+                return "<span class=\"badge {$badgeClass}\">{$displayText}</span>";
+            })
             ->addColumn('actions', function($user) {
                 return view('usuarios.partials._actions', compact('user'))->render();
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['status', 'actions'])
             ->make(true);
     }
 
@@ -38,18 +85,18 @@ class UsuarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' =>'required|email|max:255|unique:users,email',
-            'role' => 'required|string|max:255',
-            'password' => 'required|string|min:8'
-        ]);
+        // $validated = $request->validate([
+        //     'username' => 'required|string|max:255',
+        //     'email' =>'required|email|max:255|unique:users,email',
+        //     'role' => 'required|string|max:255',
+        //     'password' => 'required|string|min:8'
+        // ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        // $validated['password'] = Hash::make($validated['password']);
 
-        User::create($validated);
+        User::create($request->validated());
 
         return redirect()
             ->route('usuarios.index')
@@ -102,11 +149,20 @@ class UsuarioController extends Controller
      */
     public function destroy(User $usuario)
     {
-        $usuario->delete();
+        if ($usuario->status == 'active') {
+            $usuario->update(['status' => 'inactive']);
+            $valor = 'desactivado';
+            $title = 'Desactivar';
+        } else {
+            $usuario->update(['status' => 'active']);
+            $valor = 'activado';
+            $title = 'Activar';
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Usuario eliminado correctamente'
+            'title' => $title,
+            'message' => "Usuario {$valor} correctamente"
         ]);
     }
 }

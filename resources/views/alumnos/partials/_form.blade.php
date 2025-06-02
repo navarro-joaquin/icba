@@ -16,11 +16,15 @@
 <div class="mb-3">
     <label for="user_id">Usuario</label>
     <select name="user_id" class="form-control">
-        @foreach ($usuarios as $usuario)
-            <option value="{{ $usuario->id }}" {{ old('user_id', $alumno->user_id ?? '') == $usuario->id ? 'selected' : '' }}>
-                {{ $usuario->username }}
-            </option>
-        @endforeach
+        @if($usuarios->count() == 0)
+            <option value="">No hay usuarios registrados</option>
+        @else
+            @foreach ($usuarios as $usuario)
+                <option value="{{ $usuario->id }}" {{ old('user_id', $alumno->user_id ?? '') == $usuario->id ? 'selected' : '' }}>
+                    {{ $usuario->username }}
+                </option>
+            @endforeach
+        @endif
     </select>
 </div>
 

@@ -21,17 +21,7 @@
             </button>
         </div> --}}
         <div class="card-body">
-            <table class="table table-bordered table-striped" id="usuarios-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
+            <x-adminlte-datatable id="usuarios-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>
     </div>
 
@@ -39,38 +29,26 @@
 
 @push('js')
 <script>
-    // DataTable de Usuarios con Ajax
-    $(function () {
-        $('#usuarios-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ route('usuarios.data') }}',
-                dataSrc: function (json) {
-                    return json.data
-                }
-            },
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'username', name: 'username' },
-                { data: 'email', name: 'email' },
-                { data: 'role', name: 'role' },
-                { data: 'actions', name: 'actions', orderable: false, searchable: false }
-            ],
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-            }
-        })
-    })
-
     // SweetAlert2 para eliminar Usuarios
     $(document).on('click', '.btn-delete', function() {
         const id = $(this).data('id')
+        const estado = $(this).data('estado')
+        let title = ''
+        let confirmText = ''
+
+        if (estado == 'active') {
+            title = '¿Desea desactivar el usuario?'
+            confirmText = 'Sí, desactivar'
+        } else {
+            title = '¿Desea activar el usuario?'
+            confirmText = 'Sí, activar'
+        }
+
         Swal.fire({
-            title: '¿Desea eliminar el usuario?',
+            title: title,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar',
+            confirmButtonText: confirmText
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -81,7 +59,7 @@
                         _token: '{{ csrf_token() }}',
                     },
                     success: (response) => {
-                        Swal.fire('Eliminado', response.message, 'success')
+                        Swal.fire(response.title, response.message, 'success')
                         $('#usuarios-table').DataTable().ajax.reload()
                     },
                     error: () => {

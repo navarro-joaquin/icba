@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\AlumnoRequest;
 use Yajra\DataTables\DataTables;
 
 class AlumnoController extends Controller
@@ -14,7 +15,35 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        return view('alumnos.index');
+        $heads = [
+            'ID',
+            'Nombre',
+            'Fecha de Nacimiento',
+            'Usuario',
+            ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
+        ];
+
+        $config = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('alumnos.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'id', 'name' => 'id'],
+                ['data' => 'nombre', 'name' => 'nombre'],
+                ['data' => 'fecha_nacimiento', 'name' => 'fecha_nacimiento'],
+                ['data' => 'nombre_usuario', 'name' => 'nombre_usuario'],
+                ['data' => 'actions', 'name' => 'actions', 'orderable' => false, 'searchable' => false]
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('alumnos.index', compact('heads', 'config'));
     }
 
     public function data()
@@ -33,22 +62,16 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        $usuarios = User::all();
+        $usuarios = User::where('role', 'alumno')->get();
         return view('alumnos.create', compact('usuarios'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AlumnoRequest $request)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string',
-            'fecha_nacimiento' => 'required|date',
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        Alumno::create($validated);
+        Alumno::create($request->validated());
 
         return redirect()
             ->route('alumnos.index')
@@ -68,22 +91,16 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        $usuarios = User::all();
+        $usuarios = User::where('role', 'alumno')->get();
         return view('alumnos.edit', compact('alumno', 'usuarios'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Alumno $alumno)
+    public function update(AlumnoRequest $request, Alumno $alumno)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string',
-            'fecha_nacimiento' => 'required|date',
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        $alumno->update($validated);
+        $alumno->update($request->validated());
 
         return redirect()
             ->route('alumnos.index')

@@ -15,7 +15,7 @@
                 <i class="fas fa-user-plus"></i> Nuevo Alumno
             </a>
         </div>
-        <div class="card-body">
+        {{-- <div class="card-body">
             <table class="table table-bordered table-striped" id="alumnos-table">
                 <thead>
                     <tr>
@@ -27,6 +27,9 @@
                     </tr>
                 </thead>
             </table>
+        </div> --}}
+        <div class="card-body">
+            <x-adminlte-datatable id="alumnos-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>
     </div>
 
@@ -34,30 +37,30 @@
 
 @push('js')
 <script>
-    // DataTable de Alumnos con Ajax
-    $(function () {
-        $('#alumnos-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ route('alumnos.data') }}',
-                dataSrc: function (json) {
-                    return json.data
-                }
-            },
-            responsive: true,
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'nombre', name: 'nombre'},
-                {data: 'fecha_nacimiento', name: 'fecha_nacimiento'},
-                {data: 'nombre_usuario', name: 'nombre_usuario'},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false}
-            ],
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-            }
-        });
-    });
+    // // DataTable de Alumnos con Ajax
+    // $(function () {
+    //     $('#alumnos-table').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax: {
+    //             url: '{{ route('alumnos.data') }}',
+    //             dataSrc: function (json) {
+    //                 return json.data
+    //             }
+    //         },
+    //         responsive: true,
+    //         columns: [
+    //             {data: 'id', name: 'id'},
+    //             {data: 'nombre', name: 'nombre'},
+    //             {data: 'fecha_nacimiento', name: 'fecha_nacimiento'},
+    //             {data: 'nombre_usuario', name: 'nombre_usuario'},
+    //             {data: 'actions', name: 'actions', orderable: false, searchable: false}
+    //         ],
+    //         language: {
+    //             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+    //         }
+    //     });
+    // });
 
     // SweetAlert2 para eliminar Alumnos
     $(document).on('click', '.btn-delete', function() {

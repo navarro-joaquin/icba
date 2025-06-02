@@ -6,12 +6,12 @@
 
 <div class="mb-3">
     <label for="username">Nombre de Usuario</label>
-    <input type="text" name="username" class="form-control" value="{{ old('username', $user->username ?? '') }}" required>
+    <input type="text" name="username" class="form-control" value="{{ old('username', $user->username ?? '') }}">
 </div>
 
 <div class="mb-3">
     <label for="email">Email</label>
-    <input type="email" name="email" class="form-control" value="{{ old('email', $user->email?? '') }}" required>
+    <input type="email" name="email" class="form-control" value="{{ old('email', $user->email?? '') }}">
 </div>
 
 <div class="mb-3">
@@ -26,7 +26,7 @@
 
 <div class="mb-3">
     <label for="password">Contraseña</label>
-    <input type="password" name="password" class="form-control" {{ isset($user) ? '' : 'required' }}>
+    <input type="password" name="password" class="form-control">
 </div>
 
 <button type="submit" class="btn btn-primary">
