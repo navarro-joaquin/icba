@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Alumnos')
-@section('content_header_title', 'Alumnos')
-@section('content_header_subtitle', 'Registro')
+@section('title', 'Profesores')
+@section('content_header_title', 'Profesores')
+@section('content_header_subtitle', 'Editar')
 
 @section('content_body')
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Registro de Alumnos</h3>
+            <h3 class="card-title">Editar Profesor: {{ $profesor->nombre }}</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -25,9 +25,10 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('alumnos.store') }}" method="POST">
-                @include('alumnos.partials._form')
+            <form action="{{ route('profesores.update', $profesor->id) }}" method="POST">
+                @include('profesores.partials._form', ['profesor' => $profesor])
             </form>
         </div>
     </div>
+
 @stop

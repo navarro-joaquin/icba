@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Alumnos')
-@section('content_header_title', 'Alumnos')
+@section('title', 'Profesores')
+@section('content_header_title', 'Profesores')
 @section('content_header_subtitle', 'Listado')
 
 @section('content_body')
@@ -9,14 +9,14 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title mb-0">Listado de Alumnos</h3>
+                <h3 class="card-title mb-0">Listado de Profesores</h3>
             </div>
-            <a href="{{ route('alumnos.create') }}" class="btn btn-success">
-                <i class="fas fa-user-plus"></i> Nuevo Alumno
+            <a href="{{ route('profesores.create') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Nuevo Profesor
             </a>
         </div>
         <div class="card-body">
-            <x-adminlte-datatable id="alumnos-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
+            <x-adminlte-datatable id="profesores-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>
     </div>
 
@@ -31,10 +31,10 @@
         let title = ''
         let confirmText = ''
         if (estado === 'activo') {
-            title = '¿Desea desactivar al alumno?'
+            title = '¿Desea desactivar al profesor?'
             confirmText = 'Sí, desactivar'
         } else if (estado === 'inactivo') {
-            title = '¿Desea activar al alumno?'
+            title = '¿Desea activar al profesor?'
             confirmText = 'Sí, activar'
         }
         Swal.fire({
@@ -45,7 +45,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('alumnos.destroy', ':id') }}'.replace(':id', id),
+                    url: '{{ route('profesores.destroy', ':id') }}'.replace(':id', id),
                     method: 'POST',
                     data: {
                         _method: 'DELETE',
@@ -56,7 +56,7 @@
                         $('#alumnos-table').DataTable().ajax.reload()
                     },
                     error: () => {
-                        Swal.fire('Error', 'Ha ocurrido un error al eliminar el alumno', 'error')
+                        Swal.fire('Error', 'Ha ocurrido un error al eliminar el profesor', 'error')
                     }
                 })
             }

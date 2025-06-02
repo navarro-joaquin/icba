@@ -1,16 +1,16 @@
 @csrf
-@if(isset($alumno))
+@if(isset($profesor))
     @method('PUT')
 @endif
 
 <div class="mb-3">
-    <label for="nombre">Nombre del Alumno</label>
-    <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre', $alumno->nombre ?? '') }}">
+    <label for="nombre">Nombre del Profesor</label>
+    <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre', $profesor->nombre ?? '') }}">
 </div>
 
 <div class="mb-3">
-    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" value="{{ old('fecha_nacimiento', $alumno->fecha_nacimiento ?? '') }}">
+    <label for="especialidad">Especialidad</label>
+    <input type="text" name="especialidad" id="especialidad" class="form-control" value="{{ old('especialidad', $profesor->especialidad ?? '') }}">
 </div>
 
 <div class="mb-3">

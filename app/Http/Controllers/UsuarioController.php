@@ -151,18 +151,18 @@ class UsuarioController extends Controller
     {
         if ($usuario->status == 'active') {
             $usuario->update(['status' => 'inactive']);
-            $valor = 'desactivado';
             $title = 'Desactivar';
+            $message = 'Usuario desactivado correctamente';
         } else {
             $usuario->update(['status' => 'active']);
-            $valor = 'activado';
             $title = 'Activar';
+            $message = 'Usuario activado correctamente';
         }
 
         return response()->json([
             'success' => true,
             'title' => $title,
-            'message' => "Usuario {$valor} correctamente"
+            'message' => $message
         ]);
     }
 }

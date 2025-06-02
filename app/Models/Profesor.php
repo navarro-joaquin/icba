@@ -13,6 +13,7 @@ class Profesor extends Model
     protected $fillable = [
         'nombre',
         'especialidad',
+        'estado',
         'user_id'
     ];
 

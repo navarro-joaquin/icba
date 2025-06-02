@@ -327,6 +327,11 @@ return [
             'icon' => 'fas fa-graduation-cap',
         ],
         [
+            'text' => 'Profesores',
+            'url' => 'profesores',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [

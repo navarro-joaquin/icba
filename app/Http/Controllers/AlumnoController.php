@@ -20,6 +20,7 @@ class AlumnoController extends Controller
             'Nombre',
             'Fecha de Nacimiento',
             'Usuario',
+            'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
         ];
 
@@ -36,6 +37,7 @@ class AlumnoController extends Controller
                 ['data' => 'nombre', 'name' => 'nombre'],
                 ['data' => 'fecha_nacimiento', 'name' => 'fecha_nacimiento'],
                 ['data' => 'nombre_usuario', 'name' => 'nombre_usuario'],
+                ['data' => 'estado', 'name' => 'estado'],
                 ['data' => 'actions', 'name' => 'actions', 'orderable' => false, 'searchable' => false]
             ],
             'language' => [
@@ -49,11 +51,18 @@ class AlumnoController extends Controller
     public function data()
     {
         return Datatables::of(Alumno::with('user'))
-            ->addColumn('nombre_usuario', fn($alumno) => $alumno->user->username ?? '')
-            ->addColumn('actions', function($alumno) {
+            ->addColumn('nombre_usuario', fn ($alumno) => $alumno->user->username ?? '')
+            ->addColumn('estado', function ($alumno) {
+                if ($alumno->estado == 'activo') {
+                    return '<span class="badge badge-success">Activo</span>';
+                } else {
+                    return '<span class="badge badge-secondary">Inactivo</span>';
+                }
+            })
+            ->addColumn('actions', function ($alumno) {
                 return view('alumnos.partials._actions', compact('alumno'))->render();
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['estado', 'actions'])
             ->make(true);
     }
 
@@ -112,11 +121,20 @@ class AlumnoController extends Controller
      */
     public function destroy(Alumno $alumno)
     {
-        $alumno->delete();
+        if ($alumno->estado == 'activo') {
+            $alumno->update(['estado' => 'inactivo']);
+            $title = 'Desactivar';
+            $message = 'El Alumno ha sido desactivado correctamente';
+        } else {
+            $alumno->update(['estado' => 'activo']);
+            $title = 'Activar';
+            $message = 'El Alumno ha sido activado correctamente';
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Alumno eliminado correctamente'
+            'title' => $title,
+            'message' => $message
         ]);
     }
 }

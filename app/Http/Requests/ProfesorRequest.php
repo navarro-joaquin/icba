@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AlumnoRequest extends FormRequest
+class ProfesorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class AlumnoRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:150',
-            'fecha_nacimiento' => 'required|date',
-            'user_id' => 'required|exists:users,id'
+            'especialidad' => 'required|string|max:100',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 
@@ -32,7 +32,7 @@ class AlumnoRequest extends FormRequest
     {
         return [
             'nombre' => 'Nombre',
-            'fecha_nacimiento' => 'Fecha de nacimiento',
+            'especialidad' => 'Especialidad',
             'user_id' => 'Usuario'
         ];
     }
@@ -43,7 +43,6 @@ class AlumnoRequest extends FormRequest
             'required' => 'El campo :attribute es obligatorio',
             'max' => 'El campo :attribute no debe tener más de :max caracteres',
             'string' => 'El campo :attribute debe ser una cadena de texto',
-            'date' => 'El campo :attribute debe ser una fecha válida',
             'exists' => 'El usuario seleccionado no existe'
         ];
     }
