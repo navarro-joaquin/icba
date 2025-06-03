@@ -342,6 +342,14 @@ return [
             'icon' => 'fas fa-chalkboard',
         ],
         [
+            'header' => 'ACCIONES'
+        ],
+        [
+            'text' => 'Cursos y Gestiones',
+            'url' => 'cursos-gestiones',
+            'icon' => 'fas fa-calendar-alt',
+        ],
+        [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
