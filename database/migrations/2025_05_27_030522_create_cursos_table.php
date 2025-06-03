@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 150);
             $table->text('descripcion');
+            $table->string('estado')->default('activo');
             $table->timestamps();
         });
     }

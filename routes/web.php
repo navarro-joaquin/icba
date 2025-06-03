@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\GestionController;
+use App\Http\Controllers\CursoController;
 
 Auth::routes();
 
@@ -18,6 +20,15 @@ Route::resource('usuarios', UsuarioController::class);
 Route::get('alumnos/data', [AlumnoController::class, 'data'])->name('alumnos.data');
 Route::resource('alumnos', AlumnoController::class);
 
+// Profesores
 Route::get('profesores/data', [ProfesorController::class, 'data'])->name('profesores.data');
 Route::resource('profesores', ProfesorController::class)->parameters(['profesores' => 'profesor']);
+
+// Gestiones
+Route::get('gestiones/data', [GestionController::class, 'data'])->name('gestiones.data');
+Route::resource('gestiones', GestionController::class)->parameters(['gestiones' => 'gestion']);
+
+// Cursos
+Route::get('cursos/data', [CursoController::class, 'data'])->name('cursos.data');
+Route::resource('cursos', CursoController::class);
 

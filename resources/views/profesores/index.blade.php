@@ -24,7 +24,7 @@
 
 @push('js')
 <script>
-    // SweetAlert2 para eliminar Alumnos
+    // SweetAlert2 para eliminar Profesores
     $(document).on('click', '.btn-delete', function() {
         const id = $(this).data('id')
         const estado = $(this).data('estado')
@@ -53,7 +53,7 @@
                     },
                     success: (response) => {
                         Swal.fire(response.title, response.message, 'success')
-                        $('#alumnos-table').DataTable().ajax.reload()
+                        $('#profesores-table').DataTable().ajax.reload()
                     },
                     error: () => {
                         Swal.fire('Error', 'Ha ocurrido un error al eliminar el profesor', 'error')

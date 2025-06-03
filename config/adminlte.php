@@ -332,6 +332,16 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Gestiones',
+            'url' => 'gestiones',
+            'icon' => 'fas fa-clock',
+        ],
+        [
+            'text' => 'Cursos',
+            'url' => 'cursos',
+            'icon' => 'fas fa-chalkboard',
+        ],
+        [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [

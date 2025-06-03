@@ -27,7 +27,7 @@
 </div>
 
 <button type="submit" class="btn btn-primary">
-    <i class="fas fa-save"></i> {{ isset($user)? 'Actualizar' : 'Registrar' }}
+    <i class="fas fa-save"></i> {{ isset($alumno)? 'Actualizar' : 'Registrar' }}
 </button>
 <a href="{{ route('alumnos.index') }}" class="btn btn-info">
     <i class="fas fa-arrow-left"></i> Volver
