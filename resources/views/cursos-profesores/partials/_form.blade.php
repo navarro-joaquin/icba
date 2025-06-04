@@ -4,10 +4,10 @@
 @endif
 
 <div class="mb-3">
-    <label for="curso_profesor_id">Curso y Gestión:</label>
-    <select name="curso_profesor_id" id="curso_profesor_id" class="form-control">
+    <label for="curso_gestion_id">Curso y Gestión:</label>
+    <select name="curso_gestion_id" id="curso_gestion_id" class="form-control">
         @forelse ($cursosGestiones as $cursoGestion)
-            <option value="{{ $cursoGestion->id }}" {{ old('curso_profesor_id', $curso_profesor->curso_gestion_id ?? '') == $cursoGestion->id ? 'selected' : '' }}>
+            <option value="{{ $cursoGestion->id }}" {{ old('curso_gestion_id', $curso_profesor->curso_gestion_id ?? '') == $cursoGestion->id ? 'selected' : '' }}>
                 {{ $cursoGestion->nombre }}
             </option>
         @empty

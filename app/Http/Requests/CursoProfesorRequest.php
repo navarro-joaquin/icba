@@ -11,7 +11,7 @@ class CursoProfesorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,24 @@ class CursoProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'curso_gestion_id' => 'required|exists:curso_gestion,id',
+            'profesor_id' => 'required|exists:profesores,id',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'curso_gestion_id' => 'Curso y Gestión',
+            'profesor_id' => 'Profesor',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'El campo :attribute es requerido',
+           'exists' => 'El campo :attribute no existe'
         ];
     }
 }

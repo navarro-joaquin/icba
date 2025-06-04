@@ -355,6 +355,9 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'header' => 'OTROS'
+        ],
+        [
             'text' => 'Reportes',
             'icon' => 'fas fa-file-pdf',
             'submenu' => [

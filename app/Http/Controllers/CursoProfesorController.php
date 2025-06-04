@@ -56,6 +56,13 @@ class CursoProfesorController extends Controller
         return DataTables::of($query)
             ->addColumn('curso_gestion_nombre', fn ($curso_profesor) => $curso_profesor->cursoGestion->nombre ?? '')
             ->addColumn('profesor_nombre', fn ($curso_profesor) => $curso_profesor->profesor->nombre ?? '')
+            ->addColumn('estado', function ($curso_profesor) {
+                if ($curso_profesor->estado == 'activo') {
+                    return '<span class="badge badge-success">Activo</span>';
+                } else {
+                    return '<span class="badge badge-danger">Inactivo</span>';
+                }
+            })
             ->addColumn('actions', function ($curso_profesor) {
                 return view('cursos-profesores.partials._actions', compact('curso_profesor'))->render();
             })
