@@ -115,7 +115,12 @@ class CursoGestionController extends Controller
      */
     public function update(CursoGestionRequest $request, CursoGestion $curso_gestion)
     {
-        $curso_gestion->update($request->validated());
+        $curso = Curso::find($request->curso_id);
+        $gestion = Gestion::find($request->gestion_id);
+        $validatedData = $request->validated();
+
+        $validatedData['nombre'] = $curso->nombre . ' - ' . $gestion->nombre;
+        $curso_gestion->update($validatedData);
 
         return redirect()
             ->route('cursos-gestiones.index')
@@ -127,11 +132,20 @@ class CursoGestionController extends Controller
      */
     public function destroy(CursoGestion $curso_gestion)
     {
-        $curso_gestion->delete();
+        if ($curso_gestion->estado == 'activo') {
+            $curso_gestion->update(['estado' => 'inactivo']);
+            $title = 'Desactivar';
+            $message = 'Desactivado correctamente';
+        } else {
+            $curso_gestion->update(['estado' => 'activo']);
+            $title = 'Activar';
+            $message = 'Activado correctamente';
+        }
 
         return response()->json([
             'success' => true,
-            'message' => "Curso $curso_gestion->curso->nombre en la gestión $curso_gestion->gestion->nombre fue eliminado correctamente"
+            'title' => $title,
+            'message' => $message
         ]);
     }
 }

@@ -11,7 +11,7 @@
                 {{ $curso->nombre }}
             </option>
         @empty
-            <option value="">No hay clases disponibles</option>
+            <option value="">No hay cursos disponibles</option>
         @endforelse
     </select>
 </div>
@@ -24,7 +24,7 @@
                 {{ $gestion->nombre }}
             </option>
         @empty
-            <option value="">No hay clases disponibles</option>
+            <option value="">No hay gestiones disponibles</option>
         @endforelse
     </select>
 </div>

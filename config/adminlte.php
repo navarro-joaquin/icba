@@ -342,7 +342,7 @@ return [
             'icon' => 'fas fa-chalkboard',
         ],
         [
-            'header' => 'ACCIONES'
+            'header' => 'ASIGNACIONES'
         ],
         [
             'text' => 'Cursos y Gestiones',
@@ -350,8 +350,13 @@ return [
             'icon' => 'fas fa-calendar-alt',
         ],
         [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Cursos y Profesores',
+            'url' => 'cursos-profesores',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
+            'text' => 'Reportes',
+            'icon' => 'fas fa-file-pdf',
             'submenu' => [
                 [
                     'text' => 'level_one',

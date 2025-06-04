@@ -1,14 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Cursos y Gestiones')
-@section('content_header_title', 'Cursos y Gestiones')
-@section('content_header_subtitle', 'Editar')
+@section('title', Cursos y Profesores)
+@section('content_header_title', 'Cursos y Profesores')
+@section('content_header_subtitle', 'Registro')
 
 @section('content_body')
 
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Editar Curso y Gestion: {{ $curso_gestion->nombre }}</h3>
+        <div class="card-header d-flex align-items-center">
+            <div class="flex-grow-1">
+                <h3 class="card-title mb-0">Registro de Cursos y Profesores</h3>
+            </div>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -25,8 +27,8 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('cursos-gestiones.update', $curso_gestion->id) }}" method="POST">
-                @include('cursos-gestiones.partials._form', ['curso_gestion' => $curso_gestion])
+            <form action="{{ route('cursos-profesores.store') }}" method="POST">
+                @include('cursos-profesores.partials._form')
             </form>
         </div>
     </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Cursos y Gestiones')
-@section('content_header_title', 'Cursos y Gestiones')
+@section('title', 'Cursos y Profesores')
+@section('content_header_title', 'Cursos y Profesores')
 @section('content_header_subtitle', 'Listado')
 
 @section('content_body')
@@ -11,12 +11,12 @@
         <div class="flex-grow-1">
             <h3 class="card-title mb-0"></h3>
         </div>
-        <a href="{{ route('cursos-gestiones.create') }}" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Nuevo Curso y Gestión
+        <a href="{{ route('cursos-profesores.create') }}" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Nuevo Curso y Profesor
         </a>
     </div>
     <div class="card-body">
-        <x-adminlte-datatable id="curso-gestion-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
+        <x-adminlte-datatable id="curso-profesor-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
 
 @push('js')
 <script>
-    // SweetAlert2 para eliminar Curso y Gestion
+    // SweetAlert2 para eliminar Curso y Profesor
     $(document).on('click', '.btn-delete', function() {
         const id = $(this).data('id')
         const estado = $(this).data('estado')
@@ -45,7 +45,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('cursos-gestiones.destroy', ':id') }}'.replace(':id', id),
+                    url: '{{ route('cursos-profesores.destroy', ':id') }}'.replace(':id', id),
                     method: 'POST',
                     data: {
                         _method: 'DELETE',
