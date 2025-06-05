@@ -355,6 +355,11 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Inscripciones',
+            'url' => 'inscripciones',
+            'icon' => 'fas fa-user-graduate',
+        ],
+        [
             'header' => 'OTROS'
         ],
         [

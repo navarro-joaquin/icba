@@ -9,6 +9,7 @@ use App\Http\Controllers\GestionController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\CursoGestionController;
 use App\Http\Controllers\CursoProfesorController;
+use App\Http\Controllers\InscripcionController;
 
 Auth::routes();
 
@@ -42,3 +43,6 @@ Route::resource('cursos-gestiones', CursoGestionController::class)->parameters([
 Route::get('cursos-profesores/data', [CursoProfesorController::class, 'data'])->name('cursos-profesores.data');
 Route::resource('cursos-profesores', CursoProfesorController::class)->parameters(['cursos-profesores' => 'curso-profesor']);
 
+// Inscripciones
+Route::get('inscripciones/data', [InscripcionController::class, 'data'])->name('inscripciones.data');
+Route::resource('inscripciones', InscripcionController::class)->parameters(['inscripciones' => 'inscripcion']);

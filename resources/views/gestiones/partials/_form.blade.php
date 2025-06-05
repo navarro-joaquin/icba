@@ -19,7 +19,7 @@
 </div>
 
 <button type="submit" class="btn btn-primary">
-    <i class="fas fa-save"></i> {{ isset($gestion)? 'Actualizar' : 'Registrar' }}
+    <i class="fas fa-save"></i> {{ isset($gestion) ? 'Actualizar' : 'Registrar' }}
 </button>
 <a href="{{ route('gestiones.index') }}" class="btn btn-info">
     <i class="fas fa-arrow-left"></i> Volver

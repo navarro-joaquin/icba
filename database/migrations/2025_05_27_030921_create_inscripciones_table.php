@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('curso_gestion_id')->constrained('curso_gestion');
             $table->date('fecha_inscripcion');
             $table->decimal('monto_total', 10, 2);
+            $table->string('estado')->default('activo');
             $table->timestamps();
         });
     }
