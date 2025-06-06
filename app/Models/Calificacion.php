@@ -12,8 +12,8 @@ class Calificacion extends Model
 
     protected $fillable = [
         'inscripcion_id',
+        'tipo',
         'nota',
-        'fecha_registro',
     ];
 
     public function inscripcion()

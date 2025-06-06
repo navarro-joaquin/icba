@@ -43,7 +43,7 @@ class ProfesorRequest extends FormRequest
             'required' => 'El campo :attribute es obligatorio',
             'max' => 'El campo :attribute no debe tener más de :max caracteres',
             'string' => 'El campo :attribute debe ser una cadena de texto',
-            'exists' => 'El usuario seleccionado no existe'
+            'exists' => 'El campo :attribute seleccionado no existe'
         ];
     }
 }

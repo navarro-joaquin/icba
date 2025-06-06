@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calificacion;
+use App\Models\Inscripcion;
+use App\Http\Requests\CalificacionRequest;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class CalificacionController extends Controller
 {
@@ -12,7 +15,48 @@ class CalificacionController extends Controller
      */
     public function index()
     {
-        //
+        $heads = [
+            'ID',
+            'Inscripción',
+            'Tipo',
+            'Nota',
+            ['label' => 'Acciones', 'no-export' => true, 'searchable' => false, 'orderable' => false]
+        ];
+
+        $config = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('calificaciones.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'id', 'name' => 'id'],
+                ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
+                ['data' => 'tipo', 'name' => 'tipo'],
+                ['data' => 'nota', 'name' => 'nota'],
+                ['data' => 'actions', 'name' => 'actions', 'searchable' => false, 'orderable' => false]
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('calificaciones.index', compact('heads', 'config'));
+    }
+
+    public function data()
+    {
+        $query = Calificacion::with('inscripcion');
+
+        return DataTables::of($query)
+            ->addColumn('inscripcion_nombre', fn ($calificacion) => $calificacion->inscripcion->nombre ?? '')
+            ->addColumn('actions', function ($calificacion) {
+                return view('calificaciones.partials._actions', compact('calificacion'))->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**
@@ -20,15 +64,21 @@ class CalificacionController extends Controller
      */
     public function create()
     {
-        //
+        $inscripciones = Inscripcion::where('estado', 'activo')->get();
+
+        return view('calificaciones.create', compact('inscripciones'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CalificacionRequest $request)
     {
-        //
+        Calificacion::create($request->validated());
+
+        return redirect()
+            ->route('calificaciones.index')
+            ->with('success', 'Calificación creada correctamente');
     }
 
     /**
@@ -44,15 +94,21 @@ class CalificacionController extends Controller
      */
     public function edit(Calificacion $calificacion)
     {
-        //
+        $inscripciones = Inscripcion::where('estado', 'activo')->get();
+
+        return view('calificaciones.edit', compact('calificacion', 'inscripciones'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Calificacion $calificacion)
+    public function update(CalificacionRequest $request, Calificacion $calificacion)
     {
-        //
+        $calificacion->update($request->validated());
+
+        return redirect()
+            ->route('calificaciones.index')
+            ->with('success', 'Calificación actualizada correctamente');
     }
 
     /**
@@ -60,6 +116,12 @@ class CalificacionController extends Controller
      */
     public function destroy(Calificacion $calificacion)
     {
-        //
+        $calificacion->delete();
+
+        return response()->json([
+            'success' => true,
+            'title' => 'Eliminado',
+            'message' => 'Calificación eliminada correctamente'
+        ]);
     }
 }

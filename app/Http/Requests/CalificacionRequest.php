@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AlumnoRequest extends FormRequest
+class CalificacionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,18 @@ class AlumnoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:150',
-            'fecha_nacimiento' => 'required|date',
-            'user_id' => 'required|exists:users,id'
+            'tipo' => 'required',
+            'nota' => 'required|numeric',
+            'inscripcion_id' => 'required|exists:inscripciones,id'
         ];
     }
 
     public function attributes()
     {
         return [
-            'nombre' => 'Nombre',
-            'fecha_nacimiento' => 'Fecha de nacimiento',
-            'user_id' => 'Usuario'
+            'tipo' => 'Tipo',
+            'nota' => 'Nota',
+            'inscripcion_id' => 'Inscripción'
         ];
     }
 
@@ -41,10 +41,8 @@ class AlumnoRequest extends FormRequest
     {
         return [
             'required' => 'El campo :attribute es obligatorio',
-            'max' => 'El campo :attribute no debe tener más de :max caracteres',
-            'string' => 'El campo :attribute debe ser una cadena de texto',
-            'date' => 'El campo :attribute debe ser una fecha válida',
-            'exists' => 'El campo :attribute seleccionado no existe'
+            'exists' => 'El campo :attribute seleccionado no existe',
+            'numeric' => 'El campo :attribute debe ser un número'
         ];
     }
 }
