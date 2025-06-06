@@ -88,7 +88,7 @@ class CursoGestionController extends Controller
 
         return redirect()
             ->route('cursos-gestiones.index')
-            ->with('success', "Curso $request->curso->nombre en la gestión $request->gestion->nombre fue creado correctamente");
+            ->with('success', "Curso $curso->nombre en la gestión $gestion->nombre fue creado correctamente");
     }
 
     /**
@@ -124,7 +124,7 @@ class CursoGestionController extends Controller
 
         return redirect()
             ->route('cursos-gestiones.index')
-            ->with('success', "Curso $request->curso->nombre en la gestión $request->gestion->nombre fue actualizado correctamente");
+            ->with('success', "Curso $curso->nombre en la gestión $gestion->nombre fue actualizado correctamente");
     }
 
     /**

@@ -360,6 +360,11 @@ return [
             'icon' => 'fas fa-user-graduate',
         ],
         [
+            'text' => 'Pagos',
+            'url' => 'pagos',
+            'icon' => 'fas fa-hand-holding-usd',
+        ],
+        [
             'header' => 'OTROS'
         ],
         [

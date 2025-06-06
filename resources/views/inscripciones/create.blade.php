@@ -1,4 +1,4 @@
-@extends('layouts.app')
+1@extends('layouts.app')
 
 @section('title', 'Inscripciones')
 @section('content_header_title', 'Inscripciones')

@@ -53,7 +53,7 @@
                     },
                     success: (response) => {
                         Swal.fire(response.title, response.message, 'success')
-                        $('#alumnos-table').DataTable().ajax.reload()
+                        $('#curso-profesor-table').DataTable().ajax.reload()
                     },
                     error: () => {
                         Swal.fire('Error', 'Ha ocurrido un error al eliminar el registro', 'error')

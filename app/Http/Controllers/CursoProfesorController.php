@@ -60,13 +60,13 @@ class CursoProfesorController extends Controller
                 if ($curso_profesor->estado == 'activo') {
                     return '<span class="badge badge-success">Activo</span>';
                 } else {
-                    return '<span class="badge badge-danger">Inactivo</span>';
+                    return '<span class="badge badge-secondary">Inactivo</span>';
                 }
             })
             ->addColumn('actions', function ($curso_profesor) {
                 return view('cursos-profesores.partials._actions', compact('curso_profesor'))->render();
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['estado', 'actions'])
             ->make(true);
     }
 
@@ -146,11 +146,11 @@ class CursoProfesorController extends Controller
         if ($curso_profesor->estado == 'activo') {
             $curso_profesor->update(['estado' => 'inactivo']);
             $title = 'Desactivar';
-            $message = 'Desactivado correctamente';
+            $message = 'Registro desactivado correctamente';
         } else {
             $curso_profesor->update(['estado' => 'activo']);
             $title = 'Activar';
-            $message = 'Activado correctamente';
+            $message = 'Registro activado correctamente';
         }
 
         return response()->json([

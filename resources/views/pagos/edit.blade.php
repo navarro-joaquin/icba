@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Gestiones')
-@section('content_header_title', 'Gestiones')
-@section('content_header_subtitle', 'Registro')
+@section('title', 'Pagos')
+@section('content_header_title', 'Pagos')
+@section('content_header_subtitle', 'Editar')
 
 @section('content_body')
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Registro de Gestiones</h3>
+            <h3 class="card-title">Editar Pago del Curso: {{ $pago->inscripcion->curso_gestion->nombre }} del Alumno: {{ $pago->alumno->nombre }}</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -25,8 +25,8 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('gestiones.store') }}" method="POST">
-                @include('gestiones.partials._form')
+            <form action="{{ route('pagos.update', $pago->id) }}" method="POST">
+                @include('pagos.partials._form', ['pago' => $pago])
             </form>
         </div>
     </div>
