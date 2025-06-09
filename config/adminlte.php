@@ -370,6 +370,11 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Asistencias',
+            'url' => 'asistencias',
+            'icon' => 'fas fa-user-check',
+        ],
+        [
             'header' => 'OTROS'
         ],
         [

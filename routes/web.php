@@ -13,6 +13,7 @@ use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\AsistenciaController;
 
 Auth::routes();
 
@@ -61,3 +62,7 @@ Route::resource('pagos', PagoController::class);
 // Clases
 Route::get('clases/data', [ClaseController::class, 'data'])->name('clases.data');
 Route::resource('clases', ClaseController::class);
+
+// Asistencias
+Route::get('asistencias/data', [AsistenciaController::class, 'data'])->name('asistencias.data');
+Route::resource('asistencias', AsistenciaController::class);

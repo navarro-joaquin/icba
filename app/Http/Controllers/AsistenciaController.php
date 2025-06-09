@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asistencia;
+use App\Models\Inscripcion;
+use App\Models\Clase;
+use App\Http\Requests\AsistenciaRequest;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class AsistenciaController extends Controller
 {
@@ -12,7 +16,56 @@ class AsistenciaController extends Controller
      */
     public function index()
     {
-        //
+        $heads = [
+            'ID',
+            'Inscripcion',
+            'Clase',
+            'Presente',
+            ['label' => 'Acciones', 'no-export' => true, 'searchable' => false, 'orderable' => false],
+        ];
+
+        $config = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('asistencias.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'id', 'name' => 'id'],
+                ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
+                ['data' => 'clase_nombre', 'name' => 'clase_nombre'],
+                ['data' => 'presente', 'name' => 'presente'],
+                ['data' => 'actions', 'name' => 'actions', 'orderable' => false, 'searchable' => false],
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('asistencias.index', compact('heads', 'config'));
+    }
+
+    public function data()
+    {
+        $query = Asistencia::query();
+
+        return DataTables::of($query)
+            ->addColumn('inscripcion_nombre', fn ($asistencia) => $asistencia->inscripcion->nombre ?? '')
+            ->addColumn('clase_nombre', fn ($asistencia) => $asistencia->clase->nombre ?? '')
+            ->addColumn('presente', function($asistencia) {
+                if ($asistencia->presente) {
+                    return '<input type="checkbox" checked disabled />';
+                } else {
+                    return '<input type="checkbox" disabled />';
+                }
+            })
+            ->addColumn('actions', function ($asistencia) {
+                return view('asistencias.partials._actions', compact('asistencia'))->render();
+            })
+            ->rawColumns(['presente', 'actions'])
+            ->make(true);
     }
 
     /**
@@ -20,15 +73,22 @@ class AsistenciaController extends Controller
      */
     public function create()
     {
-        //
+        $inscripciones = Inscripcion::all();
+        $clases = Clase::all();
+
+        return view('asistencias.create', compact('inscripciones', 'clases'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AsistenciaRequest $request)
     {
-        //
+        Asistencia::create($request->validated());
+
+        return redirect()
+            ->route('asistencias.index')
+            ->with('success', 'Asistencia creada correctamente');
     }
 
     /**
@@ -44,15 +104,22 @@ class AsistenciaController extends Controller
      */
     public function edit(Asistencia $asistencia)
     {
-        //
+        $inscripciones = Inscripcion::all();
+        $clases = Clase::all();
+
+        return view('asistencias.edit', compact('asistencia', 'inscripciones', 'clases'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Asistencia $asistencia)
+    public function update(AsistenciaRequest $request, Asistencia $asistencia)
     {
-        //
+        $asistencia->update($request->validated());
+
+        return redirect()
+            ->route('asistencias.index')
+            ->with('success', 'Asistencia actualizada correctamente');
     }
 
     /**
@@ -60,6 +127,12 @@ class AsistenciaController extends Controller
      */
     public function destroy(Asistencia $asistencia)
     {
-        //
+        $asistencia->delete();
+
+        return response()->json([
+            'success' => true,
+            'title' => 'Eliminar',
+            'message' => 'Asistencia eliminada correctamente'
+        ]);
     }
 }
