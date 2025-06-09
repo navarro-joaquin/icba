@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Inscripciones')
-@section('content_header_title', 'Inscripciones')
-@section('content_header_subtitle', 'Registro')
+@section('title', 'Clases')
+@section('content_header_title', 'Clases')
+@section('content_header_subtitle', 'Editar')
 
 @section('content_body')
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Registro de Inscripciones</h3>
+            <h3 class="card-title">Editar Clase: {{ $clase->id }}</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -25,9 +25,10 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('inscripciones.store') }}" method="POST">
-                @include('inscripciones.partials._form')
+            <form action="{{ route('clases.update', $clase->id) }}" method="POST">
+                @include('clases.partials._form', ['clase' => $clase])
             </form>
         </div>
     </div>
+
 @stop

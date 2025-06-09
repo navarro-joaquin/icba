@@ -365,6 +365,11 @@ return [
             'icon' => 'fas fa-hand-holding-usd',
         ],
         [
+            'text' => 'Clases',
+            'url' => 'clases',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
             'header' => 'OTROS'
         ],
         [

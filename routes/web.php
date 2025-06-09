@@ -12,6 +12,7 @@ use App\Http\Controllers\CursoProfesorController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\ClaseController;
 
 Auth::routes();
 
@@ -56,3 +57,7 @@ Route::resource('calificaciones', CalificacionController::class)->parameters(['c
 // Pagos
 Route::get('pagos/data', [PagoController::class, 'data'])->name('pagos.data');
 Route::resource('pagos', PagoController::class);
+
+// Clases
+Route::get('clases/data', [ClaseController::class, 'data'])->name('clases.data');
+Route::resource('clases', ClaseController::class);
