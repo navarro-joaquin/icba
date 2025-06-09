@@ -52,8 +52,12 @@ class AsistenciaController extends Controller
         $query = Asistencia::query();
 
         return DataTables::of($query)
-            ->addColumn('inscripcion_nombre', fn ($asistencia) => $asistencia->inscripcion->nombre ?? '')
-            ->addColumn('clase_nombre', fn ($asistencia) => $asistencia->clase->nombre ?? '')
+            ->addColumn('inscripcion_nombre', function ($asistencia) {
+                return $asistencia->inscripcion->alumno->nombre . ' - (' . $asistencia->inscripcion->curso_gestion->nombre . ')' ?? '';
+            })
+            ->addColumn('clase_nombre', function ($asistencia) {
+                return 'N° ' . $asistencia->clase->numero_clase . ' - (' . $asistencia->clase->fecha_clase . ')' ?? '';
+            })
             ->addColumn('presente', function($asistencia) {
                 if ($asistencia->presente) {
                     return '<input type="checkbox" checked disabled />';
@@ -84,7 +88,10 @@ class AsistenciaController extends Controller
      */
     public function store(AsistenciaRequest $request)
     {
-        Asistencia::create($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['presente'] = $request->boolean('presente');
+
+        Asistencia::create($validatedData);
 
         return redirect()
             ->route('asistencias.index')
@@ -115,7 +122,10 @@ class AsistenciaController extends Controller
      */
     public function update(AsistenciaRequest $request, Asistencia $asistencia)
     {
-        $asistencia->update($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['presente'] = $request->boolean('presente');
+
+        $asistencia->update($validatedData);
 
         return redirect()
             ->route('asistencias.index')

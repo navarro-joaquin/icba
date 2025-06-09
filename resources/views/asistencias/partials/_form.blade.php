@@ -8,7 +8,7 @@
     <select name="inscripcion_id" id="inscripcion_id" class="form-control">
         @forelse ($inscripciones as $inscripcion)
             <option value="{{ $inscripcion->id }}" {{ old('inscripcion_id', $asistencia->inscripcion_id ?? '') == $inscripcion->id ? 'selected' : '' }}>
-                {{ $inscripcion->nombre }}
+                {{ $inscripcion->alumno->nombre }} - ({{ $inscripcion->curso_gestion->nombre }})
             </option>
         @empty
             <option value="">No hay inscripciones disponibles</option>
@@ -21,7 +21,7 @@
     <select name="clase_id" id="clase_id" class="form-control">
         @forelse ($clases as $clase)
             <option value="{{ $clase->id }}" {{ old('clase_id', $asistencia->clase_id ?? '') == $clase->id ? 'selected' : '' }}>
-                {{ $clase->nombre }}
+                N° {{ $clase->numero_clase }} - ({{ $clase->fecha_clase }})
             </option>
         @empty
             <option value="">No hay clases disponibles</option>
@@ -31,7 +31,14 @@
 
 <div class="mb-3">
     <label for="presente">Presente:</label>
-    <input type="checkbox" name="presente" id="presente" class="form-control" value="{{ old('$this->presente', $asistencia->presente ?? '') }}">
+    <input
+        type="checkbox"
+        name="presente"
+        id="presente"
+        class="form-control"
+        value="1"
+        @checked(old('presente', $asistencia->presente ?? 0))
+    >
 </div>
 
 <button type="submit" class="btn btn-primary">

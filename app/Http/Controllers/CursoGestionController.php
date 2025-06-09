@@ -55,10 +55,17 @@ class CursoGestionController extends Controller
         return DataTables::of($query)
             ->addColumn('nombre_curso', fn ($curso_gestion) => $curso_gestion->curso->nombre ?? '')
             ->addColumn('nombre_gestion', fn ($curso_gestion) => $curso_gestion->gestion->nombre ?? '')
+            ->addColumn('estado', function ($curso_gestion) {
+                if ($curso_gestion->estado == 'activo') {
+                    return '<span class="badge badge-success">Activo</span>';
+                } else {
+                    return '<span class="badge badge-secondary">Inactivo</span>';
+                }
+            })
             ->addColumn('actions', function ($curso_gestion) {
                 return view('cursos-gestiones.partials._actions', compact('curso_gestion'))->render();
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['estado', 'actions'])
             ->make(true);
     }
 
@@ -83,7 +90,7 @@ class CursoGestionController extends Controller
         $validatedData = $request->validated();
 
         $validatedData['nombre'] = $curso->nombre . ' - ' . $gestion->nombre;
-        
+
         CursoGestion::create($validatedData);
 
         return redirect()
