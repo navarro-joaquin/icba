@@ -51,7 +51,21 @@ class CalificacionController extends Controller
         $query = Calificacion::with('inscripcion');
 
         return DataTables::of($query)
-            ->addColumn('inscripcion_nombre', fn ($calificacion) => $calificacion->inscripcion->nombre ?? '')
+            ->addColumn('inscripcion_nombre', function ($calificacion) {
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->curso_gestion->nombre . ')' ?? '';
+            })
+            ->addColumn('tipo', function ($calificacion) {
+                switch ($calificacion->tipo) {
+                    case 'examen_1':
+                        return 'Examen 1';
+                    case 'examen_2':
+                        return 'Examen 2';
+                    case 'nota_final':
+                        return 'Nota Final';
+                    default:
+                        return '';
+                }
+            })
             ->addColumn('actions', function ($calificacion) {
                 return view('calificaciones.partials._actions', compact('calificacion'))->render();
             })

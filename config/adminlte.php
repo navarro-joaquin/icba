@@ -375,6 +375,11 @@ return [
             'icon' => 'fas fa-user-check',
         ],
         [
+            'text' => 'Calificaciones',
+            'url' => 'calificaciones',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
             'header' => 'OTROS'
         ],
         [
