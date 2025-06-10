@@ -11,6 +11,8 @@ class CursoProfesor extends Model
     protected $id = 'id';
 
     protected $fillable = [
+        'nombre',
+        'estado',
         'curso_gestion_id',
         'profesor_id'
     ];

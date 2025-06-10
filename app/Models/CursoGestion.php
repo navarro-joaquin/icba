@@ -11,8 +11,10 @@ class CursoGestion extends Model
     protected $id = 'id';
 
     protected $fillable = [
+        'nombre',
         'curso_id',
-        'gestion_id'
+        'gestion_id',
+        'estado'
     ];
 
     public function curso()

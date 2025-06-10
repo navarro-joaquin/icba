@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 150);
             $table->date('fecha_nacimiento');
+            $table->string('estado')->default('activo');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

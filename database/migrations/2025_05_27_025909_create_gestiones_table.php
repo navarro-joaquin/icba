@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->string('estado')->default('activa')->nullable();
+            $table->string('estado')->default('activo')->nullable();
             $table->timestamps();
         });
     }

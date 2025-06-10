@@ -14,7 +14,8 @@ class Inscripcion extends Model
         'alumno_id',
         'curso_gestion_id',
         'fecha_inscripcion',
-        'monto_total'
+        'monto_total',
+        'estado'
     ];
 
     public function alumno()
@@ -22,7 +23,7 @@ class Inscripcion extends Model
         return $this->belongsTo(Alumno::class);
     }
 
-    public function cursoGestion()
+    public function curso_gestion()
     {
         return $this->belongsTo(CursoGestion::class);
     }

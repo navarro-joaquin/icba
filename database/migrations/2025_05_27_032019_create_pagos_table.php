@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('inscripcion_id')->constrained('inscripciones');
             $table->date('fecha_pago');
             $table->decimal('monto', 10, 2);
+            $table->string('forma_pago');
             $table->text('descripcion')->nullable();
             $table->timestamps();
         });

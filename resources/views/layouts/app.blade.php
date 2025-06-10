@@ -47,13 +47,17 @@
 {{-- Add common Javascript/Jquery code --}}
 
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
   <script>
-
-    $(document).ready(function() {
-        // Add your common script logic here...
-    });
-
+    Swal.fire({
+      icon: 'success',
+      title: '{{ session('success') }}',
+      showConfirmButton: false,
+      timer: 1000
+    })  
   </script>
+@endif
 @endpush
 
 {{-- Add common CSS customizations --}}

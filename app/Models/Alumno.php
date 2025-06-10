@@ -13,7 +13,8 @@ class Alumno extends Model
     protected $fillable = [
         'nombre',
         'fecha_nacimiento',
-        'user_id',
+        'estado',
+        'user_id'
     ];
 
     public function user()
