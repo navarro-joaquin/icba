@@ -15,6 +15,7 @@ class Pago extends Model
         'inscripcion_id',
         'fecha_pago',
         'monto',
+        'forma_pago',
         'descripcion'
     ];
 

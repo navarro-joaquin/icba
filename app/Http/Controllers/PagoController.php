@@ -22,6 +22,7 @@ class PagoController extends Controller
             'Inscripción',
             'Fecha de pago',
             'Monto',
+            'Forma de Pago',
             'Descripción',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false]
         ];
@@ -40,6 +41,7 @@ class PagoController extends Controller
                 ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
                 ['data' => 'fecha_pago', 'name' => 'fecha_pago'],
                 ['data' => 'monto', 'name' => 'monto'],
+                ['data' => 'forma_pago', 'name' => 'forma_pago'],
                 ['data' => 'descripcion', 'name' => 'descripcion'],
                 ['data' => 'actions', 'name' => 'actions', 'orderable' => false, 'searchable' => false],
             ],
@@ -58,6 +60,16 @@ class PagoController extends Controller
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($pago) => $pago->alumno->nombre ?? '')
             ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->curso_gestion->nombre ?? '')
+            ->addColumn('forma_pago', function ($pago) {
+                switch ($pago->forma_pago) {
+                    case 'efectivo':
+                        return 'Efectivo';
+                    case 'transferencia':
+                        return 'Transferencia';
+                    default:
+                        return 'Otro';
+                }
+            })
             ->addColumn('actions', function ($pago) {
                 return view('pagos.partials._actions', compact('pago'))->render();
             })

@@ -26,6 +26,7 @@ class PagoRequest extends FormRequest
             'inscripcion_id' => 'required|exists:inscripciones,id',
             'fecha_pago' => 'required|date',
             'monto' => 'required|numeric',
+            'forma_pago' => 'required|string',
             'descripcion' => 'nullable'
         ];
     }
@@ -37,6 +38,7 @@ class PagoRequest extends FormRequest
             'inscripcion_id' => 'Inscripción',
             'fecha_pago' => 'Fecha de pago',
             'monto' => 'Monto',
+            'forma_pago' => 'Forma de pago',
             'descripcion' => 'Descripción'
         ];
     }
@@ -47,7 +49,8 @@ class PagoRequest extends FormRequest
             'required' => 'El campo :attribute es obligatorio',
             'exists' => 'El campo :attribute seleccionado no existe',
             'date' => 'El campo :attribute debe ser una fecha válida',
-            'numeric' => 'El campo :attribute debe ser un número'
+            'numeric' => 'El campo :attribute debe ser un número',
+            'string' => 'El campo :attribute debe ser una cadena de texto',
         ];
     }
 }

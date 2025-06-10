@@ -40,6 +40,14 @@
 </div>
 
 <div class="mb-3">
+    <label for="forma_pago">Forma de Pago</label>
+    <select name="forma_pago" class="form-control" id="forma_pago">
+        <option value="efectivo" {{ old('forma_pago', $user->forma_pago?? '') == 'efectivo' ? 'selected' : '' }}>Efectivo</option>
+        <option value="transferencia" {{ old('forma_pago', $user->forma_pago?? '') == 'transferencia' ? 'selected' : '' }}>Transferencia Bancaria</option>
+    </select>
+</div>
+
+<div class="mb-3">
     <label for="descripcion">Descripción</label>
     <input type="text" name="descripcion" id="descripcion" class="form-control" value="{{ old('descripcion', $pago->descripcion ?? '') }}">
 </div>
