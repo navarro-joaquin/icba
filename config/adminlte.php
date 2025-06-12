@@ -320,26 +320,31 @@ return [
             'text' => 'Usuarios',
             'url' => 'usuarios',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'ver usuarios'
         ],
         [
             'text' => 'Alumnos',
             'url' => 'alumnos',
             'icon' => 'fas fa-graduation-cap',
+            'can' => 'ver alumnos'
         ],
         [
             'text' => 'Profesores',
             'url' => 'profesores',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver profesores'
         ],
         [
             'text' => 'Gestiones',
             'url' => 'gestiones',
             'icon' => 'fas fa-clock',
+            'can' => 'ver gestiones'
         ],
         [
             'text' => 'Cursos',
             'url' => 'cursos',
             'icon' => 'fas fa-chalkboard',
+            'can' => 'ver cursos'
         ],
         [
             'header' => 'ASIGNACIONES'
@@ -348,36 +353,43 @@ return [
             'text' => 'Cursos y Gestiones',
             'url' => 'cursos-gestiones',
             'icon' => 'fas fa-calendar-alt',
+            'can' => 'ver cursos-gestiones'
         ],
         [
             'text' => 'Cursos y Profesores',
             'url' => 'cursos-profesores',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver cursos-profesores'
         ],
         [
             'text' => 'Inscripciones',
             'url' => 'inscripciones',
             'icon' => 'fas fa-user-graduate',
+            'can' => 'ver inscripciones'
         ],
         [
             'text' => 'Pagos',
             'url' => 'pagos',
             'icon' => 'fas fa-hand-holding-usd',
+            'can' => 'ver pagos'
         ],
         [
             'text' => 'Clases',
             'url' => 'clases',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver clases'
         ],
         [
             'text' => 'Asistencias',
             'url' => 'asistencias',
             'icon' => 'fas fa-user-check',
+            'can' => 'ver asistencias'
         ],
         [
             'text' => 'Calificaciones',
             'url' => 'calificaciones',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver calificaciones'
         ],
         [
             'header' => 'OTROS'
@@ -385,6 +397,7 @@ return [
         [
             'text' => 'Reportes',
             'icon' => 'fas fa-file-pdf',
+            'can' => 'ver reportes',
             'submenu' => [
                 [
                     'text' => 'level_one',

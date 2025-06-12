@@ -11,9 +11,11 @@
             <div class="flex-grow-1">
                 <h3 class="card-title mb-0">Listado de Gestiones</h3>
             </div>
-            <a href="{{ route('gestiones.create') }}" class="btn btn-success">
-                <i class="fas fa-user-plus"></i> Nueva Gestión
-            </a>
+            @can('crear gestiones')
+                <a href="{{ route('gestiones.create') }}" class="btn btn-success">
+                    <i class="fas fa-user-plus"></i> Nueva Gestión
+                </a>
+            @endcan
         </div>
         <div class="card-body">
             <x-adminlte-datatable id="gestiones-table" :heads="$heads" :config="$config"></x-adminlte-datatable>

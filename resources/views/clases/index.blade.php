@@ -11,9 +11,11 @@
             <div class="flex-grow-1">
                 <h3 class="card-title mb-0">Listado de Clases</h3>
             </div>
-            <a href="{{ route('clases.create') }}" class="btn btn-success">
-                <i class="fas fa-user-plus"></i> Nueva Clase
-            </a>
+            @can('crear clases')
+                <a href="{{ route('clases.create') }}" class="btn btn-success">
+                    <i class="fas fa-user-plus"></i> Nueva Clase
+                </a>
+            @endcan
         </div>
         <div class="card-body">
             <x-adminlte-datatable id="clases-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
