@@ -52,6 +52,7 @@ class UsuarioController extends Controller
     public function data()
     {
         $query = User::query();
+
         return DataTables::of($query)
             ->addColumn('status', function($user) {
                 $statusValue = $user->status;

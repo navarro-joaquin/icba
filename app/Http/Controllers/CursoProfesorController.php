@@ -51,7 +51,7 @@ class CursoProfesorController extends Controller
 
     public function data()
     {
-        $query = CursoProfesor::with('cursoGestion', 'profesor')->get();
+        $query = CursoProfesor::query();
 
         return DataTables::of($query)
             ->addColumn('curso_gestion_nombre', fn ($curso_profesor) => $curso_profesor->cursoGestion->nombre ?? '')

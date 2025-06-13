@@ -48,6 +48,7 @@ class CursoController extends Controller
     public function data()
     {
         $query = Curso::query();
+
         return DataTables::of($query)
             ->addColumn('estado', function($curso) {
                 if ($curso->estado == 'activo') {
