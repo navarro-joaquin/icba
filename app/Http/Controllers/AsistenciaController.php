@@ -49,11 +49,29 @@ class AsistenciaController extends Controller
 
     public function data()
     {
-        $query = Asistencia::query();
+        $role = auth()->user()->role;
+
+        switch ($role) {
+            case 'admin':
+                $query = Asistencia::query();
+                break;
+            case 'profesor':
+                $query = Asistencia::whereHas('inscripcion.cursoGestion.cursoProfesores', function($query) {
+                    $query->where('profesor_id', auth()->user()->profesor->id);
+                });
+                break;
+            case 'alumno':
+                $query = Asistencia::whereHas('inscripcion', function ($query) {
+                    $query->where('alumno_id', auth()->user()->alumno->id);
+                });
+                break;
+            default:
+                $query = Asistencia::query();
+        }
 
         return DataTables::of($query)
             ->addColumn('inscripcion_nombre', function ($asistencia) {
-                return $asistencia->inscripcion->alumno->nombre . ' - (' . $asistencia->inscripcion->curso_gestion->nombre . ')' ?? '';
+                return $asistencia->inscripcion->alumno->nombre . ' - (' . $asistencia->inscripcion->cursoGestion->nombre . ')' ?? '';
             })
             ->addColumn('clase_nombre', function ($asistencia) {
                 return 'N° ' . $asistencia->clase->numero_clase . ' - (' . $asistencia->clase->fecha_clase . ')' ?? '';
@@ -77,8 +95,24 @@ class AsistenciaController extends Controller
      */
     public function create()
     {
-        $inscripciones = Inscripcion::all();
-        $clases = Clase::all();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get only inscripciones for their assigned cursos
+            $inscripciones = Inscripcion::whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                $query->where('profesor_id', $user->profesor->id);
+            })->get();
+
+            // Get only their assigned clases
+            $clases = Clase::whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                $query->where('profesor_id', $user->profesor->id);
+            })->get();
+        } else {
+            // For non-profesor users, get all inscripciones and clases
+            $inscripciones = Inscripcion::all();
+            $clases = Clase::all();
+        }
 
         return view('asistencias.create', compact('inscripciones', 'clases'));
     }
@@ -111,8 +145,24 @@ class AsistenciaController extends Controller
      */
     public function edit(Asistencia $asistencia)
     {
-        $inscripciones = Inscripcion::all();
-        $clases = Clase::all();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get only inscripciones for their assigned cursos
+            $inscripciones = Inscripcion::whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                $query->where('profesor_id', $user->profesor->id);
+            })->get();
+
+            // Get only their assigned clases
+            $clases = Clase::whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                $query->where('profesor_id', $user->profesor->id);
+            })->get();
+        } else {
+            // For non-profesor users, get all inscripciones and clases
+            $inscripciones = Inscripcion::all();
+            $clases = Clase::all();
+        }
 
         return view('asistencias.edit', compact('asistencia', 'inscripciones', 'clases'));
     }

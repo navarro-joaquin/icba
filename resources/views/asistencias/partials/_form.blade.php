@@ -8,7 +8,7 @@
     <select name="inscripcion_id" id="inscripcion_id" class="form-control">
         @forelse ($inscripciones as $inscripcion)
             <option value="{{ $inscripcion->id }}" {{ old('inscripcion_id', $asistencia->inscripcion_id ?? '') == $inscripcion->id ? 'selected' : '' }}>
-                {{ $inscripcion->alumno->nombre }} - ({{ $inscripcion->curso_gestion->nombre }})
+                {{ $inscripcion->alumno->nombre }} - ({{ $inscripcion->cursoGestion->nombre }})
             </option>
         @empty
             <option value="">No hay inscripciones disponibles</option>

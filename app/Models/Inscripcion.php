@@ -23,7 +23,7 @@ class Inscripcion extends Model
         return $this->belongsTo(Alumno::class);
     }
 
-    public function curso_gestion()
+    public function cursoGestion()
     {
         return $this->belongsTo(CursoGestion::class);
     }
