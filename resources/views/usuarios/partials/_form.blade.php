@@ -17,10 +17,11 @@
 <div class="mb-3">
     <label for="role">Rol</label>
     <select name="role" class="form-control" id="role">
-        <option value="admin" {{ old('role', $user->role?? '') == 'admin' ? 'selected' : '' }}>Administrador</option>
-        <option value="alumno" {{ old('role', $user->role?? '') == 'alumno' ? 'selected' : '' }}>Alumno</option>
-        <option value="profesor" {{ old('role', $user->role?? '') == 'profesor' ? 'selected' : '' }}>Profesor</option>
-        <option value="gestor" {{ old('role', $user->role?? '') == 'gestor' ? 'selected' : '' }}>Gestor</option>
+        @forelse ($roles as $role)
+            <option value="{{ $role->name }}" {{ old('role', $user->role?? '') == $role->name ? 'selected' : '' }}>"{{ $role->name }}"</option>
+        @empty
+            <option value="">No hay roles disponibles</option>
+        @endforelse
     </select>
 </div>
 

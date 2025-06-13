@@ -50,7 +50,25 @@ class ClaseController extends Controller
 
     public function data()
     {
-        $query = Clase::query();
+        $role = auth()->user()->role;
+
+        switch ($role) {
+            case 'admin':
+                $query = Clase::query();
+                break;
+            case 'profesor':
+                $query = Clase::whereHas('cursoGestion.cursoProfesores', function ($query) {
+                    $query->where('profesor_id', auth()->id());
+                });
+                break;
+            case 'alumno':
+                $query = Clase::whereHas('cursoGestion.inscripciones', function ($query) {
+                    $query->where('alumno_id', auth()->id());
+                });
+                break;
+            default:
+                $query = Clase::query();
+        }
 
         return DataTables::of($query)
             ->addColumn('curso_gestion_nombre', fn ($clase) => $clase->cursoGestion->nombre ?? '')
