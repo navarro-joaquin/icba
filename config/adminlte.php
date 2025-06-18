@@ -405,7 +405,7 @@ return [
                 ],
                 [
                     'text' => 'Alumnos con deuda',
-                    'url' => 'reportes/alumnos-deuda',
+                    'url' => 'reportes/alumnos-con-deuda',
                 ],
                 [
                     'text' => 'Planillas',
