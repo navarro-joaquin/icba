@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pago;
 use App\Models\Inscripcion;
+use App\Models\Clase;
+use App\Models\Pago;
+use App\Models\Calificacion;
+use App\Models\CursoGestion;
+use App\Models\Asistencia;
 use Yajra\DataTables\DataTables;
 
 class ReporteController extends Controller
@@ -17,7 +21,7 @@ class ReporteController extends Controller
             'Monto',
             'Forma de pago',
             'Descripcion'
-        ]; //
+        ];
 
         $config = [
             'processing' => true,
@@ -47,7 +51,7 @@ class ReporteController extends Controller
         $fechaFin = $request->input('fecha_fin');
         $formaPago = $request->input('forma_pago');
 
-        $query = Pago::query(); //
+        $query = Pago::query();
 
         if (!empty($fechaInicio) && !empty($fechaFin)) {
             // Ajustado para incluir todo el día de fin
@@ -146,12 +150,188 @@ class ReporteController extends Controller
 
     public function planillas()
     {
-        return view('reportes.planillas');
+        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+
+        $clasesHeads = [
+            'Número de Clase',
+            'Fecha de Clase',
+            'Tema'
+        ];
+
+        $clasesConfig = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('reportes.planillas.clases.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'numero_clase', 'name' => 'numero_clase'],
+                ['data' => 'fecha_clase', 'name' => 'fecha_clase'],
+                ['data' => 'tema', 'name' => 'tema']
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        $asistenciasHeads = [
+            'Inscripción',
+            'Clase',
+            'Presente'
+        ];
+
+        $asistenciasConfig = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('reportes.planillas.asistencias.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
+                ['data' => 'clase_nombre', 'name' => 'clase_nombre'],
+                ['data' => 'presente', 'name' => 'presente']
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        $calificacionesHeads = [
+            'Inscripción',
+            'Tipo',
+            'Nota'
+        ];
+
+        $calificacionesConfig = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('reportes.planillas.calificaciones.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
+                ['data' => 'tipo', 'name' => 'tipo'],
+                ['data' => 'nota', 'name' => 'nota']
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('reportes.planillas', compact('cursosGestiones', 'clasesHeads', 'clasesConfig', 'asistenciasHeads', 'asistenciasConfig', 'calificacionesHeads', 'calificacionesConfig'));
     }
 
-    public function planillasData()
+    public function planillasClasesData(Request $request)
     {
+        $cursoGestionId = $request->curso_gestion;
 
+        if (!empty($cursoGestionId)) {
+            $clases = Clase::with(['cursoGestion.curso'])
+                ->where('curso_gestion_id', $cursoGestionId)
+                ->orderBy('fecha_clase', 'asc')
+                ->get();
+        } else {
+            $clases = collect();
+        }
+
+        return DataTables::of($clases)
+            ->addColumn('numero_clase', function($clase) {
+                return $clase->numero_clase;
+            })
+            ->addColumn('fecha_clase', function($clase) {
+                return $clase->fecha_clase;
+            })
+            ->addColumn('tema', function($clase) {
+                return $clase->tema ?: 'Sin tema especificado';
+            })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function planillasAsistenciasData(Request $request)
+    {
+        $cursoGestionId = $request->curso_gestion;
+
+        if (!empty($cursoGestionId)) {
+            $asistencias = Asistencia::with([
+                    'inscripcion.alumno',
+                    'inscripcion.cursoGestion',
+                    'clase' => function($query) {
+                        $query->orderBy('fecha_clase', 'asc');
+                    }
+                ])
+                ->whereHas('inscripcion', function($query) use ($cursoGestionId) {
+                    $query->where('curso_gestion_id', $cursoGestionId);
+                })
+                ->get()
+                ->sortBy(function($asistencia) {
+                    return $asistencia->clase->fecha_clase ?? '';
+                });
+        } else {
+            $asistencias = collect();
+        }
+
+        return DataTables::of($asistencias)
+            ->addColumn('inscripcion_nombre', function ($asistencia) {
+                return $asistencia->inscripcion->alumno->nombre . ' - (' . $asistencia->inscripcion->cursoGestion->nombre . ')' ?? '';
+            })
+            ->addColumn('clase_nombre', function ($asistencia) {
+                return 'N° ' . $asistencia->clase->numero_clase . ' - (' . $asistencia->clase->fecha_clase . ')' ?? '';
+            })
+            ->addColumn('presente', function($asistencia) {
+                if ($asistencia->presente) {
+                    return '<input type="checkbox" checked disabled />';
+                } else {
+                    return '<input type="checkbox" disabled />';
+                }
+            })
+            ->rawColumns(['presente'])
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function planillasCalificacionesData(Request $request)
+    {
+        $cursoGestion = $request->curso_gestion;
+
+        if (!empty($cursoGestion)) {
+            $calificaciones = Calificacion::whereHas('inscripcion', function ($query) use ($cursoGestion) {
+                $query->whereHas('cursoGestion', function ($query) use ($cursoGestion) {
+                    $query->where('id', $cursoGestion);
+                });
+            })
+                ->with(['inscripcion.alumno', 'inscripcion.cursoGestion.clases' => function ($query) use ($request) {
+                    $query->where('clases.id', $request->clase);
+                }])
+                ->get();
+        } else {
+            $calificaciones = Calificacion::whereRaw('1 = 0');
+        }
+
+        return DataTables::of($calificaciones)
+            ->addColumn('inscripcion_nombre', function ($calificacion) {
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoGestion->nombre . ')' ?? '';
+            })
+            ->addColumn('tipo', function ($calificacion) {
+                switch ($calificacion->tipo) {
+                    case 'examen_1':
+                        return 'Examen 1';
+                    case 'examen_2':
+                        return 'Examen 2';
+                    case 'nota_final':
+                        return 'Nota Final';
+                    default:
+                        return '';
+                }
+            })
+            ->addIndexColumn()
+            ->make(true);
     }
 
     public function planillasPDF()

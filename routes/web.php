@@ -76,3 +76,6 @@ Route::get('reportes/alumnos-con-deuda', [ReporteController::class, 'alumnosConD
 Route::get('reportes/alumnos-con-deuda/data', [ReporteController::class, 'alumnosConDeudaData'])->name('reportes.alumnos-con-deuda.data');
 
 Route::get('reportes/planillas', [ReporteController::class, 'planillas'])->name('reportes.planillas');
+Route::get('reportes/planillas/clases/data', [ReporteController::class, 'planillasClasesData'])->name('reportes.planillas.clases.data');
+Route::get('reportes/planillas/asistencias/data', [ReporteController::class, 'planillasAsistenciasData'])->name('reportes.planillas.asistencias.data');
+Route::get('reportes/planillas/calificaciones/data', [ReporteController::class, 'planillasCalificacionesData'])->name('reportes.planillas.calificaciones.data');
