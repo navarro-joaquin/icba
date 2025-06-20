@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Clase extends Model
+class Clase extends Model implements Auditable
 {
+    use AuditableTrait;
+
     protected $table = 'clases';
 
     protected $id = 'id';

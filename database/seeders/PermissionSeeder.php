@@ -13,6 +13,8 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        Permission::create(['name' => 'ver operaciones']);
+
         // Permisos de usuarios
         Permission::create(['name' => 'ver usuarios']);
         Permission::create(['name' => 'crear usuarios']);
@@ -43,6 +45,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'editar cursos']);
         Permission::create(['name' => 'eliminar cursos']);
 
+        Permission::create(['name' => 'ver asignaciones']);
+
         // Permisos de cursos-gestiones
         Permission::create(['name' => 'ver cursos-gestiones']);
         Permission::create(['name' => 'crear cursos-gestiones']);
@@ -54,6 +58,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'crear cursos-profesores']);
         Permission::create(['name' => 'editar cursos-profesores']);
         Permission::create(['name' => 'eliminar cursos-profesores']);
+
+        Permission::create(['name' => 'ver gestion-academica']);
 
         // Permisos de inscripciones
         Permission::create(['name' => 'ver inscripciones']);
@@ -87,6 +93,9 @@ class PermissionSeeder extends Seeder
 
         // Permisos del dashboard
         Permission::create(['name' => 'ver reportes']);
+
+        // Auditoria
+        Permission::create(['name' => 'ver auditoria']);
 
     }
 }

@@ -15,18 +15,18 @@
             <form id="dateFilterForm">
                 <div class="mb-3">
                     <label for="fecha_inicio">Fecha inicial:</label>
-                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control">
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="fecha_fin">Fecha final:</label>
-                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control">
+                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="forma_pago">Forma de pago:</label>
                     <select name="forma_pago" id="forma_pago" class="form-control">
-                        <option value="">-- Seleccione una opción --</option>
+                        <option value="">-- Todos --</option>
                         <option value="efectivo">Efectivo</option>
                         <option value="transferencia">Transferencia Bancaria</option>
                     </select>

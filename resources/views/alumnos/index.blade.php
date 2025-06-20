@@ -13,7 +13,7 @@
             </div>
             @can('crear alumnos')
                 <a href="{{ route('alumnos.create') }}" class="btn btn-success">
-                    <i class="fas fa-user-plus"></i> Nuevo Alumno
+                    <i class="fas fa-plus"></i> Nuevo Alumno
                 </a>
             @endcan
         </div>

@@ -15,6 +15,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\AuditoriaController;
 
 Auth::routes();
 
@@ -79,3 +80,6 @@ Route::get('reportes/planillas', [ReporteController::class, 'planillas'])->name(
 Route::get('reportes/planillas/clases/data', [ReporteController::class, 'planillasClasesData'])->name('reportes.planillas.clases.data');
 Route::get('reportes/planillas/asistencias/data', [ReporteController::class, 'planillasAsistenciasData'])->name('reportes.planillas.asistencias.data');
 Route::get('reportes/planillas/calificaciones/data', [ReporteController::class, 'planillasCalificacionesData'])->name('reportes.planillas.calificaciones.data');
+
+// Auditoria
+Route::get('auditoria', [AuditoriaController::class, 'index'])->name('auditoria');

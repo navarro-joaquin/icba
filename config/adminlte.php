@@ -315,7 +315,10 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        ['header' => 'OPERACIONES'],
+        [
+            'header' => 'OPERACIONES',
+            'can' => 'ver operaciones'
+        ],
         [
             'text' => 'Usuarios',
             'url' => 'usuarios',
@@ -347,7 +350,8 @@ return [
             'can' => 'ver cursos'
         ],
         [
-            'header' => 'ASIGNACIONES'
+            'header' => 'ASIGNACIONES',
+            'can' => 'ver asignaciones'
         ],
         [
             'text' => 'Cursos y Gestiones',
@@ -360,6 +364,10 @@ return [
             'url' => 'cursos-profesores',
             'icon' => 'fas fa-chalkboard-teacher',
             'can' => 'ver cursos-profesores'
+        ],
+        [
+            'header' => 'GESTIÓN ACADÉMICA',
+            'can' => 'ver gestion-academica'
         ],
         [
             'text' => 'Inscripciones',
@@ -392,7 +400,8 @@ return [
             'can' => 'ver calificaciones'
         ],
         [
-            'header' => 'OTROS'
+            'header' => 'OTROS',
+            'can' => 'ver reportes'
         ],
         [
             'text' => 'Reportes',
@@ -412,6 +421,16 @@ return [
                     'url' => 'reportes/planillas'
                 ],
             ],
+        ],
+        [
+            'header' => 'AUDITORÍA',
+            'can' => 'ver auditoria'
+        ],
+        [
+            'text' => 'Auditoría',
+            'url' => 'auditoria',
+            'icon' => 'fas fa-history',
+            'can' => 'ver auditoria'
         ]
     ],
 

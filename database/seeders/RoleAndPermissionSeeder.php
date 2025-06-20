@@ -26,6 +26,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         $roleAdmin->givePermissionTo(Permission::all());
         $roleGestor->givePermissionTo([
+            'ver operaciones',
             'ver usuarios',
             'ver alumnos',
             'crear alumnos',
@@ -35,10 +36,12 @@ class RoleAndPermissionSeeder extends Seeder
             'crear gestiones',
             'ver cursos',
             'crear cursos',
+            'ver asignaciones',
             'ver cursos-gestiones',
             'crear cursos-gestiones',
             'ver cursos-profesores',
             'crear cursos-profesores',
+            'ver gestion-academica',
             'ver inscripciones',
             'crear inscripciones',
             'ver pagos',
