@@ -1,43 +1,44 @@
-@extends('layouts.pdf')
-
-@section('titulo', 'Alumnos con Deuda')
-@section('contenido')
-
-    <div class="row">
-        <div class="col-10 justify-content-center align-content-center">
-            <h2 class="text-center">Alumnos con Deuda</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumnos con Deuda</title>
+    <link rel="stylesheet" href="{{ public_path('assets/css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <header class="report-header">
+        <h1>Alumnos con Deuda</h1>
+        <div class="header-info">
+            <p><strong>Fecha:</strong> <span id="report-date">{{ date('d/m/Y') }}</span></p>
+            <p><strong>Generado por:</strong> <span id="generated-by">{{ Auth::user()->username }}</span></p>
         </div>
-        <div class="col-2">
-            <img src="{{ asset('assets/img/icba.png') }}" alt="logo" class="img-fluid">
+        <div class="logo">
+            <img src="{{ public_path('assets/img/icba2.png') }}" alt="ICBA Logo">
         </div>
-    </div>
-    <div class="row">
-        <p><strong>Fecha:</strong> {{ date('d/m/Y') }}</p>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Alumno</th>
-                        <th>Curso</th>
-                        <th>Deuda (Bs.)</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($resultados as $resultado)
-                        <tr>
-                            <td>{{ $resultado['alumno_nombre'] }}</td>
-                            <td>{{ $resultado['inscripcion'] }}</td>
-                            <td>{{ $resultado['monto'] }}</td>
-                            <td>{{ $resultado['descripcion'] }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </header>
 
-@endsection
-
+    <table class="debtors-table">
+        <thead>
+        <tr>
+            <th>Alumno</th>
+            <th>Curso</th>
+            <th>Deuda</th>
+            <th>Descripción</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach ($resultados as $resultado)
+                <tr>
+                    <td>{{ $resultado['alumno_nombre'] }}</td>
+                    <td>{{ $resultado['inscripcion'] }}</td>
+                    <td class="debt-amount">{{ $resultado['monto'] }}</td>
+                    <td>{{ $resultado['descripcion'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

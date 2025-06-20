@@ -10,6 +10,7 @@ use App\Models\Calificacion;
 use App\Models\CursoGestion;
 use App\Models\Asistencia;
 use Yajra\DataTables\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReporteController extends Controller
 {
@@ -174,7 +175,10 @@ class ReporteController extends Controller
         ->sortByDesc('deuda')
         ->values();
 
-        return view('reportes.pdf.alumnos-con-deuda', compact('resultados'));
+        //return view('reportes.pdf.alumnos-con-deuda', compact('resultados'));
+
+        $pdf = Pdf::loadView('reportes.pdf.alumnos-con-deuda', ['resultados' => $resultados]);
+        return $pdf->stream();
     }
 
     public function planillas()
