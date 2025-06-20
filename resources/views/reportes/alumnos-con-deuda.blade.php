@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Alumnos con Deuda')
-@section('content_header_title', 'Alumnos con Deuda')
+@section('content_header_title', 'Reportes')
+@section('content_header_subtitle', 'Alumnos con Deuda')
 
 @section('content_body')
 

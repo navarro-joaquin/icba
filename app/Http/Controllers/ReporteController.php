@@ -145,7 +145,36 @@ class ReporteController extends Controller
 
     public function alumnosConDeudaPDF()
     {
+        $inscripciones = Inscripcion::with(['alumno', 'pagos' => function($query) {
+            $query->orderBy('fecha_pago', 'desc');
+        }, 'cursoGestion.curso'])->get();
 
+        $resultados = $inscripciones->map(function($inscripcion) {
+            $tienePagos = $inscripcion->pagos->isNotEmpty();
+            $totalPagado = $inscripcion->pagos->sum('monto');
+            $deuda = $inscripcion->monto_total - $totalPagado;
+
+            // Incluir si no tiene pagos o si tiene deuda
+            if (!$tienePagos || $deuda > 0) {
+                $ultimoPago = $inscripcion->pagos->first();
+
+                return [
+                    'alumno_nombre' => $inscripcion->alumno->nombre ?? 'Sin nombre',
+                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoGestion->nombre ?? 'Curso no encontrado'),
+                    'monto' => number_format($deuda, 2) . ' Bs.',
+                    'descripcion' => $tienePagos
+                        ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
+                        : 'Sin pagos registrados',
+                    'deuda' => $deuda // Para ordenamiento
+                ];
+            }
+            return null;
+        })
+        ->filter()
+        ->sortByDesc('deuda')
+        ->values();
+
+        return view('reportes.pdf.alumnos-con-deuda', compact('resultados'));
     }
 
     public function planillas()

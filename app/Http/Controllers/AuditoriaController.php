@@ -19,8 +19,7 @@ class AuditoriaController extends Controller
             $operation = $this->translateOperation($audit->event);
             $modelType = $this->getModelBaseName($audit->auditable_type);
             $recordId = $audit->auditable_id;
-            $dataTime = $audit->created_at->format('Y-m-d H:i:s');
-            $ipAddress = $audit->ip_address;
+            $dataTime = $audit->created_at->format('d/m/Y H:i:s');
 
             $oldValues = $audit->old_values ? json_encode($audit->old_values, JSON_PRETTY_PRINT) : 'N/A';
             $newValues = $audit->new_values ? json_encode($audit->new_values, JSON_PRETTY_PRINT) : 'N/A';
@@ -37,10 +36,10 @@ class AuditoriaController extends Controller
         }
 
         $heads = [
-            ['label' => 'Usuario', 'width' => 15],
+            ['label' => 'Usuario', 'width' => 10],
             ['label' => 'Operación', 'width' => 10],
             ['label' => 'Tabla', 'width' => 10],
-            ['label' => 'ID Reg.', 'width' => 15],
+            ['label' => 'ID Reg.', 'width' => 10],
             ['label' => 'Fecha/Hora', 'width' => 15],
             ['label' => 'Valores Anteriores', 'noexport' => true],
             ['label' => 'Valores Nuevos', 'noexport' => true],

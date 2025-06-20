@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Pagos Realizados')
-@section('content_header_title', 'Pagos Realizados')
+@section('content_header_title', 'Reportes')
+@section('content_header_subtitle', 'Pagos Realizados')
 
 @section('content_body')
 

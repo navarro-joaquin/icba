@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Planillas')
-@section('content_header_title', 'Planillas')
+@section('content_header_title', 'Reportes')
+@section('content_header_subtitle', 'Planillas')
 
 @section('content_body')
     <div class="card">
