@@ -71,9 +71,31 @@ class ReporteController extends Controller
             ->make(true);
     }
 
-    public function pagosrealizadosPDF()
+    public function pagosrealizadosPDF(Request $request)
     {
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+        $formaPago = $request->input('forma_pago');
 
+        $query = Pago::query();
+
+        if (!empty($fechaInicio) && !empty($fechaFin)) {
+            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59']);
+            if (!empty($formaPago)) {
+                $query->where('forma_pago', $formaPago);
+            } else {
+                $formaPago = 'Todos';
+            }
+        } else {
+            $query->whereRaw('1 = 0');
+        }
+
+        $pagos = $query->with('alumno')->get();
+
+        //return view('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
+
+        $pdf = Pdf::loadView('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
+        return $pdf->stream('pagos-realizados.pdf');
     }
 
     public function alumnosConDeuda()

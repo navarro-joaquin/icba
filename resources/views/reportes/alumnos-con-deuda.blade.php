@@ -15,6 +15,12 @@
         <div class="card-body">
             <x-adminlte-datatable id="alumnos-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>
+        <div class="card-footer">
+            <a href="{{ route('reportes.alumnos-con-deuda.pdf') }}" class="btn btn-danger" target="_blank">
+                <i class="fas fa-file-pdf"></i> Exportar a PDF
+            </a>
+        </div>
     </div>
+
 
 @stop

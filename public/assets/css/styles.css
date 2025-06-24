@@ -48,34 +48,35 @@ body {
     max-height: 70px;
 }
 
-.debtors-table {
+.tabla {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 0.9em;
 }
 
-.debtors-table th {
-    font-size: 1.1em;
-}
-
-.debtors-table th, .debtors-table td {
+.tabla th, .tabla td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
 }
 
-.debtors-table th {
+.tabla th {
     background-color: #f0f0f0;
     font-weight: bold;
     color: #333;
+    font-size: 1em;
 }
 
-.debtors-table tbody tr:nth-child(even) {
+.tabla td {
+    font-size: 0.9em;
+}
+
+.tabla tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.debtors-table td.debt-amount {
+.tabla td.monto {
     font-weight: bold;
     color: darkred;
 }

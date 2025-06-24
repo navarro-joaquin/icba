@@ -72,6 +72,7 @@ Route::resource('asistencias', AsistenciaController::class);
 // Reportes
 Route::get('reportes/pagos-realizados', [ReporteController::class, 'pagosRealizados'])->name('reportes.pagos-realizados');
 Route::get('reportes/pagos-realizados/data', [ReporteController::class, 'pagosRealizadosData'])->name('reportes.pagos-realizados.data');
+Route::get('reportes/pagos-realizados/pdf', [ReporteController::class, 'pagosRealizadosPDF'])->name('reportes.pagos-realizados.pdf');
 
 Route::get('reportes/alumnos-con-deuda', [ReporteController::class, 'alumnosConDeuda'])->name('reportes.alumnos-con-deuda');
 Route::get('reportes/alumnos-con-deuda/data', [ReporteController::class, 'alumnosConDeudaData'])->name('reportes.alumnos-con-deuda.data');

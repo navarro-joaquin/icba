@@ -49,6 +49,11 @@
         <div class="card-body">
             <x-adminlte-datatable id="pagos-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-danger ml-2" id="generarPdfBtn" disabled>
+                <i class="fas fa-file-pdf"></i> Generar PDF
+            </button>
+        </div>
     </div>
 
 @stop
@@ -84,7 +89,23 @@
                 // Simplemente recarga la tabla. La función `data` que acabamos de configurar
                 // se ejecutará automáticamente para obtener los valores de los inputs.
                 table.ajax.reload(null, false); // null para callback, false para no resetear paginación
+
+                // Habilitar el botón de PDF
+                $('#generarPdfBtn').prop('disabled', false);
             });
+
+            $('#generarPdfBtn').on('click', function() {
+                var fecha_inicio = $('#fecha_inicio').val()
+                var fecha_fin = $('#fecha_fin').val()
+                var forma_pago = $('#forma_pago').val()
+
+                var PdfUrl = '{{ route('reportes.pagos-realizados.pdf') }}'
+                PdfUrl += '?fecha_inicio=' + fecha_inicio
+                PdfUrl += '&fecha_fin=' + fecha_fin
+                PdfUrl += '&forma_pago=' + forma_pago
+
+                window.open(PdfUrl, '_blank')
+            })
         });
     </script>
 @endpush
