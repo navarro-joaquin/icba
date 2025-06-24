@@ -1,0 +1,122 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea al inicio verticalmente */
+    min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
+}
+
+.page-container {
+    background-color: white;
+    padding: 0;
+    /*border: 1px solid #ddd;*/
+    width: 185mm; /* Ancho de una hoja A4 (aproximado) */
+    min-height: 272mm; /* Alto de una hoja A4 (aproximado) */
+    box-sizing: border-box;
+    position: relative; /* Para posibles elementos de posicionamiento absoluto */
+}
+
+.header-section {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000; /* Línea debajo del título principal */
+}
+
+.header-section h1 {
+    font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-decoration: underline; /* Subrayado del título "Cursos regulares" */
+}
+
+.header-details {
+    display: grid; /* Convertir a contenedor Grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual ancho */
+    grid-template-rows: auto auto; /* 2 filas con altura automática */
+    gap: 5px 10px; /* Espacio entre filas y columnas (vertical y horizontal) */
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.header-details p {
+    margin: 0;
+    text-align: left;
+    padding-left: 10px; /* Mantener el padding si lo deseas */
+}
+
+.table-section {
+    margin-bottom: 0;
+}
+
+.table-section h2 {
+    text-align: center;
+    font-size: 1em;
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid #000;
+    text-align: center; /* Centra el texto por defecto en las celdas */
+    font-size: 0.75em;
+    height: 15px; /* Altura fija para las celdas para simular las líneas */
+}
+
+table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    white-space: nowrap; /* Evita que los encabezados se rompan en varias líneas */
+}
+
+/* Estilos específicos para la tabla de cursos (la de arriba) */
+.course-table th:nth-child(1) { width: 10px; } /* Nº de Curso */
+.course-table th:nth-child(2) { width: 10px; } /* Fecha */
+.course-table th:nth-child(3) { width: 15px; } /* Lección/Tema */
+.course-table th:nth-child(4) { width: 10px; } /* Horas/UE */
+.course-table th:nth-child(5) { width: 10px; } /* Firma */
+.course-table th:nth-child(6) { width: 8px; } /* Nº de Alum */
+.course-table th:nth-child(7) { width: 10px; } /* Observaciones */
+
+
+/* Estilos específicos para la tabla de asistencia (la de abajo) */
+.attendance-table th:nth-child(2) { width: 30%; text-align: left; } /* Nombre y Apellido */
+.attendance-table th:nth-child(3) { width: 15%; } /* Teléfono */
+.day-col {
+    width: 2%; /* Ancho para las columnas de los días */
+    min-width: 20px; /* Evita que sean demasiado pequeñas */
+}
+
+.grade-table th:nth-child(2) { width: 30%; text-align: left; } /* Nombre y Apellido */
+.grade-col {
+    width: 2%; /* Ancho para las columnas de las notas */
+    min-width: 40px; /* Evita que sean demasiado pequeñas */
+}
+
+/* Estilos para las columnas pequeñas (números de fila y Exa, Men, N.F.) */
+.small-col {
+    width: 2%;
+    min-width: 20px;
+    font-size: 0.75em;
+}
+
+.observations {
+    font-size: 0.9em;
+}
+
+.observations p {
+    margin-bottom: 5px;
+}
+
+.observation-line {
+    border-bottom: 1px solid #000;
+    margin-bottom: 8px;
+    height: 1em; /* Para dar espacio a las líneas */
+}

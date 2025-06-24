@@ -82,6 +82,8 @@ Route::get('reportes/planillas', [ReporteController::class, 'planillas'])->name(
 Route::get('reportes/planillas/clases/data', [ReporteController::class, 'planillasClasesData'])->name('reportes.planillas.clases.data');
 Route::get('reportes/planillas/asistencias/data', [ReporteController::class, 'planillasAsistenciasData'])->name('reportes.planillas.asistencias.data');
 Route::get('reportes/planillas/calificaciones/data', [ReporteController::class, 'planillasCalificacionesData'])->name('reportes.planillas.calificaciones.data');
+Route::get('reportes/planillas/regular/pdf', [ReporteController::class, 'planillaRegularPDF'])->name('reportes.planillas.regular.pdf');
+Route::get('reportes/planillas/individual/pdf', [ReporteController::class, 'planillaIndividualPDF'])->name('reportes.planillas.individual.pdf');
 
 // Auditoria
 Route::get('auditoria', [AuditoriaController::class, 'index'])->name('auditoria');

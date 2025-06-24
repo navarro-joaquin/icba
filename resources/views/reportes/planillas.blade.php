@@ -27,6 +27,12 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Buscar
                 </button>
+                <a href="{{ route('reportes.planillas.regular.pdf') }}" class="btn btn-success ml-2" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Planilla Curso Regular
+                </a>
+                <a href="{{ route('reportes.planillas.individual.pdf') }}" class="btn btn-secondary ml-2" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Planilla Curso Individual
+                </a>
             </form>
         </div>
     </div>

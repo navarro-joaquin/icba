@@ -389,8 +389,15 @@ class ReporteController extends Controller
             ->make(true);
     }
 
-    public function planillasPDF()
+    public function planillaRegularPDF()
     {
+        $pdf = Pdf::loadView('reportes.pdf.planilla-regular');
+        return $pdf->stream('curso-regular.pdf');
+    }
 
+    public function planillaIndividualPDF()
+    {
+        $pdf = Pdf::loadView('reportes.pdf.planilla-individual');
+        return $pdf->stream('curso-individual.pdf');
     }
 }
