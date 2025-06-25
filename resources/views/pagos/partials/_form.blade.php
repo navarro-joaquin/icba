@@ -21,7 +21,7 @@
     <select name="inscripcion_id" class="form-control" id="inscripcion_id">
         @forelse ($inscripciones as $inscripcion)
             <option value="{{ $inscripcion->id }}" {{ old('inscripcion_id', $pago->inscripcion_id ?? '') == $inscripcion->id ? 'selected' : '' }}>
-                {{ $inscripcion->curso_gestion->nombre }}
+                {{ $inscripcion->cursoGestion->nombre }}
             </option>
         @empty
             <option value="">No hay inscripiciones registradas</option>

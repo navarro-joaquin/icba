@@ -1,0 +1,82 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    //background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1000px;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ccc;
+}
+
+.report-header h1 {
+    color: #333;
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.header-info p {
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.logo {
+    text-align: right;
+}
+
+.logo img {
+    max-height: 70px;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+.tabla th, .tabla td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.tabla th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #333;
+    font-size: 1em;
+}
+
+.tabla td {
+    font-size: 0.9em;
+}
+
+.tabla tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla td.monto {
+    font-weight: bold;
+    color: darkred;
+}

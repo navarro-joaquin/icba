@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Inscripcion extends Model
+class Inscripcion extends Model implements Auditable
 {
+    use AuditableTrait;
+
     protected $table = 'inscripciones';
 
     protected $primaryKey = 'id';
@@ -23,7 +27,7 @@ class Inscripcion extends Model
         return $this->belongsTo(Alumno::class);
     }
 
-    public function curso_gestion()
+    public function cursoGestion()
     {
         return $this->belongsTo(CursoGestion::class);
     }

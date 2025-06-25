@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>Gestión</b>ICBA',
-    'logo_img' => 'assets/img/icba.png',
+    'logo_img' => 'assets/img/icba2.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => 'assets/img/icba.png',
+            'path' => 'assets/img/icba2.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'assets/img/icba.png',
+            'path' => 'assets/img/icba2.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -315,110 +315,122 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        ['header' => 'OPERACIONES'],
+        [
+            'header' => 'OPERACIONES',
+            'can' => 'ver operaciones'
+        ],
         [
             'text' => 'Usuarios',
             'url' => 'usuarios',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'ver usuarios'
         ],
         [
             'text' => 'Alumnos',
             'url' => 'alumnos',
             'icon' => 'fas fa-graduation-cap',
+            'can' => 'ver alumnos'
         ],
         [
             'text' => 'Profesores',
             'url' => 'profesores',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver profesores'
         ],
         [
             'text' => 'Gestiones',
             'url' => 'gestiones',
             'icon' => 'fas fa-clock',
+            'can' => 'ver gestiones'
         ],
         [
             'text' => 'Cursos',
             'url' => 'cursos',
             'icon' => 'fas fa-chalkboard',
+            'can' => 'ver cursos'
         ],
         [
-            'header' => 'ASIGNACIONES'
+            'header' => 'ASIGNACIONES',
+            'can' => 'ver asignaciones'
         ],
         [
             'text' => 'Cursos y Gestiones',
             'url' => 'cursos-gestiones',
             'icon' => 'fas fa-calendar-alt',
+            'can' => 'ver cursos-gestiones'
         ],
         [
             'text' => 'Cursos y Profesores',
             'url' => 'cursos-profesores',
             'icon' => 'fas fa-chalkboard-teacher',
+            'can' => 'ver cursos-profesores'
+        ],
+        [
+            'header' => 'GESTIÓN ACADÉMICA',
+            'can' => 'ver gestion-academica'
         ],
         [
             'text' => 'Inscripciones',
             'url' => 'inscripciones',
             'icon' => 'fas fa-user-graduate',
+            'can' => 'ver inscripciones'
         ],
         [
             'text' => 'Pagos',
             'url' => 'pagos',
             'icon' => 'fas fa-hand-holding-usd',
+            'can' => 'ver pagos'
         ],
         [
             'text' => 'Clases',
             'url' => 'clases',
-            'icon' => 'fas fa-chalkboard-teacher',
+            'icon' => 'fas fa-book',
+            'can' => 'ver clases'
         ],
         [
             'text' => 'Asistencias',
             'url' => 'asistencias',
             'icon' => 'fas fa-user-check',
+            'can' => 'ver asistencias'
         ],
         [
             'text' => 'Calificaciones',
             'url' => 'calificaciones',
-            'icon' => 'fas fa-chalkboard-teacher',
+            'icon' => 'fas fa-database',
+            'can' => 'ver calificaciones'
         ],
         [
-            'header' => 'OTROS'
+            'header' => 'OTROS',
+            'can' => 'ver reportes'
         ],
         [
             'text' => 'Reportes',
             'icon' => 'fas fa-file-pdf',
+            'can' => 'ver reportes',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Pagos realizados',
+                    'url' => 'reportes/pagos-realizados',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Alumnos con deuda',
+                    'url' => 'reportes/alumnos-con-deuda',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Planillas',
+                    'url' => 'reportes/planillas'
                 ],
             ],
+        ],
+        [
+            'header' => 'AUDITORÍA',
+            'can' => 'ver auditoria'
+        ],
+        [
+            'text' => 'Auditoría',
+            'url' => 'auditoria',
+            'icon' => 'fas fa-history',
+            'can' => 'ver auditoria'
         ]
     ],
 

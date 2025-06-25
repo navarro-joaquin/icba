@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Yajra\DataTables\DataTables;
@@ -51,6 +52,7 @@ class UsuarioController extends Controller
     public function data()
     {
         $query = User::query();
+
         return DataTables::of($query)
             ->addColumn('status', function($user) {
                 $statusValue = $user->status;
@@ -79,7 +81,9 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+        $roles = Role::all();
+
+        return view('usuarios.create', compact('roles'));
     }
 
     /**
@@ -87,16 +91,9 @@ class UsuarioController extends Controller
      */
     public function store(UserRequest $request)
     {
-        // $validated = $request->validate([
-        //     'username' => 'required|string|max:255',
-        //     'email' =>'required|email|max:255|unique:users,email',
-        //     'role' => 'required|string|max:255',
-        //     'password' => 'required|string|min:8'
-        // ]);
+        $user = User::create($request->validated());
 
-        // $validated['password'] = Hash::make($validated['password']);
-
-        User::create($request->validated());
+        $user->assignRole($request->role);
 
         return redirect()
             ->route('usuarios.index')
@@ -116,7 +113,9 @@ class UsuarioController extends Controller
      */
     public function edit(User $usuario)
     {
-        return view('usuarios.edit', compact('usuario'));
+        $roles = Role::all();
+
+        return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
     /**
@@ -138,6 +137,8 @@ class UsuarioController extends Controller
         }
 
         $usuario->update($validated);
+
+        $usuario->syncRoles($request->role);
 
         return redirect()
             ->route('usuarios.index')

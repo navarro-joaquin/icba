@@ -51,7 +51,8 @@ class CursoGestionController extends Controller
 
     public function data()
     {
-        $query = CursoGestion::with('curso', 'gestion')->get();
+        $query = CursoGestion::query();
+
         return DataTables::of($query)
             ->addColumn('nombre_curso', fn ($curso_gestion) => $curso_gestion->curso->nombre ?? '')
             ->addColumn('nombre_gestion', fn ($curso_gestion) => $curso_gestion->gestion->nombre ?? '')

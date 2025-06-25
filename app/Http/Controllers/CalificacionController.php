@@ -48,11 +48,29 @@ class CalificacionController extends Controller
 
     public function data()
     {
-        $query = Calificacion::with('inscripcion');
+        $role = Auth()->user()->role;
+
+        switch ($role) {
+            case 'admin':
+                $query = Calificacion::with('inscripcion');
+                break;
+            case 'profesor':
+                $query = Calificacion::with('inscripcion')->whereHas('inscripcion.cursoGestion.cursoProfesores', function ($query) {
+                    $query->where('profesor_id', Auth()->user()->profesor->id);
+                });
+                break;
+            case 'alumno':
+                $query = Calificacion::with('inscripcion')->whereHas('inscripcion', function ($query) {
+                    $query->where('alumno_id', Auth()->user()->alumno->id);
+                });
+                break;
+            default:
+                $query = Calificacion::with('inscripcion');
+        }
 
         return DataTables::of($query)
             ->addColumn('inscripcion_nombre', function ($calificacion) {
-                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->curso_gestion->nombre . ')' ?? '';
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoGestion->nombre . ')' ?? '';
             })
             ->addColumn('tipo', function ($calificacion) {
                 switch ($calificacion->tipo) {
@@ -78,7 +96,20 @@ class CalificacionController extends Controller
      */
     public function create()
     {
-        $inscripciones = Inscripcion::where('estado', 'activo')->get();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get only inscripciones for their assigned cursos
+            $inscripciones = Inscripcion::where('estado', 'activo')
+                ->whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                    $query->where('profesor_id', $user->profesor->id);
+                })
+                ->get();
+        } else {
+            // For non-profesor users, get all active inscripciones
+            $inscripciones = Inscripcion::where('estado', 'activo')->get();
+        }
 
         return view('calificaciones.create', compact('inscripciones'));
     }
@@ -108,7 +139,20 @@ class CalificacionController extends Controller
      */
     public function edit(Calificacion $calificacion)
     {
-        $inscripciones = Inscripcion::where('estado', 'activo')->get();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get only inscripciones for their assigned cursos
+            $inscripciones = Inscripcion::where('estado', 'activo')
+                ->whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                    $query->where('profesor_id', $user->profesor->id);
+                })
+                ->get();
+        } else {
+            // For non-profesor users, get all active inscripciones
+            $inscripciones = Inscripcion::where('estado', 'activo')->get();
+        }
 
         return view('calificaciones.edit', compact('calificacion', 'inscripciones'));
     }

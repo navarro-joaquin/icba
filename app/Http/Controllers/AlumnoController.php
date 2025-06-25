@@ -50,7 +50,9 @@ class AlumnoController extends Controller
 
     public function data()
     {
-        return Datatables::of(Alumno::with('user'))
+        $query = Alumno::query();
+
+        return Datatables::of($query)
             ->addColumn('nombre_usuario', fn ($alumno) => $alumno->user->username ?? '')
             ->addColumn('estado', function ($alumno) {
                 if ($alumno->estado == 'activo') {

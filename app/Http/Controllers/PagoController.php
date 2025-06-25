@@ -59,7 +59,7 @@ class PagoController extends Controller
 
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($pago) => $pago->alumno->nombre ?? '')
-            ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->curso_gestion->nombre ?? '')
+            ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->cursoGestion->nombre ?? '')
             ->addColumn('forma_pago', function ($pago) {
                 switch ($pago->forma_pago) {
                     case 'efectivo':

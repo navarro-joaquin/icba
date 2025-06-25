@@ -50,7 +50,25 @@ class ClaseController extends Controller
 
     public function data()
     {
-        $query = Clase::query();
+        $role = auth()->user()->role;
+
+        switch ($role) {
+            case 'admin':
+                $query = Clase::query();
+                break;
+            case 'profesor':
+                $query = Clase::whereHas('cursoGestion.cursoProfesores', function ($query) {
+                    $query->where('profesor_id', auth()->user()->profesor->id);
+                });
+                break;
+            case 'alumno':
+                $query = Clase::whereHas('cursoGestion.inscripciones', function ($query) {
+                    $query->where('alumno_id', auth()->user()->alumno->id);
+                });
+                break;
+            default:
+                $query = Clase::query();
+        }
 
         return DataTables::of($query)
             ->addColumn('curso_gestion_nombre', fn ($clase) => $clase->cursoGestion->nombre ?? '')
@@ -66,7 +84,23 @@ class ClaseController extends Controller
      */
     public function create()
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get their assigned cursosGestiones
+            $cursosGestiones = $user->profesor->cursoProfesores()
+                ->with('cursoGestion')
+                ->whereHas('cursoGestion', function($query) {
+                    $query->where('estado', 'activo');
+                })
+                ->get()
+                ->pluck('cursoGestion')
+                ->unique('id');
+        } else {
+            // For non-profesor users, get all active cursosGestiones
+            $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        }
 
         return view('clases.create', compact('cursosGestiones'));
     }
@@ -96,7 +130,23 @@ class ClaseController extends Controller
      */
     public function edit(Clase $clase)
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        if ($user->hasRole('profesor') && $user->profesor) {
+            // If user is a profesor, get their assigned cursosGestiones
+            $cursosGestiones = $user->profesor->cursoProfesores()
+                ->with('cursoGestion')
+                ->whereHas('cursoGestion', function($query) {
+                    $query->where('estado', 'activo');
+                })
+                ->get()
+                ->pluck('cursoGestion')
+                ->unique('id');
+        } else {
+            // For non-profesor users, get all active cursosGestiones
+            $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        }
 
         return view('clases.edit', compact('clase', 'cursosGestiones'));
     }

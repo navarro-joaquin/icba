@@ -50,6 +50,7 @@ class GestionController extends Controller
     public function data()
     {
         $query = Gestion::query();
+
         return DataTables::of($query)
             ->addColumn('estado', function ($gestion) {
                 if ($gestion->estado == 'activo') {

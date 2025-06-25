@@ -11,15 +11,12 @@
             <div class="flex-grow-1">
                 <h3 class="card-title mb-0">Listado de Usuarios</h3>
             </div>
-            <a href="{{ route('usuarios.create') }}" class="btn btn-success">
-                <i class="fas fa-user-plus"></i> Nuevo Usuario
-            </a>
+            @can('crear usuarios')
+                <a href="{{ route('usuarios.create') }}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Nuevo Usuario
+                </a>
+            @endcan
         </div>
-        {{-- <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div> --}}
         <div class="card-body">
             <x-adminlte-datatable id="usuarios-table" :heads="$heads" :config="$config"></x-adminlte-datatable>
         </div>

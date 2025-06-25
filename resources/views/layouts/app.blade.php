@@ -34,12 +34,12 @@
 
 @section('footer')
   <div class="float-right">
-    Version: {{ config('app.version', '1.0.0') }}
+    Version: {{ config('app.version', '1.0.1') }}
   </div>
 
   <strong>
-    <a href="{{ config('app.company_url', 'https://nvrrcors.pro') }}">
-      {{ config('app.company_name', 'NvrrCors') }}
+    <a href="{{ config('app.company_url', 'https://www.icba-sucre.edu.bo') }}">
+      {{ config('app.company_name', 'Instituto Cultural Boliviano Alemán') }}
     </a>
   </strong>
 @stop
@@ -55,7 +55,7 @@
       title: '{{ session('success') }}',
       showConfirmButton: false,
       timer: 1000
-    })  
+    })
   </script>
 @endif
 @endpush
@@ -64,6 +64,6 @@
 
 @push('css')
   <style type="text/css">
-    
+
   </style>
 @endpush

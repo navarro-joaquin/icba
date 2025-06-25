@@ -25,7 +25,7 @@ class InscripcionController extends Controller
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
         ];
-        
+
         $config = [
             'processing' => true,
             'serverSide' => true,
@@ -53,11 +53,11 @@ class InscripcionController extends Controller
 
     public function data()
     {
-        $query = Inscripcion::with('alumno', 'curso_gestion')->get();
-        
+        $query = Inscripcion::with('alumno', 'cursoGestion')->get();
+
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($inscripcion) => $inscripcion->alumno->nombre ?? '')
-            ->addColumn('curso_gestion_nombre', fn ($inscripcion) => $inscripcion->curso_gestion->nombre ?? '')
+            ->addColumn('curso_gestion_nombre', fn ($inscripcion) => $inscripcion->cursoGestion->nombre ?? '')
             ->addColumn('estado', function ($inscripcion) {
                 if ($inscripcion->estado == 'activo') {
                     return '<span class="badge badge-success">Activo</span>';

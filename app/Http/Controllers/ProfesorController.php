@@ -50,7 +50,8 @@ class ProfesorController extends Controller
 
     public function data()
     {
-        $query = Profesor::with('user');
+        $query = Profesor::query();
+
         return DataTables::of($query)
             ->addColumn('nombre_usuario', fn ($profesor) => $profesor->user->username ?? '')
             ->addColumn('estado', function ($profesor) {
