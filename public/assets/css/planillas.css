@@ -11,18 +11,17 @@ body {
 .page-container {
     background-color: white;
     padding: 0;
-    /*border: 1px solid #ddd;*/
     width: 185mm; /* Ancho de una hoja A4 (aproximado) */
-    min-height: 272mm; /* Alto de una hoja A4 (aproximado) */
+    min-height: 260mm; /* Alto de una hoja A4 (aproximado) */
     box-sizing: border-box;
     position: relative; /* Para posibles elementos de posicionamiento absoluto */
+    margin: 20px auto;
 }
 
 .header-section {
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #000; /* Línea debajo del título principal */
+    margin-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .header-section h1 {
@@ -32,19 +31,26 @@ body {
     text-decoration: underline; /* Subrayado del título "Cursos regulares" */
 }
 
-.header-details {
-    display: grid; /* Convertir a contenedor Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual ancho */
-    grid-template-rows: auto auto; /* 2 filas con altura automática */
-    gap: 5px 10px; /* Espacio entre filas y columnas (vertical y horizontal) */
-    font-size: 0.9em;
-    margin-bottom: 5px;
+.header-details-table table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.header-details p {
-    margin: 0;
-    text-align: left;
-    padding-left: 10px; /* Mantener el padding si lo deseas */
+.header-details-table td {
+    width: 25%;
+    padding: 0;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.header-details-table p {
+    text-align: left; /* Centrar el texto */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    font-size: 0.9em;
+    margin: 2px; /* Pequeño margen para simular el 'gap' */
+    /* Dompdf puede tener dificultades con margin y padding combinados
+       en tablas. A veces es mejor poner el margen en el p. */
 }
 
 .table-section {
@@ -63,7 +69,7 @@ table {
     border-collapse: collapse;
 }
 
-table th, table td {
+.table-section table th, .table-section table td {
     border: 1px solid #000;
     text-align: center; /* Centra el texto por defecto en las celdas */
     font-size: 0.75em;

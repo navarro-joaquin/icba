@@ -10,14 +10,21 @@
 <div class="page-container">
     <div class="header-section">
         <h1>Cursos regulares</h1>
-        <div class="header-details">
-            <p>Profesor/a: <span></span></p>
-            <p>Módulo: <span></span></p>
-            <p>Nivel: <span></span></p>
-            <p>Año: <span></span></p>
-            <p>Días: <span></span></p>
-            <p>Horario: <span></span></p>
-            <p>Duración: <span></span></p>
+        <div class="header-details-table">
+            <table>
+                <tr>
+                    <td><p>Profesor/a:</p></td>
+                    <td><p>Módulo:</p></td>
+                    <td><p>Nivel:</p></td>
+                    <td><p>Año:</p></td>
+                </tr>
+                <tr>
+                    <td><p>Días:</p></td>
+                    <td><p>Horario:</p></td>
+                    <td><p>Duración:</p></td>
+                    <td></td>
+                </tr>
+            </table>
         </div>
     </div>
 

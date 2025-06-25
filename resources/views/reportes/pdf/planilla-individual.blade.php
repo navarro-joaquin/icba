@@ -10,13 +10,21 @@
 <div class="page-container">
     <div class="header-section">
         <h1>Cursos individuales</h1>
-        <div class="header-details">
-            <p>Profesor/a: <span></span></p>
-            <p>Curso EU: <span></span></p>
-            <p>Nivel: <span></span></p>
-            <p>Año: <span></span></p>
-            <p>Inicio: <span></span></p>
-            <p>Libro: <span></span></p>
+        <div class="header-details-table">
+            <table>
+                <tr>
+                    <td><p>Profesor/a:</p></td>
+                    <td><p>Curso EU:</p></td>
+                    <td><p>Nivel:</p></td>
+                    <td><p>Año:</p></td>
+                </tr>
+                <tr>
+                    <td><p>Inicio:</p></td>
+                    <td><p>Libro:</p></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
         </div>
     </div>
 

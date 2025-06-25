@@ -384,7 +384,7 @@ return [
         [
             'text' => 'Clases',
             'url' => 'clases',
-            'icon' => 'fas fa-chalkboard-teacher',
+            'icon' => 'fas fa-book',
             'can' => 'ver clases'
         ],
         [
@@ -396,7 +396,7 @@ return [
         [
             'text' => 'Calificaciones',
             'url' => 'calificaciones',
-            'icon' => 'fas fa-chalkboard-teacher',
+            'icon' => 'fas fa-database',
             'can' => 'ver calificaciones'
         ],
         [
