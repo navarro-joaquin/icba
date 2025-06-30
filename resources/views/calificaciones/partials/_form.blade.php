@@ -10,11 +10,21 @@
         <option value="examen_2" {{ old('tipo', $user->tipo ?? '') == 'examen_2' ? 'selected' : '' }}>Examen 2</option>
         <option value="nota_final" {{ old('tipo', $user->tipo ?? '') == 'nota_final' ? 'selected' : '' }}>Nota Final</option>
     </select>
+    @error('tipo')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <div class="mb-3">
     <label for="nota">Nota:</label>
     <input type="number" name="nota" id="nota" class="form-control" value="{{ old('nota', $calificacion->nota ?? '') }}">
+    @error('nota')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <div class="mb-3">
@@ -25,14 +35,16 @@
                 {{ $inscripcion->alumno->nombre }} - ({{ $inscripcion->cursoGestion->nombre }})
             </option>
         @empty
-            <option value="">No hay inscripciones disponibles</option>
+            <option value="">-- No hay inscripciones disponibles --</option>
         @endforelse
     </select>
+    @error('inscripcion_id')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <button type="submit" class="btn btn-primary">
     <i class="fas fa-save"></i> {{ isset($calificacion) ? 'Actualizar' : 'Registrar' }}
 </button>
-<a href="{{ route('calificaciones.index') }}" class="btn btn-info">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>

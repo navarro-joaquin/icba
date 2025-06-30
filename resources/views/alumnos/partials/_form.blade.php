@@ -6,11 +6,21 @@
 <div class="mb-3">
     <label for="nombre">Nombre del Alumno</label>
     <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre', $alumno->nombre ?? '') }}">
+    @error('nombre')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <div class="mb-3">
     <label for="fecha_nacimiento">Fecha de Nacimiento</label>
     <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" value="{{ old('fecha_nacimiento', $alumno->fecha_nacimiento ?? '') }}">
+    @error('fecha_nacimiento')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <div class="mb-3">
@@ -21,14 +31,16 @@
                 {{ $usuario->username }}
             </option>
         @empty
-            <option value="">No hay usuarios registrados</option>
+            <option value="">-- No hay usuarios disponibles --</option>
         @endforelse
     </select>
+    @error('user_id')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <button type="submit" class="btn btn-primary">
     <i class="fas fa-save"></i> {{ isset($alumno) ? 'Actualizar' : 'Registrar' }}
 </button>
-<a href="{{ route('alumnos.index') }}" class="btn btn-info">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>

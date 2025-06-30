@@ -33,10 +33,10 @@
         let title = ''
         let confirmText = ''
 
-        if (estado == 'active') {
+        if (estado === 'active') {
             title = '¿Desea desactivar el usuario?'
             confirmText = 'Sí, desactivar'
-        } else {
+        } else if (estado === 'inactive') {
             title = '¿Desea activar el usuario?'
             confirmText = 'Sí, activar'
         }
@@ -45,6 +45,7 @@
             title: title,
             icon: 'warning',
             showCancelButton: true,
+            cancelButtonText: 'Cancelar',
             confirmButtonText: confirmText
         }).then((result) => {
             if (result.isConfirmed) {

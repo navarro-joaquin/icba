@@ -11,9 +11,14 @@
                 {{ $cursoGestion->nombre }}
             </option>
         @empty
-            <option value="">No hay cursos disponibles</option>
+            <option value="">-- No hay cursos disponibles --</option>
         @endforelse
     </select>
+    @error('curso_gestion_id')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <div class="mb-3">
@@ -24,14 +29,16 @@
                 {{ $profesor->nombre }}
             </option>
         @empty
-            <option value="">No hay profesores disponibles</option>
+            <option value="">-- No hay profesores disponibles --</option>
         @endforelse
     </select>
+    @error('profesor_id')
+        <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
 </div>
 
 <button type="submit" class="btn btn-primary">
-    <i class="fas fa-save"></i> {{ isset($alumno) ? 'Actualizar' : 'Registrar' }}
+    <i class="fas fa-save"></i> {{ isset($curso_profesor) ? 'Actualizar' : 'Registrar' }}
 </button>
-<a href="{{ route('alumnos.index') }}" class="btn btn-info">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>

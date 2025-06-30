@@ -73,7 +73,10 @@ class ProfesorController extends Controller
      */
     public function create()
     {
-        $usuarios = User::where('role', 'profesor')->where('status', 'active')->get();
+        $usuarios = User::where('role', 'profesor')
+            ->where('status', 'active')
+            ->whereDoesntHave('profesor')
+            ->get();
         return view('profesores.create', compact('usuarios'));
     }
 
@@ -102,7 +105,13 @@ class ProfesorController extends Controller
      */
     public function edit(Profesor $profesor)
     {
-        $usuarios = User::where('role', 'profesor')->where('status', 'active')->get();
+        $usuarios = User::where('role', 'profesor')
+            ->where('status', 'active')
+            ->where(function ($query) use ($profesor) {
+                $query->whereDoesntHave('profesor')
+                    ->orWhere('id', $profesor->user_id);
+            })
+            ->get();
         return view('profesores.edit', compact('usuarios', 'profesor'));
     }
 

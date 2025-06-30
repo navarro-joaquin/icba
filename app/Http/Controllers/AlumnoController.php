@@ -73,7 +73,10 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        $usuarios = User::where('role', 'alumno')->get();
+        $usuarios = User::where('role', 'alumno')
+            ->where('status', 'active')
+            ->whereDoesntHave('alumno')
+            ->get();
         return view('alumnos.create', compact('usuarios'));
     }
 
@@ -102,7 +105,13 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        $usuarios = User::where('role', 'alumno')->get();
+        $usuarios = User::where('role', 'alumno')
+            ->where('status', 'active')
+            ->where(function ($query) use ($alumno) {
+                $query->whereDoesntHave('alumno')
+                    ->orWhere('id', $alumno->user_id);
+            })
+            ->get();
         return view('alumnos.edit', compact('alumno', 'usuarios'));
     }
 

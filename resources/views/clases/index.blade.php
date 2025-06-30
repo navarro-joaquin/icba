@@ -35,6 +35,7 @@
                 title: title,
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'Cancelar',
                 confirmButtonText: confirmText,
             }).then((result) => {
                 if (result.isConfirmed) {
