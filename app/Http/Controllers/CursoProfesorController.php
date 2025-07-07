@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profesor;
-use App\Models\CursoGestion;
+use App\Models\CursoCiclo;
 use App\Models\CursoProfesor;
 use App\Http\Requests\CursoProfesorRequest;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class CursoProfesorController extends Controller
         $heads = [
             'ID',
             'Nombre',
-            'Curso-Gestión',
+            'Curso-Ciclo',
             'Profesor',
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'searchable' => false, 'orderable' => false]
@@ -36,7 +36,7 @@ class CursoProfesorController extends Controller
             'columns' => [
                 ['data' => 'id', 'name' => 'id'],
                 ['data' => 'nombre', 'name' => 'nombre'],
-                ['data' => 'curso_gestion_nombre', 'name' => 'curso_gestion_nombre'],
+                ['data' => 'curso_ciclo_nombre', 'name' => 'curso_ciclo_nombre'],
                 ['data' => 'profesor_nombre', 'name' => 'profesor_nombre'],
                 ['data' => 'estado', 'name' => 'estado'],
                 ['data' => 'actions', 'name' => 'actions', 'searchable' => false, 'orderable' => false],
@@ -54,14 +54,14 @@ class CursoProfesorController extends Controller
         $query = CursoProfesor::query();
 
         return DataTables::of($query)
-            ->addColumn('curso_gestion_nombre', fn ($curso_profesor) => $curso_profesor->cursoGestion->nombre ?? '')
+            ->addColumn('curso_ciclo_nombre', fn ($curso_profesor) => $curso_profesor->cursoCiclo->nombre ?? '')
             ->addColumn('profesor_nombre', fn ($curso_profesor) => $curso_profesor->profesor->nombre ?? '')
             ->addColumn('estado', function ($curso_profesor) {
-                if ($curso_profesor->estado == 'activo') {
-                    return '<span class="badge badge-success">Activo</span>';
-                } else {
-                    return '<span class="badge badge-secondary">Inactivo</span>';
-                }
+                return match ($curso_profesor->estado) {
+                    'activo' => '<span class="badge bg-success">Activo</span>',
+                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelada</span>',
+                };
             })
             ->addColumn('actions', function ($curso_profesor) {
                 return view('cursos-profesores.partials._actions', compact('curso_profesor'))->render();
@@ -75,10 +75,10 @@ class CursoProfesorController extends Controller
      */
     public function create()
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        $cursosCiclos = CursoCiclo::where('estado', 'activo')->get();
         $profesores = Profesor::where('estado', 'activo')->get();
 
-        return view('cursos-profesores.create', compact('cursosGestiones', 'profesores'));
+        return view('cursos-profesores.create', compact('cursosCiclos', 'profesores'));
     }
 
     /**
@@ -86,9 +86,9 @@ class CursoProfesorController extends Controller
      */
     public function store(CursoProfesorRequest $request)
     {
-        $cursoGestion = CursoGestion::find($request->curso_gestion_id);
+        $cursoCiclo = CursoCiclo::find($request->curso_ciclo_id);
         $profesor = Profesor::find($request->profesor_id);
-        $nombre = $cursoGestion->nombre . ' - ' . $profesor->nombre;
+        $nombre = $cursoCiclo->nombre . ' - ' . $profesor->nombre;
 
         $validatedData = $request->validated();
         $validatedData['nombre'] = $nombre;
@@ -97,7 +97,7 @@ class CursoProfesorController extends Controller
 
         return redirect()
             ->route('cursos-profesores.index')
-            ->with('success', "Curso $cursoGestion->nombre asignado al profesor $profesor->nombre correctamente");
+            ->with('success', "Curso $cursoCiclo->nombre asignado al profesor $profesor->nombre correctamente");
     }
 
     /**
@@ -113,10 +113,10 @@ class CursoProfesorController extends Controller
      */
     public function edit(CursoProfesor $curso_profesor)
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        $cursosCiclos = CursoCiclo::where('estado', 'activo')->get();
         $profesores = Profesor::where('estado', 'activo')->get();
 
-        return view('cursos-profesores.edit', compact('curso_profesor', 'cursosGestiones', 'profesores'));
+        return view('cursos-profesores.edit', compact('curso_profesor', 'cursosCiclos', 'profesores'));
     }
 
     /**
@@ -124,9 +124,9 @@ class CursoProfesorController extends Controller
      */
     public function update(Request $request, CursoProfesor $curso_profesor)
     {
-        $cursoGestion = CursoGestion::find($request->curso_gestion_id);
+        $cursoCiclo = CursoCiclo::find($request->curso_ciclo_id);
         $profesor = Profesor::find($request->profesor_id);
-        $nombre = $cursoGestion->nombre . ' - ' . $profesor->nombre;
+        $nombre = $cursoCiclo->nombre . ' - ' . $profesor->nombre;
 
         $validatedData = $request->validated();
         $validatedData['nombre'] = $nombre;
@@ -135,7 +135,7 @@ class CursoProfesorController extends Controller
 
         return redirect()
             ->route('cursos-profesores.index')
-            ->with('success', "Curso $cursoGestion->nombre asignado al profesor $profesor->nombre correctamente");
+            ->with('success', "Curso $cursoCiclo->nombre asignado al profesor $profesor->nombre correctamente");
     }
 
     /**

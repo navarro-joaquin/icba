@@ -25,3 +25,16 @@
     </div>
 
 @stop
+
+@push('js')
+    <script>
+        function togglePassword() {
+            let x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+@endpush

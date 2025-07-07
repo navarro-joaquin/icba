@@ -15,7 +15,7 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Limpiar la cache de permisos
+        // Limpiar la caché de permisos
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Crear roles y asignar permisos
@@ -28,45 +28,42 @@ class RoleAndPermissionSeeder extends Seeder
         $roleGestor->givePermissionTo([
             'ver operaciones',
             'ver usuarios',
+            'crear usuarios',
             'ver alumnos',
             'crear alumnos',
             'ver profesores',
             'crear profesores',
-            'ver gestiones',
-            'crear gestiones',
+            'ver ciclos',
+            'crear ciclos',
             'ver cursos',
             'crear cursos',
             'ver asignaciones',
-            'ver cursos-gestiones',
-            'crear cursos-gestiones',
+            'ver cursos-ciclos',
+            'crear cursos-ciclos',
             'ver cursos-profesores',
             'crear cursos-profesores',
             'ver gestion-academica',
+            'ver matriculas',
+            'crear matriculas',
+            'ver pagos-matriculas',
+            'crear pagos-matriculas',
             'ver inscripciones',
             'crear inscripciones',
             'ver pagos',
             'crear pagos',
-            'ver clases',
-            'crear clases',
-            'ver asistencias',
-            'crear asistencias',
             'ver calificaciones',
             'crear calificaciones'
         ]);
 
         $roleAlumno->givePermissionTo([
-            'ver clases',
-            'ver asistencias',
+            'ver matriculas',
+            'ver pagos-matriculas',
+            'ver inscripciones',
+            'ver pagos',
             'ver calificaciones'
         ]);
 
         $roleProfesor->givePermissionTo([
-            'ver clases',
-            'crear clases',
-            'editar clases',
-            'ver asistencias',
-            'crear asistencias',
-            'editar asistencias',
             'ver calificaciones',
             'crear calificaciones',
             'editar calificaciones'

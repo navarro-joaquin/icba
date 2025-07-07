@@ -17,13 +17,15 @@ class CursoProfesor extends Model implements Auditable
     protected $fillable = [
         'nombre',
         'estado',
-        'curso_gestion_id',
+        'fecha_inicio',
+        'fecha_fin',
+        'curso_ciclo_id',
         'profesor_id'
     ];
 
-    public function cursoGestion()
+    public function cursoCiclo()
     {
-        return $this->belongsTo(CursoGestion::class);
+        return $this->belongsTo(CursoCiclo::class);
     }
 
     public function profesor()

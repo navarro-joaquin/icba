@@ -55,7 +55,7 @@ class CalificacionController extends Controller
                 $query = Calificacion::with('inscripcion');
                 break;
             case 'profesor':
-                $query = Calificacion::with('inscripcion')->whereHas('inscripcion.cursoGestion.cursoProfesores', function ($query) {
+                $query = Calificacion::with('inscripcion')->whereHas('inscripcion.cursoCiclo.cursoProfesores', function ($query) {
                     $query->where('profesor_id', Auth()->user()->profesor->id);
                 });
                 break;
@@ -70,7 +70,7 @@ class CalificacionController extends Controller
 
         return DataTables::of($query)
             ->addColumn('inscripcion_nombre', function ($calificacion) {
-                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoGestion->nombre . ')' ?? '';
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoCiclo->nombre . ')' ?? '';
             })
             ->addColumn('tipo', function ($calificacion) {
                 switch ($calificacion->tipo) {
@@ -102,7 +102,7 @@ class CalificacionController extends Controller
         if ($user->hasRole('profesor') && $user->profesor) {
             // If user is a profesor, get only inscripciones for their assigned cursos
             $inscripciones = Inscripcion::where('estado', 'activo')
-                ->whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                ->whereHas('cursoCiclo.cursoProfesores', function($query) use ($user) {
                     $query->where('profesor_id', $user->profesor->id);
                 })
                 ->get();
@@ -145,7 +145,7 @@ class CalificacionController extends Controller
         if ($user->hasRole('profesor') && $user->profesor) {
             // If user is a profesor, get only inscripciones for their assigned cursos
             $inscripciones = Inscripcion::where('estado', 'activo')
-                ->whereHas('cursoGestion.cursoProfesores', function($query) use ($user) {
+                ->whereHas('cursoCiclo.cursoProfesores', function($query) use ($user) {
                     $query->where('profesor_id', $user->profesor->id);
                 })
                 ->get();

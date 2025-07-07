@@ -19,7 +19,7 @@ class AlumnoController extends Controller
             'ID',
             'Nombre',
             'Fecha de Nacimiento',
-            'Usuario',
+            'Usuario (Email)',
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
         ];
@@ -53,13 +53,13 @@ class AlumnoController extends Controller
         $query = Alumno::query();
 
         return Datatables::of($query)
-            ->addColumn('nombre_usuario', fn ($alumno) => $alumno->user->username ?? '')
+            ->addColumn('nombre_usuario', fn ($alumno) => $alumno->user->email ?? '')
             ->addColumn('estado', function ($alumno) {
-                if ($alumno->estado == 'activo') {
-                    return '<span class="badge badge-success">Activo</span>';
-                } else {
-                    return '<span class="badge badge-secondary">Inactivo</span>';
-                }
+                return match ($alumno->estado) {
+                    'activo' => '<span class="badge bg-success">Activo</span>',
+                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelado</span>',
+                };
             })
             ->addColumn('actions', function ($alumno) {
                 return view('alumnos.partials._actions', compact('alumno'))->render();

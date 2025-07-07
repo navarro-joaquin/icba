@@ -16,7 +16,7 @@ class Inscripcion extends Model implements Auditable
 
     protected $fillable = [
         'alumno_id',
-        'curso_gestion_id',
+        'curso_ciclo_id',
         'fecha_inscripcion',
         'monto_total',
         'estado'
@@ -27,9 +27,9 @@ class Inscripcion extends Model implements Auditable
         return $this->belongsTo(Alumno::class);
     }
 
-    public function cursoGestion()
+    public function cursoCiclo()
     {
-        return $this->belongsTo(CursoGestion::class);
+        return $this->belongsTo(CursoCiclo::class);
     }
 
     public function calificaciones()

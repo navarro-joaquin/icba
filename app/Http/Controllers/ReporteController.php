@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inscripcion;
-use App\Models\Clase;
 use App\Models\Pago;
 use App\Models\Calificacion;
-use App\Models\CursoGestion;
-use App\Models\Asistencia;
+use App\Models\CursoCiclo;
 use Yajra\DataTables\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -134,7 +132,7 @@ class ReporteController extends Controller
         // Obtener todas las inscripciones con sus relaciones
         $inscripciones = Inscripcion::with(['alumno', 'pagos' => function($query) {
             $query->orderBy('fecha_pago', 'desc');
-        }, 'cursoGestion.curso'])->get();
+        }, 'cursoCiclo.curso'])->get();
 
         $resultados = $inscripciones->map(function($inscripcion) {
             $tienePagos = $inscripcion->pagos->isNotEmpty();
@@ -147,7 +145,7 @@ class ReporteController extends Controller
 
                 return [
                     'alumno_nombre' => $inscripcion->alumno->nombre ?? 'Sin nombre',
-                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoGestion->nombre ?? 'Curso no encontrado'),
+                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
                     'monto' => number_format($deuda, 2) . ' Bs.',
                     'descripcion' => $tienePagos
                         ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
@@ -170,7 +168,7 @@ class ReporteController extends Controller
     {
         $inscripciones = Inscripcion::with(['alumno', 'pagos' => function($query) {
             $query->orderBy('fecha_pago', 'desc');
-        }, 'cursoGestion.curso'])->get();
+        }, 'cursoCiclo.curso'])->get();
 
         $resultados = $inscripciones->map(function($inscripcion) {
             $tienePagos = $inscripcion->pagos->isNotEmpty();
@@ -183,7 +181,7 @@ class ReporteController extends Controller
 
                 return [
                     'alumno_nombre' => $inscripcion->alumno->nombre ?? 'Sin nombre',
-                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoGestion->nombre ?? 'Curso no encontrado'),
+                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
                     'monto' => number_format($deuda, 2) . ' Bs.',
                     'descripcion' => $tienePagos
                         ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
@@ -205,55 +203,7 @@ class ReporteController extends Controller
 
     public function planillas()
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
-
-        $clasesHeads = [
-            'Número de Clase',
-            'Fecha de Clase',
-            'Tema'
-        ];
-
-        $clasesConfig = [
-            'processing' => true,
-            'serverSide' => true,
-            'ajax' => [
-                'url' => route('reportes.planillas.clases.data'),
-                'type' => 'GET',
-                'dataSrc' => 'data'
-            ],
-            'columns' => [
-                ['data' => 'numero_clase', 'name' => 'numero_clase'],
-                ['data' => 'fecha_clase', 'name' => 'fecha_clase'],
-                ['data' => 'tema', 'name' => 'tema']
-            ],
-            'language' => [
-                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-            ]
-        ];
-
-        $asistenciasHeads = [
-            'Inscripción',
-            'Clase',
-            'Presente'
-        ];
-
-        $asistenciasConfig = [
-            'processing' => true,
-            'serverSide' => true,
-            'ajax' => [
-                'url' => route('reportes.planillas.asistencias.data'),
-                'type' => 'GET',
-                'dataSrc' => 'data'
-            ],
-            'columns' => [
-                ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
-                ['data' => 'clase_nombre', 'name' => 'clase_nombre'],
-                ['data' => 'presente', 'name' => 'presente']
-            ],
-            'language' => [
-                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-            ]
-        ];
+        $cursosCiclos = CursoCiclo::where('estado', 'activo')->get();
 
         $calificacionesHeads = [
             'Inscripción',
@@ -279,99 +229,27 @@ class ReporteController extends Controller
             ]
         ];
 
-        return view('reportes.planillas', compact('cursosGestiones', 'clasesHeads', 'clasesConfig', 'asistenciasHeads', 'asistenciasConfig', 'calificacionesHeads', 'calificacionesConfig'));
-    }
-
-    public function planillasClasesData(Request $request)
-    {
-        $cursoGestionId = $request->curso_gestion;
-
-        if (!empty($cursoGestionId)) {
-            $clases = Clase::with(['cursoGestion.curso'])
-                ->where('curso_gestion_id', $cursoGestionId)
-                ->orderBy('fecha_clase', 'asc')
-                ->get();
-        } else {
-            $clases = collect();
-        }
-
-        return DataTables::of($clases)
-            ->addColumn('numero_clase', function($clase) {
-                return $clase->numero_clase;
-            })
-            ->addColumn('fecha_clase', function($clase) {
-                return $clase->fecha_clase;
-            })
-            ->addColumn('tema', function($clase) {
-                return $clase->tema ?: 'Sin tema especificado';
-            })
-            ->addIndexColumn()
-            ->make(true);
-    }
-
-    public function planillasAsistenciasData(Request $request)
-    {
-        $cursoGestionId = $request->curso_gestion;
-
-        if (!empty($cursoGestionId)) {
-            $asistencias = Asistencia::with([
-                    'inscripcion.alumno',
-                    'inscripcion.cursoGestion',
-                    'clase' => function($query) {
-                        $query->orderBy('fecha_clase', 'asc');
-                    }
-                ])
-                ->whereHas('inscripcion', function($query) use ($cursoGestionId) {
-                    $query->where('curso_gestion_id', $cursoGestionId);
-                })
-                ->get()
-                ->sortBy(function($asistencia) {
-                    return $asistencia->clase->fecha_clase ?? '';
-                });
-        } else {
-            $asistencias = collect();
-        }
-
-        return DataTables::of($asistencias)
-            ->addColumn('inscripcion_nombre', function ($asistencia) {
-                return $asistencia->inscripcion->alumno->nombre . ' - (' . $asistencia->inscripcion->cursoGestion->nombre . ')' ?? '';
-            })
-            ->addColumn('clase_nombre', function ($asistencia) {
-                return 'N° ' . $asistencia->clase->numero_clase . ' - (' . $asistencia->clase->fecha_clase . ')' ?? '';
-            })
-            ->addColumn('presente', function($asistencia) {
-                if ($asistencia->presente) {
-                    return '<input type="checkbox" checked disabled />';
-                } else {
-                    return '<input type="checkbox" disabled />';
-                }
-            })
-            ->rawColumns(['presente'])
-            ->addIndexColumn()
-            ->make(true);
+        return view('reportes.planillas', compact('cursosCiclos', 'calificacionesHeads', 'calificacionesConfig'));
     }
 
     public function planillasCalificacionesData(Request $request)
     {
-        $cursoGestion = $request->curso_gestion;
+        $cursoCiclo = $request->curso_ciclo;
 
-        if (!empty($cursoGestion)) {
-            $calificaciones = Calificacion::whereHas('inscripcion', function ($query) use ($cursoGestion) {
-                $query->whereHas('cursoGestion', function ($query) use ($cursoGestion) {
-                    $query->where('id', $cursoGestion);
+        if (!empty($cursoCiclo)) {
+            $calificaciones = Calificacion::whereHas('inscripcion', function ($query) use ($cursoCiclo) {
+                $query->whereHas('cursoCiclo', function ($query) use ($cursoCiclo) {
+                    $query->where('id', $cursoCiclo);
                 });
             })
-                ->with(['inscripcion.alumno', 'inscripcion.cursoGestion.clases' => function ($query) use ($request) {
-                    $query->where('clases.id', $request->clase);
-                }])
-                ->get();
+            ->get();
         } else {
             $calificaciones = Calificacion::whereRaw('1 = 0');
         }
 
         return DataTables::of($calificaciones)
             ->addColumn('inscripcion_nombre', function ($calificacion) {
-                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoGestion->nombre . ')' ?? '';
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoCiclo->nombre . ')' . ' ('. $calificacion->inscripcion->cursoCiclo->fecha_inicio . ' - '. $calificacion->inscripcion->cursoCiclo->fecha_fin . ')' ?? '';
             })
             ->addColumn('tipo', function ($calificacion) {
                 switch ($calificacion->tipo) {

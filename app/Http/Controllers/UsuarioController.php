@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Alumno;
+use App\Models\Profesor;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
@@ -55,19 +57,11 @@ class UsuarioController extends Controller
 
         return DataTables::of($query)
             ->addColumn('status', function($user) {
-                $statusValue = $user->status;
-                $badgeClass = '';
-                $displayText = '';
-
-                if ($statusValue === 'active') {
-                    $badgeClass = 'badge-success';
-                    $displayText = 'Activo';
-                } elseif ($statusValue === 'inactive') {
-                    $badgeClass = 'badge-secondary';
-                    $displayText = 'Inactivo';
-                }
-
-                return "<span class=\"badge {$badgeClass}\">{$displayText}</span>";
+                return match ($user->status) {
+                    'active' => '<span class="badge bg-success">Activo</span>',
+                    'inactive' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelado</span>',
+                };
             })
             ->addColumn('actions', function($user) {
                 return view('usuarios.partials._actions', compact('user'))->render();
@@ -94,6 +88,20 @@ class UsuarioController extends Controller
         $user = User::create($request->validated());
 
         $user->assignRole($request->role);
+
+        if ($user->role == 'alumno') {
+            Alumno::create([
+                'nombre' => $request->username,
+                'fecha_nacimiento' => $request->fecha_nacimiento,
+                'user_id' => $user->id,
+            ]);
+        } else if ($user->role == 'profesor') {
+            Profesor::create([
+                'nombre' => $request->username,
+                'especialidad' => $request->especialidad,
+                'user_id' => $user->id
+            ]);
+        }
 
         return redirect()
             ->route('usuarios.index')

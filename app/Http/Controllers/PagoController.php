@@ -55,11 +55,17 @@ class PagoController extends Controller
 
     public function data()
     {
-        $query = Pago::query();
+        $user = auth()->user();
+
+        if ($user->hasRole('alumno')) {
+            $query = Pago::with('alumno', 'inscripcion')->where('alumno_id', $user->alumno->id)->get();
+        } else {
+            $query = Pago::with('alumno', 'inscripcion')->get();
+        }
 
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($pago) => $pago->alumno->nombre ?? '')
-            ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->cursoGestion->nombre ?? '')
+            ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->cursoCiclo->nombre ?? '')
             ->addColumn('forma_pago', function ($pago) {
                 switch ($pago->forma_pago) {
                     case 'efectivo':

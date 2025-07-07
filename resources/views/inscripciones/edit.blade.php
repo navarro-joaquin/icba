@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title">Editar Inscripción: {{ $inscripcion->cursoGestion->nombre }} del Alumno: {{ $inscripcion->alumno->nombre }}</h3>
+                <h3 class="card-title">Editar Inscripción: {{ $inscripcion->cursoCiclo->nombre }} del Alumno: {{ $inscripcion->alumno->nombre }}</h3>
             </div>
             <div class="card-tools">
                 <a href="{{ route('inscripciones.index') }}" class="btn btn-secondary">

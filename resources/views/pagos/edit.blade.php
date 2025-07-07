@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title">Editar Pago del Curso: {{ $pago->inscripcion->cursoGestion->nombre }} del Alumno: {{ $pago->alumno->nombre }}</h3>
+                <h3 class="card-title">Editar Pago del Curso: {{ $pago->inscripcion->cursoCiclo->nombre }} del Alumno: {{ $pago->alumno->nombre }}</h3>
             </div>
             <div class="card-tools">
                 <a href="{{ route('pagos.index') }}" class="btn btn-secondary">

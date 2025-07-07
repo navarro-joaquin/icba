@@ -20,8 +20,8 @@ class Curso extends Model implements Auditable
         'estado'
     ];
 
-    public function cursoGestiones()
+    public function cursosCiclos()
     {
-        return $this->hasMany(CursoGestion::class);
+        return $this->hasMany(CursoCiclo::class);
     }
 }

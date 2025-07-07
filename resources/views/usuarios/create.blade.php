@@ -25,3 +25,30 @@
     </div>
 
 @stop
+
+@push('js')
+    <script>
+        function togglePassword() {
+            let x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        $(document).on('change', '#role', function (e) {
+            let role = e.target.value
+            if (role === 'alumno') {
+                $('#alumno').show()
+                $('#profesor').hide()
+            } else if (role === 'profesor') {
+                $('#alumno').hide()
+                $('#profesor').show()
+            } else {
+                $('#alumno').hide()
+                $('#profesor').hide()
+            }
+        })
+    </script>
+@endpush

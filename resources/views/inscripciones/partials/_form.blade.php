@@ -6,6 +6,7 @@
 <div class="mb-3">
     <label for="alumno_id">Alumno</label>
     <select name="alumno_id" class="form-control" id="alumno_id">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($alumnos as $alumno)
             <option value="{{ $alumno->id }}" {{ old('alumno_id', $inscripcion->alumno_id ?? '') == $alumno->id ? 'selected' : '' }}>
                 {{ $alumno->nombre }}
@@ -22,17 +23,18 @@
 </div>
 
 <div class="mb-3">
-    <label for="curso_gestion_id">Curso y Gestión</label>
-    <select name="curso_gestion_id" class="form-control" id="curso_gestion_id">
-        @forelse ($cursosGestiones as $cursoGestion)
-            <option value="{{ $cursoGestion->id }}" {{ old('curso_gestion_id', $inscripcion->curso_gestion_id ?? '') == $cursoGestion->id ? 'selected' : '' }}>
-                {{ $cursoGestion->nombre }}
+    <label for="curso_ciclo_id">Curso y Ciclo</label>
+    <select name="curso_ciclo_id" class="form-control" id="curso_ciclo_id">
+        <option value="">-- Seleccione una opción --</option>
+        @forelse ($cursosCiclos as $cursoCiclo)
+            <option value="{{ $cursoCiclo->id }}" {{ old('curso_ciclo_id', $inscripcion->curso_ciclo_id ?? '') == $cursoCiclo->id ? 'selected' : '' }}>
+                {{ $cursoCiclo->nombre }}
             </option>
         @empty
-            <option value="">-- No hay Cursos y Gestiones disponibles --</option>
+            <option value="">-- No hay Cursos y Ciclos disponibles --</option>
         @endforelse
     </select>
-    @error('curso_gestion_id')
+    @error('curso_ciclo_id')
         <span class="text-danger">
             {{ $message }}
         </span>

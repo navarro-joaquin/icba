@@ -77,15 +77,14 @@ class AuditoriaController extends Controller
             case 'User': return 'Usuario';
             case 'Alumno': return 'Alumno';
             case 'Profesor': return 'Profesor';
-            case 'Gestion': return 'Gestion';
+            case 'Ciclo': return 'Ciclo';
             case 'Curso': return 'Curso';
-            case 'CursoGestion': return 'Curso y Gestion';
+            case 'CursoCiclo': return 'Curso y Ciclo';
             case 'CursoProfesor': return 'Curso y Profesor';
-            case 'Inscripcion': return 'Inscripcion';
+            case 'Matricula': return 'Matricula';
+            case 'Inscripcion': return 'Inscripción';
             case 'Pago': return 'Pago';
-            case 'Clase': return 'Clase';
-            case 'Asistencia': return 'Asistencia';
-            case 'Calificacion': return 'Calificacion';
+            case 'Calificacion': return 'Calificación';
             default: return $baseName;
         }
     }

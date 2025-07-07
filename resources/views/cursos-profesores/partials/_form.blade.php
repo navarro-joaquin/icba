@@ -4,17 +4,18 @@
 @endif
 
 <div class="mb-3">
-    <label for="curso_gestion_id">Curso y Gestión:</label>
-    <select name="curso_gestion_id" id="curso_gestion_id" class="form-control">
-        @forelse ($cursosGestiones as $cursoGestion)
-            <option value="{{ $cursoGestion->id }}" {{ old('curso_gestion_id', $curso_profesor->curso_gestion_id ?? '') == $cursoGestion->id ? 'selected' : '' }}>
-                {{ $cursoGestion->nombre }}
+    <label for="curso_ciclo_id">Curso y Ciclo:</label>
+    <select name="curso_ciclo_id" id="curso_ciclo_id" class="form-control">
+        <option value="">-- Seleccione una opción --</option>
+        @forelse ($cursosCiclos as $cursoCiclo)
+            <option value="{{ $cursoCiclo->id }}" {{ old('curso_ciclo_id', $curso_profesor->curso_ciclo_id ?? '') == $cursoCiclo->id ? 'selected' : '' }}>
+                {{ $cursoCiclo->nombre }}
             </option>
         @empty
             <option value="">-- No hay cursos disponibles --</option>
         @endforelse
     </select>
-    @error('curso_gestion_id')
+    @error('curso_ciclo_id')
         <span class="text-danger">
             {{ $message }}
         </span>
@@ -24,6 +25,7 @@
 <div class="mb-3">
     <label for="profesor_id">Profesor:</label>
     <select name="profesor_id" id="profesor_id" class="form-control">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($profesores as $profesor)
             <option value="{{ $profesor->id }}" {{ old('profesor_id', $curso_profesor->profesor_id ?? '') == $profesor->id ? 'selected' : '' }}>
                 {{ $profesor->nombre }}

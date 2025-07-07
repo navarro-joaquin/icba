@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('estado')->default('activo');
-            $table->foreignId('curso_gestion_id')->constrained('curso_gestion');
+            $table->foreignId('curso_ciclo_id')->constrained('curso_ciclo');
             $table->foreignId('profesor_id')->constrained('profesores');
             $table->timestamps();
         });

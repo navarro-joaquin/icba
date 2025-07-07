@@ -23,7 +23,7 @@ class InscripcionRequest extends FormRequest
     {
         return [
             'alumno_id' => 'required|exists:alumnos,id',
-            'curso_gestion_id' => 'required|exists:curso_gestion,id',
+            'curso_ciclo_id' => 'required|exists:curso_ciclo,id',
             'fecha_inscripcion' => 'required|date',
             'monto_total' => 'required|numeric'
         ];
@@ -33,7 +33,7 @@ class InscripcionRequest extends FormRequest
     {
         return [
             'alumno_id' => 'Alumno',
-            'curso_gestion_id' => 'Curso y Gestión',
+            'curso_ciclo_id' => 'Curso y Ciclo',
             'fecha_inscripcion' => 'Fecha de inscripción',
             'monto_total' => 'Monto Total'
         ];

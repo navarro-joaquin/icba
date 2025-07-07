@@ -14,11 +14,11 @@
         <div class="card-body">
             <form id="planillaForm">
                 <div class="mb-3">
-                    <label for="curso_gestion">Curso:</label>
-                    <select name="curso_gestion" id="curso_gestion" class="form-control">
+                    <label for="curso_ciclo">Curso:</label>
+                    <select name="curso_ciclo" id="curso_ciclo" class="form-control">
                             <option value="">-- Seleccione una opción --</option>
-                        @forelse ($cursosGestiones as $cursoGestion)
-                            <option value="{{ $cursoGestion->id }}">{{ $cursoGestion->nombre }}</option>
+                        @forelse ($cursosCiclos as $cursoCiclo)
+                            <option value="{{ $cursoCiclo->id }}">{{ $cursoCiclo->nombre }}</option>
                         @empty
                             <option value="">No hay cursos disponibles</option>
                         @endforelse
@@ -40,28 +40,6 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title mb-0">Listado de Clases</h3>
-            </div>
-        </div>
-        <div class="card-body">
-            <x-adminlte-datatable id="clases-table" :heads="$clasesHeads" :config="$clasesConfig"></x-adminlte-datatable>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header d-flex align-items-center">
-            <div class="flex-grow-1">
-                <h3 class="card-title mb-0">Listado de Asistencias</h3>
-            </div>
-        </div>
-        <div class="card-body">
-            <x-adminlte-datatable id="asistencias-table" :heads="$asistenciasHeads" :config="$asistenciasConfig"></x-adminlte-datatable>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header d-flex align-items-center">
-            <div class="flex-grow-1">
                 <h3 class="card-title mb-0">Listado de Calificaciones</h3>
             </div>
         </div>
@@ -75,31 +53,17 @@
 
     <script>
         $(document).ready(function () {
-            var clasesTable = $('#clases-table').DataTable()
-            var asistenciasTable = $('#asistencias-table').DataTable()
-            var calificacionesTable = $('#calificaciones-table').DataTable()
+            let calificacionesTable = $('#calificaciones-table').DataTable()
 
-            clasesTable.ajax.url('{{ route('reportes.planillas.clases.data') }}')
-            asistenciasTable.ajax.url('{{ route('reportes.planillas.asistencias.data') }}')
             calificacionesTable.ajax.url('{{ route('reportes.planillas.calificaciones.data') }}')
 
-            clasesTable.settings()[0].ajax.data = function (d) {
-                d.curso_gestion = $('#curso_gestion').val()
-            }
-
-            asistenciasTable.settings()[0].ajax.data = function (d) {
-                d.curso_gestion = $('#curso_gestion').val()
-            }
-
             calificacionesTable.settings()[0].ajax.data = function (d) {
-                d.curso_gestion = $('#curso_gestion').val()
+                d.curso_ciclo = $('#curso_ciclo').val()
             }
 
             $('#planillaForm').on('submit', function (e) {
                 e.preventDefault()
 
-                clasesTable.ajax.reload(null, false)
-                asistenciasTable.ajax.reload(null, false)
                 calificacionesTable.ajax.reload(null, false)
             })
         })

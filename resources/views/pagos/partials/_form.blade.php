@@ -6,6 +6,7 @@
 <div class="mb-3">
     <label for="alumno_id">Alumno</label>
     <select name="alumno_id" class="form-control" id="alumno_id">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($alumnos as $alumno)
             <option value="{{ $alumno->id }}" {{ old('alumno_id', $pago->alumno_id ?? '') == $alumno->id ? 'selected' : '' }}>
                 {{ $alumno->nombre }}
@@ -24,9 +25,10 @@
 <div class="mb-3">
     <label for="inscripcion_id">Inscripción</label>
     <select name="inscripcion_id" class="form-control" id="inscripcion_id">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($inscripciones as $inscripcion)
             <option value="{{ $inscripcion->id }}" {{ old('inscripcion_id', $pago->inscripcion_id ?? '') == $inscripcion->id ? 'selected' : '' }}>
-                {{ $inscripcion->cursoGestion->nombre }}
+                {{ $inscripcion->cursoCiclo->nombre }}
             </option>
         @empty
             <option value="">-- No hay inscripciones disponibles --</option>

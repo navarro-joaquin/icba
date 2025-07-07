@@ -33,11 +33,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'editar profesores']);
         Permission::create(['name' => 'eliminar profesores']);
 
-        // Permisos de gestiones
-        Permission::create(['name' => 'ver gestiones']);
-        Permission::create(['name' => 'crear gestiones']);
-        Permission::create(['name' => 'editar gestiones']);
-        Permission::create(['name' => 'eliminar gestiones']);
+        // Permisos de ciclos
+        Permission::create(['name' => 'ver ciclos']);
+        Permission::create(['name' => 'crear ciclos']);
+        Permission::create(['name' => 'editar ciclos']);
+        Permission::create(['name' => 'eliminar ciclos']);
 
         // Permisos de cursos
         Permission::create(['name' => 'ver cursos']);
@@ -47,11 +47,11 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name' => 'ver asignaciones']);
 
-        // Permisos de cursos-gestiones
-        Permission::create(['name' => 'ver cursos-gestiones']);
-        Permission::create(['name' => 'crear cursos-gestiones']);
-        Permission::create(['name' => 'editar cursos-gestiones']);
-        Permission::create(['name' => 'eliminar cursos-gestiones']);
+        // Permisos de cursos-ciclos
+        Permission::create(['name' => 'ver cursos-ciclos']);
+        Permission::create(['name' => 'crear cursos-ciclos']);
+        Permission::create(['name' => 'editar cursos-ciclos']);
+        Permission::create(['name' => 'eliminar cursos-ciclos']);
 
         // Permisos de cursos-profesores
         Permission::create(['name' => 'ver cursos-profesores']);
@@ -60,6 +60,18 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'eliminar cursos-profesores']);
 
         Permission::create(['name' => 'ver gestion-academica']);
+
+        // Permisos de matriculas
+        Permission::create(['name' => 'ver matriculas']);
+        Permission::create(['name' => 'crear matriculas']);
+        Permission::create(['name' => 'editar matriculas']);
+        Permission::create(['name' => 'eliminar matriculas']);
+
+        // Permisos de pagos de matriculas
+        Permission::create(['name' => 'ver pagos-matriculas']);
+        Permission::create(['name' => 'crear pagos-matriculas']);
+        Permission::create(['name' => 'editar pagos-matriculas']);
+        Permission::create(['name' => 'eliminar pagos-matriculas']);
 
         // Permisos de inscripciones
         Permission::create(['name' => 'ver inscripciones']);
@@ -72,18 +84,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'crear pagos']);
         Permission::create(['name' => 'editar pagos']);
         Permission::create(['name' => 'eliminar pagos']);
-
-        // Permisos de clases
-        Permission::create(['name' => 'ver clases']);
-        Permission::create(['name' => 'crear clases']);
-        Permission::create(['name' => 'editar clases']);
-        Permission::create(['name' => 'eliminar clases']);
-
-        // Permisos de asistencias
-        Permission::create(['name' => 'ver asistencias']);
-        Permission::create(['name' => 'crear asistencias']);
-        Permission::create(['name' => 'editar asistencias']);
-        Permission::create(['name' => 'eliminar asistencias']);
 
         // Permisos de calificaciones
         Permission::create(['name' => 'ver calificaciones']);

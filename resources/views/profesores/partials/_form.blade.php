@@ -24,11 +24,12 @@
 </div>
 
 <div class="mb-3">
-    <label for="user_id">Usuario</label>
+    <label for="user_id">Usuario (Email)</label>
     <select name="user_id" class="form-control" id="user_id">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($usuarios as $usuario)
             <option value="{{ $usuario->id }}" {{ old('user_id', $alumno->user_id ?? '') == $usuario->id ? 'selected' : '' }}>
-                {{ $usuario->username }}
+                {{ $usuario->email }}
             </option>
         @empty
             <option value="">-- No hay usuarios disponibles --</option>

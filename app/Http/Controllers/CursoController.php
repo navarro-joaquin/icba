@@ -51,11 +51,11 @@ class CursoController extends Controller
 
         return DataTables::of($query)
             ->addColumn('estado', function($curso) {
-                if ($curso->estado == 'activo') {
-                    return '<span class="badge badge-success">Activo</span>';
-                } else {
-                    return '<span class="badge badge-secondary">Inactivo</span>';
-                }
+                return match ($curso->estado) {
+                    'activo' => '<span class="badge bg-success">Activo</span>',
+                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelado</span>',
+                };
             })
             ->addColumn('actions', function($curso) {
                 return view('cursos.partials._actions', compact('curso'))->render();

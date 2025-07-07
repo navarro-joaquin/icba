@@ -19,7 +19,7 @@ class ProfesorController extends Controller
             'ID',
             'Nombre',
             'Especialidad',
-            'Usuario',
+            'Usuario (Email)',
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'searchable' => false, 'orderable' => false]
         ];
@@ -53,13 +53,13 @@ class ProfesorController extends Controller
         $query = Profesor::query();
 
         return DataTables::of($query)
-            ->addColumn('nombre_usuario', fn ($profesor) => $profesor->user->username ?? '')
+            ->addColumn('nombre_usuario', fn ($profesor) => $profesor->user->email ?? '')
             ->addColumn('estado', function ($profesor) {
-                if ($profesor->estado == 'activo') {
-                    return '<span class="badge badge-success">Activo</span>';
-                } else {
-                    return '<span class="badge badge-secondary">Inactivo</span>';
-                }
+                return match ($profesor->estado) {
+                    'activo' => '<span class="badge bg-success">Activo</span>',
+                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelada</span>',
+                };
             })
             ->addColumn('actions', function ($profesor) {
                 return view('profesores.partials._actions', compact('profesor'))->render();

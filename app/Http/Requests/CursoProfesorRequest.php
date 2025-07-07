@@ -22,7 +22,7 @@ class CursoProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'curso_gestion_id' => 'required|exists:curso_gestion,id',
+            'curso_ciclo_id' => 'required|exists:curso_ciclo,id',
             'profesor_id' => 'required|exists:profesores,id',
         ];
     }
@@ -30,7 +30,7 @@ class CursoProfesorRequest extends FormRequest
     public function attributes()
     {
         return [
-            'curso_gestion_id' => 'Curso y Gestión',
+            'curso_ciclo_id' => 'Curso y Ciclo',
             'profesor_id' => 'Profesor',
         ];
     }

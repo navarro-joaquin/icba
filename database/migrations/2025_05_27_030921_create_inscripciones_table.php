@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('alumno_id')->constrained('alumnos');
-            $table->foreignId('curso_gestion_id')->constrained('curso_gestion');
+            $table->foreignId('curso_ciclo_id')->constrained('curso_ciclo');
             $table->date('fecha_inscripcion');
             $table->decimal('monto_total', 10, 2);
             $table->string('estado')->default('activo');

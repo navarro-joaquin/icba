@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inscripcion;
-use App\Models\CursoGestion;
+use App\Models\CursoCiclo;
 use App\Models\Alumno;
 use App\Http\Requests\InscripcionRequest;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class InscripcionController extends Controller
         $heads = [
             'ID',
             'Alumno',
-            'Curso-Gestión',
+            'Curso-Ciclo',
             'Fecha de inscripción',
             'Monto total (Bs.)',
             'Estado',
@@ -37,7 +37,7 @@ class InscripcionController extends Controller
             'columns' => [
                 ['data' => 'id', 'name' => 'id'],
                 ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
-                ['data' => 'curso_gestion_nombre', 'name' => 'curso_gestion_nombre'],
+                ['data' => 'curso_ciclo_nombre', 'name' => 'curso_ciclo_nombre'],
                 ['data' => 'fecha_inscripcion', 'name' => 'fecha_inscripcion'],
                 ['data' => 'monto_total', 'name' => 'monto_total'],
                 ['data' => 'estado', 'name' => 'estado'],
@@ -53,17 +53,23 @@ class InscripcionController extends Controller
 
     public function data()
     {
-        $query = Inscripcion::with('alumno', 'cursoGestion')->get();
+        $user = auth()->user();
+
+        if ($user->hasRole('alumno')) {
+            $query = Inscripcion::with('alumno', 'cursoCiclo')->where('alumno_id', $user->alumno->id)->get();
+        } else {
+            $query = Inscripcion::with('alumno', 'cursoCiclo')->get();
+        }
 
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($inscripcion) => $inscripcion->alumno->nombre ?? '')
-            ->addColumn('curso_gestion_nombre', fn ($inscripcion) => $inscripcion->cursoGestion->nombre ?? '')
+            ->addColumn('curso_ciclo_nombre', fn ($inscripcion) => $inscripcion->cursoCiclo->nombre ?? '')
             ->addColumn('estado', function ($inscripcion) {
-                if ($inscripcion->estado == 'activo') {
-                    return '<span class="badge badge-success">Activo</span>';
-                } else {
-                    return '<span class="badge badge-secondary">Inactivo</span>';
-                }
+                return match ($inscripcion->estado) {
+                    'activo' => '<span class="badge bg-success">Activo</span>',
+                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    default => '<span class="badge bg-danger">Cancelada</span>',
+                };
             })
             ->addColumn('actions', function ($inscripcion) {
                 return view('inscripciones.partials._actions', compact('inscripcion'))->render();
@@ -77,10 +83,10 @@ class InscripcionController extends Controller
      */
     public function create()
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        $cursosCiclos = CursoCiclo::where('estado', 'activo')->get();
         $alumnos = Alumno::where('estado', 'activo')->get();
 
-        return view('inscripciones.create', compact('cursosGestiones', 'alumnos'));
+        return view('inscripciones.create', compact('cursosCiclos', 'alumnos'));
     }
 
     /**
@@ -108,10 +114,10 @@ class InscripcionController extends Controller
      */
     public function edit(Inscripcion $inscripcion)
     {
-        $cursosGestiones = CursoGestion::where('estado', 'activo')->get();
+        $cursosCiclos = CursoCiclo::where('estado', 'activo')->get();
         $alumnos = Alumno::where('estado', 'activo')->get();
 
-        return view('inscripciones.edit', compact('inscripcion', 'cursosGestiones', 'alumnos'));
+        return view('inscripciones.edit', compact('inscripcion', 'cursosCiclos', 'alumnos'));
     }
 
     /**

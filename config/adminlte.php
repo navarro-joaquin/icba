@@ -338,10 +338,10 @@ return [
             'can' => 'ver profesores'
         ],
         [
-            'text' => 'Gestiones',
-            'url' => 'gestiones',
+            'text' => 'Ciclos',
+            'url' => 'ciclos',
             'icon' => 'fas fa-clock',
-            'can' => 'ver gestiones'
+            'can' => 'ver ciclos'
         ],
         [
             'text' => 'Cursos',
@@ -354,10 +354,10 @@ return [
             'can' => 'ver asignaciones'
         ],
         [
-            'text' => 'Cursos y Gestiones',
-            'url' => 'cursos-gestiones',
+            'text' => 'Cursos y Ciclos',
+            'url' => 'cursos-ciclos',
             'icon' => 'fas fa-calendar-alt',
-            'can' => 'ver cursos-gestiones'
+            'can' => 'ver cursos-ciclos'
         ],
         [
             'text' => 'Cursos y Profesores',
@@ -370,6 +370,12 @@ return [
             'can' => 'ver gestion-academica'
         ],
         [
+            'text' => 'Matriculas',
+            'url' => 'matriculas',
+            'icon' => 'fas fa-calendar-day',
+            'can' => 'ver matriculas'
+        ],
+        [
             'text' => 'Inscripciones',
             'url' => 'inscripciones',
             'icon' => 'fas fa-user-graduate',
@@ -380,18 +386,6 @@ return [
             'url' => 'pagos',
             'icon' => 'fas fa-hand-holding-usd',
             'can' => 'ver pagos'
-        ],
-        [
-            'text' => 'Clases',
-            'url' => 'clases',
-            'icon' => 'fas fa-book',
-            'can' => 'ver clases'
-        ],
-        [
-            'text' => 'Asistencias',
-            'url' => 'asistencias',
-            'icon' => 'fas fa-user-check',
-            'can' => 'ver asistencias'
         ],
         [
             'text' => 'Calificaciones',

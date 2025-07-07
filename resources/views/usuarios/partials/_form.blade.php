@@ -40,9 +40,35 @@
     @enderror
 </div>
 
+<div class="mb-3" id="alumno" style="display: none">
+    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" value="{{ old('fecha_nacimiento', $alumno->fecha_nacimiento ?? '') }}">
+    @error('fecha_nacimiento')
+    <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
+</div>
+
+<div class="mb-3 hidden" id="profesor" style="display: none">
+    <label for="especialidad">Especialidad</label>
+    <input type="text" name="especialidad" id="especialidad" class="form-control" value="{{ old('especialidad', $profesor->especialidad ?? '') }}">
+    @error('especialidad')
+    <span class="text-danger">
+            {{ $message }}
+        </span>
+    @enderror
+</div>
+
+
 <div class="mb-3">
     <label for="password">Contraseña</label>
-    <input type="password" name="password" id="password" class="form-control">
+    <div class="input-group mb-3">
+        <input type="password" name="password" id="password" class="form-control">
+        <button type="button" class="btn btn-secondary" onclick="togglePassword()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
     @error('password')
         <span class="text-danger">
             {{ $message }}

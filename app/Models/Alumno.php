@@ -35,4 +35,14 @@ class Alumno extends Model implements Auditable
     {
         return $this->hasMany(Pago::class);
     }
+
+    public function matriculas()
+    {
+        return $this->hasMany(Matricula::class);
+    }
+
+    public function pagosMatriculas()
+    {
+        return $this->hasMany(PagoMatricula::class);
+    }
 }
