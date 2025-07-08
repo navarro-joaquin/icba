@@ -23,8 +23,9 @@
         <thead>
         <tr>
             <th>Alumno</th>
-            <th>Curso</th>
-            <th>Deuda</th>
+            <th>Concepto</th>
+            <th>Tipo</th>
+            <th>Monto Adeudado</th>
             <th>Descripción</th>
         </tr>
         </thead>
@@ -32,8 +33,9 @@
             @foreach ($resultados as $resultado)
                 <tr>
                     <td>{{ $resultado['alumno_nombre'] }}</td>
-                    <td>{{ $resultado['inscripcion'] }}</td>
-                    <td class="monto">{{ $resultado['monto'] }}</td>
+                    <td>{{ $resultado['concepto'] }}</td>
+                    <td>{{ $resultado['tipo'] }}</td>
+                    <td class="monto">{{ $resultado['deuda'] }} Bs.</td>
                     <td>{{ $resultado['descripcion'] }}</td>
                 </tr>
             @endforeach

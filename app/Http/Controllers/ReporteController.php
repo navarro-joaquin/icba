@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inscripcion;
+use App\Models\Matricula;
 use App\Models\Pago;
+use App\Models\PagoMatricula;
 use App\Models\Calificacion;
 use App\Models\CursoCiclo;
 use Yajra\DataTables\DataTables;
@@ -15,8 +17,10 @@ class ReporteController extends Controller
     public function pagosRealizados()
     {
         $heads = [
+            'ID',
             'Fecha',
             'Alumno',
+            'Tipo',
             'Monto',
             'Forma de pago',
             'Descripcion'
@@ -31,11 +35,13 @@ class ReporteController extends Controller
                 'dataSrc' => 'data'
             ],
             'columns' => [
+                ['data' => 'id', 'name' => 'id'],
                 ['data' => 'fecha_pago', 'name' => 'fecha_pago'],
                 ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
+                ['data' => 'tipo', 'name' => 'tipo', 'orderable' => false, 'searchable' => false],
                 ['data' => 'monto', 'name' => 'monto'],
                 ['data' => 'forma_pago', 'name' => 'forma_pago'],
-                ['data' => 'descripcion', 'name' => 'descripcion']
+                ['data' => 'descripcion', 'name' => 'descripcion'],
             ],
             'language' => [
                 'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
@@ -46,25 +52,62 @@ class ReporteController extends Controller
 
     public function pagosRealizadosData(Request $request)
     {
+        // Obtener parámetros del request
         $fechaInicio = $request->input('fecha_inicio');
         $fechaFin = $request->input('fecha_fin');
         $formaPago = $request->input('forma_pago');
 
-        $query = Pago::query();
-
-        if (!empty($fechaInicio) && !empty($fechaFin)) {
-            // Ajustado para incluir todo el día de fin
-            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59']);
-            if (!empty($formaPago)) {
-                $query->where('forma_pago', $formaPago);
-            }
-        } else {
-            // Esto asegura que la tabla esté vacía inicialmente si no hay fechas
-            $query->whereRaw('1 = 0');
+        // Si no hay fechas definidas, devolver colección vacía
+        if (empty($fechaInicio) || empty($fechaFin)) {
+            return DataTables::of(collect([]))
+                ->addIndexColumn()
+                ->make(true);
         }
 
-        return DataTables::of($query)
-            ->addColumn('alumno_nombre', fn ($pago) => $pago->alumno->nombre ?? '')
+        // Obtener pagos de inscripciones
+        $pagosInscripciones = Pago::query()
+            ->select(
+                'pagos.id',
+                'pagos.fecha_pago',
+                'pagos.monto',
+                'pagos.forma_pago',
+                'pagos.descripcion',
+                'alumnos.nombre as alumno_nombre',
+                \DB::raw('"Inscripción" as tipo')
+            )
+            ->join('alumnos', 'pagos.alumno_id', '=', 'alumnos.id')
+            ->whereBetween('pagos.fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59'])
+            ->when(!empty($formaPago), function($query) use ($formaPago) {
+                $query->where('pagos.forma_pago', $formaPago);
+            });
+
+        // Obtener pagos de matrículas
+        $pagosMatriculas = PagoMatricula::query()
+            ->select(
+                'pagos_matriculas.id',
+                'pagos_matriculas.fecha_pago',
+                'pagos_matriculas.monto',
+                'pagos_matriculas.forma_pago',
+                'pagos_matriculas.descripcion',
+                'alumnos.nombre as alumno_nombre',
+                \DB::raw('"Matrícula" as tipo')
+            )
+            ->join('matriculas', 'pagos_matriculas.matricula_id', '=', 'matriculas.id')
+            ->join('alumnos', 'matriculas.alumno_id', '=', 'alumnos.id')
+            ->whereBetween('pagos_matriculas.fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59'])
+            ->when(!empty($formaPago), function($query) use ($formaPago) {
+                $query->where('pagos_matriculas.forma_pago', $formaPago);
+            });
+
+        // Obtener los resultados de ambas consultas
+        $pagosInscripciones = $pagosInscripciones->get();
+        $pagosMatriculas = $pagosMatriculas->get();
+
+        // Combinar las colecciones
+        $pagosCombinados = $pagosInscripciones->concat($pagosMatriculas);
+
+        // Crear una colección para DataTables
+        return DataTables::of($pagosCombinados)
             ->addIndexColumn()
             ->make(true);
     }
@@ -75,22 +118,53 @@ class ReporteController extends Controller
         $fechaFin = $request->input('fecha_fin');
         $formaPago = $request->input('forma_pago');
 
-        $query = Pago::query();
-
-        if (!empty($fechaInicio) && !empty($fechaFin)) {
-            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59']);
-            if (!empty($formaPago)) {
-                $query->where('forma_pago', $formaPago);
-            } else {
-                $formaPago = 'Todos';
-            }
-        } else {
-            $query->whereRaw('1 = 0');
+        // Si no hay fechas definidas, devolver PDF vacío
+        if (empty($fechaInicio) || empty($fechaFin)) {
+            $pagos = collect([]);
+            return view('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
         }
 
-        $pagos = $query->with('alumno')->get();
+        // Obtener pagos de inscripciones
+        $pagosInscripciones = Pago::select(
+                'pagos.id',
+                'pagos.fecha_pago',
+                'pagos.monto',
+                'pagos.forma_pago',
+                'pagos.descripcion',
+                'alumnos.nombre as alumno_nombre',
+                \DB::raw('"Inscripción" as tipo')
+            )
+            ->join('alumnos', 'pagos.alumno_id', '=', 'alumnos.id')
+            ->whereBetween('pagos.fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59']);
 
-        //return view('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
+        // Obtener pagos de matrículas
+        $pagosMatriculas = PagoMatricula::query()
+            ->select(
+                'pagos_matriculas.id',
+                'pagos_matriculas.fecha_pago',
+                'pagos_matriculas.monto',
+                'pagos_matriculas.forma_pago',
+                'pagos_matriculas.descripcion',
+                'alumnos.nombre as alumno_nombre',
+                \DB::raw('"Matrícula" as tipo')
+            )
+            ->join('matriculas', 'pagos_matriculas.matricula_id', '=', 'matriculas.id')
+            ->join('alumnos', 'matriculas.alumno_id', '=', 'alumnos.id')
+            ->whereBetween('pagos_matriculas.fecha_pago', [$fechaInicio, $fechaFin . ' 23:59:59']);
+
+        // Aplicar filtro de forma de pago si existe
+        if (!empty($formaPago)) {
+            $pagosInscripciones->where('pagos.forma_pago', $formaPago);
+            $pagosMatriculas->where('pagos_matriculas.forma_pago', $formaPago);
+        } else {
+            $formaPago = 'Todos';
+        }
+
+        // Obtener y combinar resultados
+        $pagosInscripciones = $pagosInscripciones->get();
+        $pagosMatriculas = $pagosMatriculas->get();
+
+        $pagos = $pagosInscripciones->concat($pagosMatriculas);
 
         $pdf = Pdf::loadView('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
         return $pdf->stream('pagos-realizados.pdf');
@@ -100,9 +174,10 @@ class ReporteController extends Controller
     {
         $heads = [
             'Alumno',
-            'Inscripción',
-            'Monto',
-            'Descripción'
+            'Concepto',
+            'Tipo',
+            'Monto Adeudado',
+            'Último Pago'
         ];
 
         $config = [
@@ -115,10 +190,12 @@ class ReporteController extends Controller
             ],
             'columns' => [
                 ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
-                ['data' => 'inscripcion', 'name' => 'inscripcion'],
-                ['data' => 'monto', 'name' => 'monto'],
+                ['data' => 'concepto', 'name' => 'concepto'],
+                ['data' => 'tipo', 'name' => 'tipo'],
+                ['data' => 'monto', 'name' => 'monto', 'className' => 'text-end'],
                 ['data' => 'descripcion', 'name' => 'descripcion']
             ],
+            'order' => [[3, 'desc']], // Ordenar por monto descendente por defecto
             'language' => [
                 'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
             ]
@@ -134,7 +211,13 @@ class ReporteController extends Controller
             $query->orderBy('fecha_pago', 'desc');
         }, 'cursoCiclo.curso'])->get();
 
-        $resultados = $inscripciones->map(function($inscripcion) {
+        // Obtener todas las matrículas con sus relaciones
+        $matriculas = Matricula::with(['alumno', 'pagosMatriculas' => function($query) {
+            $query->orderBy('fecha_pago', 'desc');
+        }])->get();
+
+        // Procesar inscripciones
+        $deudasInscripciones = $inscripciones->map(function($inscripcion) {
             $tienePagos = $inscripcion->pagos->isNotEmpty();
             $totalPagado = $inscripcion->pagos->sum('monto');
             $deuda = $inscripcion->monto_total - $totalPagado;
@@ -145,19 +228,58 @@ class ReporteController extends Controller
 
                 return [
                     'alumno_nombre' => $inscripcion->alumno->nombre ?? 'Sin nombre',
-                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
-                    'monto' => number_format($deuda, 2) . ' Bs.',
+                    'concepto' => 'Inscripción: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
+                    'monto' => $deuda,
+                    'monto_formateado' => number_format($deuda, 2) . ' Bs.',
                     'descripcion' => $tienePagos
                         ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
                         : 'Sin pagos registrados',
+                    'tipo' => 'Inscripción',
                     'deuda' => $deuda // Para ordenamiento
                 ];
             }
             return null;
-        })
-        ->filter()
-        ->sortByDesc('deuda')
-        ->values();
+        })->filter();
+
+        // Procesar matrículas
+        $deudasMatriculas = $matriculas->map(function($matricula) {
+            $tienePagos = $matricula->pagosMatriculas->isNotEmpty();
+            $totalPagado = $matricula->pagosMatriculas->sum('monto');
+            $deuda = $matricula->monto_total - $totalPagado;
+
+            // Incluir si no tiene pagos o si tiene deuda
+            if (!$tienePagos || $deuda > 0) {
+                $ultimoPago = $matricula->pagosMatriculas->first();
+
+                return [
+                    'alumno_nombre' => $matricula->alumno->nombre ?? 'Sin nombre',
+                    'concepto' => 'Matrícula Año: ' . $matricula->anio,
+                    'monto' => $deuda,
+                    'monto_formateado' => number_format($deuda, 2) . ' Bs.',
+                    'descripcion' => $tienePagos
+                        ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
+                        : 'Sin pagos registrados',
+                    'tipo' => 'Matrícula',
+                    'deuda' => $deuda // Para ordenamiento
+                ];
+            }
+            return null;
+        })->filter();
+
+        // Combinar y ordenar resultados
+        $resultados = $deudasInscripciones->concat($deudasMatriculas)
+            ->sortByDesc('deuda')
+            ->values()
+            ->map(function($item) {
+                return [
+                    'alumno_nombre' => $item['alumno_nombre'],
+                    'concepto' => $item['concepto'],
+                    'monto' => $item['monto_formateado'],
+                    'descripcion' => $item['descripcion'],
+                    'tipo' => $item['tipo'],
+                    'deuda' => $item['deuda']
+                ];
+            });
 
         return DataTables::of($resultados)
             ->addIndexColumn()
@@ -166,36 +288,66 @@ class ReporteController extends Controller
 
     public function alumnosConDeudaPDF()
     {
+        // Obtener todas las inscripciones con sus relaciones
         $inscripciones = Inscripcion::with(['alumno', 'pagos' => function($query) {
             $query->orderBy('fecha_pago', 'desc');
         }, 'cursoCiclo.curso'])->get();
 
-        $resultados = $inscripciones->map(function($inscripcion) {
+        // Obtener todas las matrículas con sus relaciones
+        $matriculas = Matricula::with(['alumno', 'pagosMatriculas' => function($query) {
+            $query->orderBy('fecha_pago', 'desc');
+        }])->get();
+
+        // Procesar inscripciones
+        $deudasInscripciones = $inscripciones->map(function($inscripcion) {
             $tienePagos = $inscripcion->pagos->isNotEmpty();
             $totalPagado = $inscripcion->pagos->sum('monto');
             $deuda = $inscripcion->monto_total - $totalPagado;
 
-            // Incluir si no tiene pagos o si tiene deuda
             if (!$tienePagos || $deuda > 0) {
                 $ultimoPago = $inscripcion->pagos->first();
 
                 return [
                     'alumno_nombre' => $inscripcion->alumno->nombre ?? 'Sin nombre',
-                    'inscripcion' => 'Inscripción al Curso: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
+                    'concepto' => 'Inscripción: ' . ($inscripcion->cursoCiclo->nombre ?? 'Curso no encontrado'),
                     'monto' => number_format($deuda, 2) . ' Bs.',
                     'descripcion' => $tienePagos
                         ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
                         : 'Sin pagos registrados',
-                    'deuda' => $deuda // Para ordenamiento
+                    'tipo' => 'Inscripción',
+                    'deuda' => $deuda
                 ];
             }
             return null;
-        })
-        ->filter()
-        ->sortByDesc('deuda')
-        ->values();
+        })->filter();
 
-        //return view('reportes.pdf.alumnos-con-deuda', compact('resultados'));
+        // Procesar matrículas
+        $deudasMatriculas = $matriculas->map(function($matricula) {
+            $tienePagos = $matricula->pagosMatriculas->isNotEmpty();
+            $totalPagado = $matricula->pagosMatriculas->sum('monto');
+            $deuda = $matricula->monto_total - $totalPagado;
+
+            if (!$tienePagos || $deuda > 0) {
+                $ultimoPago = $matricula->pagosMatriculas->first();
+
+                return [
+                    'alumno_nombre' => $matricula->alumno->nombre ?? 'Sin nombre',
+                    'concepto' => 'Matrícula Año: ' . $matricula->anio,
+                    'monto' => number_format($deuda, 2) . ' Bs.',
+                    'descripcion' => $tienePagos
+                        ? 'Último pago: ' . ($ultimoPago->descripcion ?? '') . ($ultimoPago ? ' (' . $ultimoPago->fecha_pago . ')' : '')
+                        : 'Sin pagos registrados',
+                    'tipo' => 'Matrícula',
+                    'deuda' => $deuda
+                ];
+            }
+            return null;
+        })->filter();
+
+        // Combinar y ordenar resultados
+        $resultados = $deudasInscripciones->concat($deudasMatriculas)
+            ->sortByDesc('deuda')
+            ->values();
 
         $pdf = Pdf::loadView('reportes.pdf.alumnos-con-deuda', ['resultados' => $resultados]);
         return $pdf->stream();

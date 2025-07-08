@@ -64,8 +64,8 @@
 <div class="mb-3">
     <label for="forma_pago">Forma de Pago</label>
     <select name="forma_pago" class="form-control" id="forma_pago">
-        <option value="efectivo" {{ old('forma_pago', $user->forma_pago?? '') == 'efectivo' ? 'selected' : '' }}>Efectivo</option>
-        <option value="transferencia" {{ old('forma_pago', $user->forma_pago?? '') == 'transferencia' ? 'selected' : '' }}>Transferencia Bancaria</option>
+        <option value="efectivo" {{ old('forma_pago', $pago->forma_pago?? '') == 'efectivo' ? 'selected' : '' }}>Efectivo</option>
+        <option value="transferencia" {{ old('forma_pago', $pago->forma_pago?? '') == 'transferencia' ? 'selected' : '' }}>Transferencia Bancaria</option>
     </select>
     @error('forma_pago')
         <span class="text-danger">

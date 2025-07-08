@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
     // Matriculas
     Route::get('matriculas/data', [MatriculaController::class, 'data'])->name('matriculas.data');
+    Route::get('matriculas/estado/{alumno_id}', [MatriculaController::class, 'estado'])->name('matriculas.estado');
     Route::resource('matriculas', MatriculaController::class);
 
     // Pagos de Matriculas

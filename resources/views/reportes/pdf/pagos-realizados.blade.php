@@ -26,8 +26,10 @@
     <table class="tabla">
         <thead>
         <tr>
+            <td>ID</td>
             <th>Fecha</th>
             <th>Alumno</th>
+            <th>Tipo</th>
             <th>Monto (Bs.)</th>
             <th>Forma de Pago</th>
             <th>Descripción</th>
@@ -36,8 +38,10 @@
         <tbody>
         @foreach ($pagos as $pago)
             <tr>
+                <td>{{ $pago->id }}</td>
                 <td>{{ $pago->fecha_pago }}</td>
-                <td>{{ $pago->alumno->nombre }}</td>
+                <td>{{ $pago->alumno_nombre }}</td>
+                <td>{{ $pago->tipo }}</td>
                 <td class="monto">{{ $pago->monto }}</td>
                 <td>{{ $pago->forma_pago }}</td>
                 <td>{{ $pago->descripcion }}</td>

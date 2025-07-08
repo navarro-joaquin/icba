@@ -39,7 +39,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ route('pagos.destroy', ':id') }}'.replace(':id', id)
+                        url: '{{ route('pagos.destroy', ':id') }}'.replace(':id', id),
                         method: 'POST',
                         data: {
                             _method: 'DELETE',

@@ -376,6 +376,12 @@ return [
             'can' => 'ver matriculas'
         ],
         [
+            'text' => 'Pagos de Matriculas',
+            'url' => 'pagos-matriculas',
+            'icon' => 'fas fa-hand-holding-usd',
+            'can' => 'ver pagos-matriculas'
+        ],
+        [
             'text' => 'Inscripciones',
             'url' => 'inscripciones',
             'icon' => 'fas fa-user-graduate',

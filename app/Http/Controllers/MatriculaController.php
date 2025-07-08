@@ -68,6 +68,32 @@ class MatriculaController extends Controller
             ->make(true);
     }
 
+    public function estado($alumno_id)
+    {
+        $anioActual = now()->year;
+
+        $matricula = Matricula::where('alumno_id', $alumno_id)
+            ->where('anio', $anioActual)
+            ->first();
+
+        if (!$matricula) {
+            return response()->json([
+                'estado' => 'no_registrada',
+                'anio' => $anioActual,
+            ]);
+        }
+
+        $pagado = $matricula->pagosMatriculas()->sum('monto');
+        $completo = $pagado >= $matricula->monto_total;
+
+        return response()->json([
+            'estado' => $completo ? 'pagada' : 'pendiente',
+            'pagado' => $pagado,
+            'total' => $matricula->monto_total,
+            'anio' => $matricula->anio,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
