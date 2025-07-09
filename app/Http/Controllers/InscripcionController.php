@@ -78,6 +78,20 @@ class InscripcionController extends Controller
             ->make(true);
     }
 
+    public function obtener($alumno_id)
+    {
+        $inscripciones = Inscripcion::with('cursoCiclo')
+            ->where('alumno_id', $alumno_id)
+            ->where('estado', 'activo')
+            ->get();
+
+        if ($inscripciones->isEmpty()) {
+            return response()->json(['inscripciones' => []]);
+        }
+
+        return response()->json(['inscripciones' => $inscripciones]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

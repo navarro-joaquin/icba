@@ -26,6 +26,7 @@
     <label for="matricula_id">Matricula</label>
     <select name="matricula_id" class="form-control" id="matricula_id">
         <option value="">-- Seleccione una opción --</option>
+        {{--
         @forelse ($matriculas as $matricula)
             <option value="{{ $matricula->id }}" {{ old('matricula_id', $pago_matricula->matricula_id ?? '') == $matricula->id ? 'selected' : '' }}>
                 {{ $matricula->anio }}
@@ -33,6 +34,7 @@
         @empty
             <option value="">-- No hay matriculas disponibles --</option>
         @endforelse
+        --}}
     </select>
     @error('matricula_id')
     <span class="text-danger">

@@ -25,3 +25,32 @@
     </div>
 
 @stop
+
+@push('js')
+    <script>
+        $(document).on('change', '#alumno_id', function (e) {
+            const alumno_id = e.target.value
+            const inscripcionSelect = $('#inscripcion_id')
+
+            if (alumno_id) {
+                inscripcionSelect.empty()
+                inscripcionSelect.append('<option value="">-- Seleccione una Inscripción --</option>')
+                $.get('/inscripciones/obtener/' + alumno_id, function (data) {
+                    $.each(data, function (index, inscripciones) {
+                        if (inscripciones.length === 0) {
+                            inscripcionSelect.empty()
+                            inscripcionSelect.append('<option value="">-- El alumno no tiene inscripciones activas --</option>')
+                        } else {
+                            inscripciones.map((inscripcion) => {
+                                inscripcionSelect.append('<option value="' + inscripcion.id + '">' + inscripcion.curso_ciclo.nombre + '</option>')
+                            })
+                        }
+                    })
+                })
+            } else {
+                inscripcionSelect.empty()
+                inscripcionSelect.append('<option value="">-- Seleccione una opción --</option>')
+            }
+        })
+    </script>
+@endpush

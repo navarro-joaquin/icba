@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     // Matriculas
     Route::get('matriculas/data', [MatriculaController::class, 'data'])->name('matriculas.data');
     Route::get('matriculas/estado/{alumno_id}', [MatriculaController::class, 'estado'])->name('matriculas.estado');
+    Route::get('matriculas/obtener/{alumno_id}', [MatriculaController::class, 'obtener'])->name('matriculas.obtener');
     Route::resource('matriculas', MatriculaController::class);
 
     // Pagos de Matriculas
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
 
     // Inscripciones
     Route::get('inscripciones/data', [InscripcionController::class, 'data'])->name('inscripciones.data');
+    Route::get('inscripciones/obtener/{alumno_id}', [InscripcionController::class, 'obtener'])->name('inscripciones.obtener');
     Route::resource('inscripciones', InscripcionController::class)->parameters(['inscripciones' => 'inscripcion']);
 
     // Calificaciones

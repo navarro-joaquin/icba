@@ -35,7 +35,7 @@ class PagoMatriculaRequest extends FormRequest
     {
         return [
             'alumno_id' => 'Alumno',
-            'inscripcion_id' => 'Inscripción',
+            'matricula_id' => 'Matricula',
             'fecha_pago' => 'Fecha de pago',
             'monto' => 'Monto',
             'forma_pago' => 'Forma de pago',

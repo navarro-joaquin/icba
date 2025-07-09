@@ -94,6 +94,19 @@ class MatriculaController extends Controller
         ]);
     }
 
+    public function obtener($alumno_id)
+    {
+        $matriculas = Matricula::where('alumno_id', $alumno_id)
+            ->where('estado', 'activo')
+            ->get();
+
+        if ($matriculas->isEmpty()) {
+            return response()->json(['matriculas' => []]);
+        }
+
+        return response()->json(['matriculas' => $matriculas]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
