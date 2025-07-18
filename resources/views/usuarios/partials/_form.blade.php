@@ -24,11 +24,17 @@
     @enderror
 </div>
 
+
 <div class="mb-3">
     <label for="role">Rol</label>
     <select name="role" class="form-control" id="role">
+        <option value="">-- Seleccione una opción --</option>
         @forelse ($roles as $role)
-            <option value="{{ $role->name }}" {{ old('role', $user->role?? '') == $role->name ? 'selected' : '' }}>"{{ $role->name }}"</option>
+            @if (auth()->user()->hasRole('gestor') && ($role->name == 'admin' || $role->name == 'gestor'))
+                <!-- Skip admin and gestor roles for users with gestor role -->
+            @else
+                <option value="{{ $role->name }}" {{ old('role', $user->role?? '') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+            @endif
         @empty
             <option value="">-- No hay roles disponibles --</option>
         @endforelse
