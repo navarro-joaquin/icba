@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alumnos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 150);
-            $table->date('fecha_nacimiento');
+            $table->date('fecha_nacimiento')->nullable();
             $table->string('estado')->default('activo');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
