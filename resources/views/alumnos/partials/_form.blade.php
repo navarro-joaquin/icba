@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="nombre">Nombre del Alumno</label>
+    <label for="nombre">Nombre del Alumno <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre', $alumno->nombre ?? '') }}">
     @error('nombre')
         <span class="text-danger">
@@ -24,7 +24,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="user_id">Usuario (Email)</label>
+    <label for="user_id">Usuario (Email) <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="user_id" class="form-control" id="user_id">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($usuarios as $usuario)

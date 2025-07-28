@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="curso_id">Curso:</label>
+    <label for="curso_id">Curso <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="curso_id" id="curso_id" class="form-control">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($cursos as $curso)
@@ -23,7 +23,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="ciclo_id">Ciclos:</label>
+    <label for="ciclo_id">Ciclos <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="ciclo_id" id="ciclo_id" class="form-control">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($ciclos as $ciclo)
@@ -42,7 +42,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="fecha_inicio">Fecha de inicio:</label>
+    <label for="fecha_inicio">Fecha de inicio <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ old('fecha_inicio', $curso_ciclo->fecha_inicio ?? '') }}">
     @error('fecha_inicio')
     <span class="text-danger">
@@ -52,7 +52,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="fecha_fin">Fecha de finalización:</label>
+    <label for="fecha_fin">Fecha de finalización <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ old('fecha_fin', $curso_ciclo->fecha_fin ?? '') }}">
     @error('fecha_fin')
     <span class="text-danger">

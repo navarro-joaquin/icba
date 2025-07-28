@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="nombre">Nombre del Ciclo</label>
+    <label for="nombre">Nombre del Ciclo <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre', $ciclo->nombre ?? '') }}">
     @error('nombre')
         <span class="text-danger">
@@ -14,7 +14,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="fecha_inicio">Fecha de inicio</label>
+    <label for="fecha_inicio">Fecha de inicio  <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ old('fecha_inicio', $ciclo->fecha_inicio ?? '') }}">
     @error('fecha_inicio')
         <span class="text-danger">
@@ -24,7 +24,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="fecha_fin">Fecha de finalización</label>
+    <label for="fecha_fin">Fecha de finalización  <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ old('fecha_fin', $ciclo->fecha_fin ?? '') }}">
     @error('fecha_fin')
         <span class="text-danger">

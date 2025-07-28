@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="tipo">Tipo de Calificación:</label>
+    <label for="tipo">Tipo de Calificación <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="tipo" class="form-control" id="tipo">
         <option value="examen_1" {{ old('tipo', $calificacion->tipo ?? '') == 'examen_1' ? 'selected' : '' }}>Examen 1</option>
         <option value="examen_2" {{ old('tipo', $calificacion->tipo ?? '') == 'examen_2' ? 'selected' : '' }}>Examen 2</option>
@@ -18,7 +18,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="nota">Nota:</label>
+    <label for="nota">Nota <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="number" name="nota" id="nota" class="form-control" value="{{ old('nota', $calificacion->nota ?? '') }}">
     @error('nota')
         <span class="text-danger">
@@ -28,7 +28,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="inscripcion_id">Inscripción:</label>
+    <label for="inscripcion_id">Inscripción <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="inscripcion_id" id="inscripcion_id" class="form-control">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($inscripciones as $inscripcion)

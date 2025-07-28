@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="alumno_id">Alumno</label>
+    <label for="alumno_id">Alumno <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="alumno_id" class="form-control" id="alumno_id">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($alumnos as $alumno)
@@ -23,7 +23,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="inscripcion_id">Inscripción</label>
+    <label for="inscripcion_id">Inscripción <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="inscripcion_id" class="form-control" id="inscripcion_id">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($inscripciones as $inscripcion)
@@ -42,7 +42,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="fecha_pago">Fecha de Pago</label>
+    <label for="fecha_pago">Fecha de Pago <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="date" name="fecha_pago" id="fecha_pago" class="form-control" value="{{ old('fecha_pago', $pago->fecha_pago ?? '') }}">
     @error('fecha_pago')
         <span class="text-danger">
@@ -52,7 +52,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="monto">Monto (Bs.)</label>
+    <label for="monto">Monto (Bs.) <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="number" name="monto" id="monto" class="form-control" value="{{ old('monto', $pago->monto ?? '') }}">
     @error('monto')
         <span class="text-danger">
@@ -62,7 +62,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="forma_pago">Forma de Pago</label>
+    <label for="forma_pago">Forma de Pago <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="forma_pago" class="form-control" id="forma_pago">
         <option value="efectivo" {{ old('forma_pago', $pago->forma_pago?? '') == 'efectivo' ? 'selected' : '' }}>Efectivo</option>
         <option value="transferencia" {{ old('forma_pago', $pago->forma_pago?? '') == 'transferencia' ? 'selected' : '' }}>Transferencia Bancaria</option>

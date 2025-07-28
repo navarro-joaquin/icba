@@ -23,7 +23,7 @@ class AlumnoRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:150',
-            'fecha_nacimiento' => 'required|date',
+            'fecha_nacimiento' => 'nullable|date',
             'user_id' => 'required|exists:users,id'
         ];
     }

@@ -4,7 +4,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="curso_ciclo_id">Curso y Ciclo:</label>
+    <label for="curso_ciclo_id">Curso y Ciclo <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="curso_ciclo_id" id="curso_ciclo_id" class="form-control">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($cursosCiclos as $cursoCiclo)
@@ -23,7 +23,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="profesor_id">Profesor:</label>
+    <label for="profesor_id">Profesor <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="profesor_id" id="profesor_id" class="form-control">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($profesores as $profesor)

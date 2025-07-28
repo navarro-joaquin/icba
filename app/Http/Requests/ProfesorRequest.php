@@ -23,7 +23,7 @@ class ProfesorRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:150',
-            'especialidad' => 'required|string|max:100',
+            'especialidad' => 'nullable|string|max:100',
             'user_id' => 'required|exists:users,id',
         ];
     }

@@ -5,7 +5,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="username">Nombre de Usuario</label>
+    <label for="username">Nombre de Usuario <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="text" name="username" id="username" class="form-control" value="{{ old('username', $user->username ?? '') }}">
     @error('username')
         <span class="text-danger">
@@ -15,7 +15,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="email">Email</label>
+    <label for="email">Email <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email?? '') }}">
     @error('email')
         <span class="text-danger">
@@ -26,7 +26,7 @@
 
 
 <div class="mb-3">
-    <label for="role">Rol</label>
+    <label for="role">Rol <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="role" class="form-control" id="role">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($roles as $role)
@@ -68,7 +68,7 @@
 
 
 <div class="mb-3">
-    <label for="password">Contraseña</label>
+    <label for="password">Contraseña <span class="text-danger" title="El campo es requerido">*</span></label>
     <div class="input-group mb-3">
         <input type="password" name="password" id="password" class="form-control">
         <button type="button" class="btn btn-secondary" onclick="togglePassword()">
