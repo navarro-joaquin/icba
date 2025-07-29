@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matricula;
+use App\Models\PagoMatricula;
 use App\Models\Alumno;
 use Illuminate\Http\Request;
 use App\Http\Requests\MatriculaRequest;
@@ -50,7 +51,13 @@ class MatriculaController extends Controller
 
     public function data()
     {
-        $query = Matricula::query();
+        $user = auth()->user();
+
+        if ($user->hasRole('alumno')) {
+            $query = Matricula::with('alumno')->where('alumno_id', $user->alumno->id)->get();
+        } else {
+            $query = Matricula::with('alumno')->get();
+        }
 
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($matricula) => $matricula->alumno->nombre ?? '')
@@ -96,8 +103,16 @@ class MatriculaController extends Controller
 
     public function obtener($alumno_id)
     {
+        // Obtener IDs de matrículas que ya tienen pagos completados
+        $matriculas_pagadas = PagoMatricula::select('matricula_id')
+            ->groupBy('matricula_id')
+            ->havingRaw('SUM(monto) >= (SELECT monto_total FROM matriculas WHERE id = matricula_id)')
+            ->pluck('matricula_id')
+            ->toArray();
+
         $matriculas = Matricula::where('alumno_id', $alumno_id)
             ->where('estado', 'activo')
+            ->whereNotIn('id', $matriculas_pagadas)
             ->get();
 
         if ($matriculas->isEmpty()) {
@@ -112,7 +127,17 @@ class MatriculaController extends Controller
      */
     public function create()
     {
-        $alumnos = Alumno::where('estado', 'activo')->get();
+        $anio_actual = date('Y');
+
+        // Obtener IDs de alumnos que ya tienen matrícula para el año actual
+        $alumnos_con_matricula = Matricula::where('anio', $anio_actual)
+            ->pluck('alumno_id')
+            ->toArray();
+
+        // Obtener alumnos activos que no tengan matrícula para el año actual
+        $alumnos = Alumno::where('estado', 'activo')
+            ->whereNotIn('id', $alumnos_con_matricula)
+            ->get();
 
         return view('matriculas.create', compact('alumnos'));
     }

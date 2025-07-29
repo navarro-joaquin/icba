@@ -33,7 +33,7 @@ class CursoCicloRequest extends FormRequest
     {
         return [
             'fecha_inicio' => 'Fecha de inicio',
-            'fecha_fin' => 'Fecha de fin',
+            'fecha_fin' => 'Fecha de finalización',
             'curso_id' => 'Curso',
             'ciclo_id' => 'Ciclo',
         ];

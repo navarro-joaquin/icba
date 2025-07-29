@@ -30,8 +30,8 @@ class CursoRequest extends FormRequest
     public function attributes()
     {
         return [
-            'nombre' => 'Nombre',
-            'descripcion' => 'Descripción'
+            'nombre' => 'Nombre del curso',
+            'descripcion' => 'Descripción del curso'
         ];
     }
 

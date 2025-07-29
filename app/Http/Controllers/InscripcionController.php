@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inscripcion;
 use App\Models\CursoCiclo;
+use App\Models\Pago;
 use App\Models\Alumno;
 use App\Http\Requests\InscripcionRequest;
 use Illuminate\Http\Request;
@@ -80,9 +81,17 @@ class InscripcionController extends Controller
 
     public function obtener($alumno_id)
     {
+        // Obtener IDs de inscripciones que ya tienen pagos completados
+        $inscripciones_pagadas = Pago::select('inscripcion_id')
+            ->groupBy('inscripcion_id')
+            ->havingRaw('SUM(monto) >= (SELECT monto_total FROM inscripciones WHERE id = inscripcion_id)')
+            ->pluck('inscripcion_id')
+            ->toArray();
+
         $inscripciones = Inscripcion::with('cursoCiclo')
             ->where('alumno_id', $alumno_id)
             ->where('estado', 'activo')
+            ->whereNotIn('id', $inscripciones_pagadas)
             ->get();
 
         if ($inscripciones->isEmpty()) {

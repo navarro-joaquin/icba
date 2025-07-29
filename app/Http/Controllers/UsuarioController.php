@@ -20,7 +20,7 @@ class UsuarioController extends Controller
     {
         $heads = [
             'ID',
-            'Nombre de usuario',
+            'Nombre',
             'Correo electrónico',
             'Rol',
             'Estado',

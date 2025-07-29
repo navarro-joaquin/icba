@@ -12,7 +12,7 @@
                 <h3 class="card-title">Registro de Cursos y Ciclos</h3>
             </div>
             <div class="card-tools">
-                <a href="{{ route('alumnos.index') }}" class="btn btn-secondary">
+                <a href="{{ route('cursos-ciclos.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Volver
                 </a>
             </div>

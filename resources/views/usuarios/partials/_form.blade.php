@@ -5,7 +5,7 @@
 @endif
 
 <div class="mb-3">
-    <label for="username">Nombre de Usuario <span class="text-danger" title="El campo es requerido">*</span></label>
+    <label for="username">Nombre <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="text" name="username" id="username" class="form-control" value="{{ old('username', $user->username ?? '') }}">
     @error('username')
         <span class="text-danger">

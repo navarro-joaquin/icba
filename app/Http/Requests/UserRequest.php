@@ -35,10 +35,10 @@ class UserRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'username' => 'nombre de usuario',
-            'email' => 'correo electrónico',
-            'role' => 'rol',
-            'password' => 'contraseña',
+            'username' => 'Nombre',
+            'email' => 'Correo electrónico',
+            'role' => 'Rol',
+            'password' => 'Contraseña',
             'fecha_nacimiento' => 'Fecha de nacimiento',
             'especialidad' => 'Especialidad'
         ];

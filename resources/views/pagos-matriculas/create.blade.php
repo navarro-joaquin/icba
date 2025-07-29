@@ -39,7 +39,7 @@
                     $.each(data, function (index, matriculas) {
                         if (matriculas.length === 0) {
                             matriculaSelect.empty()
-                            matriculaSelect.append('<option value="">-- El alumno no tiene matriculas activas --</option>')
+                            matriculaSelect.append('<option value="">-- El alumno no tiene matriculas activas o pendientes --</option>')
                         } else {
                             matriculas.map((matricula) => {
                                 matriculaSelect.append('<option value="' + matricula.id + '">' + matricula.anio + '</option>')

@@ -12,7 +12,7 @@
                 <h3 class="card-title">Editar Curso y Profesor: {{ $curso_profesor->nombre }}</h3>
             </div>
             <div class="card-tools">
-                <a href="{{ route('alumnos.index') }}" class="btn btn-secondary">
+                <a href="{{ route('cursos-profesores.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Volver
                 </a>
             </div>

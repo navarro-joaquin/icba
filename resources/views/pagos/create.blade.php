@@ -39,7 +39,7 @@
                     $.each(data, function (index, inscripciones) {
                         if (inscripciones.length === 0) {
                             inscripcionSelect.empty()
-                            inscripcionSelect.append('<option value="">-- El alumno no tiene inscripciones activas --</option>')
+                            inscripcionSelect.append('<option value="">-- El alumno no tiene inscripciones activas o pendientes --</option>')
                         } else {
                             inscripciones.map((inscripcion) => {
                                 inscripcionSelect.append('<option value="' + inscripcion.id + '">' + inscripcion.curso_ciclo.nombre + '</option>')

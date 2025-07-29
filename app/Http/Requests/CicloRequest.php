@@ -31,7 +31,7 @@ class CicloRequest extends FormRequest
     public function attributes()
     {
         return [
-            'nombre' => 'Nombre',
+            'nombre' => 'Nombre del ciclo',
             'fecha_inicio' => 'Fecha de inicio',
             'fecha_fin' => 'Fecha de finalización'
         ];
