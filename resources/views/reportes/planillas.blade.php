@@ -40,6 +40,17 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
+                <h3 class="card-title mb-0">Listado de Alumnos Inscritos</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <x-adminlte-datatable id="alumnos-table" :heads="$inscripcionesHeads" :config="$inscripcionesConfig"></x-adminlte-datatable>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <div class="flex-grow-1">
                 <h3 class="card-title mb-0">Listado de Calificaciones</h3>
             </div>
         </div>
@@ -54,10 +65,16 @@
     <script>
         $(document).ready(function () {
             let calificacionesTable = $('#calificaciones-table').DataTable()
+            let alumnosTable = $('#alumnos-table').DataTable()
 
             calificacionesTable.ajax.url('{{ route('reportes.planillas.calificaciones.data') }}')
+            alumnosTable.ajax.url('{{ route('reportes.planillas.inscripciones.data') }}')
 
             calificacionesTable.settings()[0].ajax.data = function (d) {
+                d.curso_ciclo = $('#curso_ciclo').val()
+            }
+
+            alumnosTable.settings()[0].ajax.data = function (d) {
                 d.curso_ciclo = $('#curso_ciclo').val()
             }
 
@@ -65,6 +82,7 @@
                 e.preventDefault()
 
                 calificacionesTable.ajax.reload(null, false)
+                alumnosTable.ajax.reload(null, false)
             })
         })
     </script>

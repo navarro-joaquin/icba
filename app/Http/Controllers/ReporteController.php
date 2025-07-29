@@ -363,6 +363,13 @@ class ReporteController extends Controller
             'Nota'
         ];
 
+        $inscripcionesHeads = [
+            'Alumno',
+            'Curso',
+            'Fecha Inicio',
+            'Fecha Fin'
+        ];
+
         $calificacionesConfig = [
             'processing' => true,
             'serverSide' => true,
@@ -381,7 +388,26 @@ class ReporteController extends Controller
             ]
         ];
 
-        return view('reportes.planillas', compact('cursosCiclos', 'calificacionesHeads', 'calificacionesConfig'));
+        $inscripcionesConfig = [
+            'processing' => true,
+            'serverSide' => true,
+            'ajax' => [
+                'url' => route('reportes.planillas.inscripciones.data'),
+                'type' => 'GET',
+                'dataSrc' => 'data'
+            ],
+            'columns' => [
+                ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
+                ['data' => 'curso', 'name' => 'curso'],
+                ['data' => 'fecha_inicio', 'name' => 'fecha_inicio'],
+                ['data' => 'fecha_fin', 'name' => 'fecha_fin']
+            ],
+            'language' => [
+                'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            ]
+        ];
+
+        return view('reportes.planillas', compact('cursosCiclos', 'calificacionesHeads', 'calificacionesConfig', 'inscripcionesHeads', 'inscripcionesConfig'));
     }
 
     public function planillasCalificacionesData(Request $request)
@@ -414,6 +440,32 @@ class ReporteController extends Controller
                     default:
                         return '';
                 }
+            })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function planillasInscripcionesData(Request $request)
+    {
+        $cursoCiclo = $request->curso_ciclo;
+
+        $inscripciones = Inscripcion::whereHas('cursoCiclo', function ($query) use ($cursoCiclo) {
+            $query->where('id', $cursoCiclo);
+        })
+        ->get();
+
+        return DataTables::of($inscripciones)
+            ->addColumn('alumno_nombre', function ($inscripcion) {
+                return $inscripcion->alumno->nombre ?? '';
+            })
+            ->addColumn('curso', function ($inscripcion) {
+                return $inscripcion->cursoCiclo->nombre ?? '';
+            })
+            ->addColumn('fecha_inicio', function ($inscripcion) {
+                return $inscripcion->cursoCiclo->fecha_inicio ?? '';
+            })
+            ->addColumn('fecha_fin', function ($inscripcion) {
+                return $inscripcion->cursoCiclo->fecha_fin ?? '';
             })
             ->addIndexColumn()
             ->make(true);

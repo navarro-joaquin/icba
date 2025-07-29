@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('reportes/planillas', [ReporteController::class, 'planillas'])->name('reportes.planillas');
     Route::get('reportes/planillas/calificaciones/data', [ReporteController::class, 'planillasCalificacionesData'])->name('reportes.planillas.calificaciones.data');
+    Route::get('reportes/planillas/inscritos/data', [ReporteController::class, 'planillasInscripcionesData'])->name('reportes.planillas.inscripciones.data');
     Route::get('reportes/planillas/regular/pdf', [ReporteController::class, 'planillaRegularPDF'])->name('reportes.planillas.regular.pdf');
     Route::get('reportes/planillas/individual/pdf', [ReporteController::class, 'planillaIndividualPDF'])->name('reportes.planillas.individual.pdf');
 
