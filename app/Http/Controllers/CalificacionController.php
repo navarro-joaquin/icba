@@ -7,6 +7,7 @@ use App\Models\Inscripcion;
 use App\Http\Requests\CalificacionRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class CalificacionController extends Controller
 {
@@ -18,8 +19,9 @@ class CalificacionController extends Controller
         $heads = [
             'ID',
             'Inscripción',
-            'Tipo',
-            'Nota',
+            'Examen 1',
+            'Examen 2',
+            'Nota Final',
             ['label' => 'Acciones', 'no-export' => true, 'searchable' => false, 'orderable' => false]
         ];
 
@@ -34,8 +36,9 @@ class CalificacionController extends Controller
             'columns' => [
                 ['data' => 'id', 'name' => 'id'],
                 ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
-                ['data' => 'tipo', 'name' => 'tipo'],
-                ['data' => 'nota', 'name' => 'nota'],
+                ['data' => 'examen_1', 'name' => 'examen_1'],
+                ['data' => 'examen_2', 'name' => 'examen_2'],
+                ['data' => 'nota_final', 'name' => 'nota_final'],
                 ['data' => 'actions', 'name' => 'actions', 'searchable' => false, 'orderable' => false]
             ],
             'language' => [
@@ -60,9 +63,18 @@ class CalificacionController extends Controller
                 });
                 break;
             case 'alumno':
-                $query = Calificacion::with('inscripcion')->whereHas('inscripcion', function ($query) {
-                    $query->where('alumno_id', Auth()->user()->alumno->id);
-                });
+                // Si el alumno no tiene pagos completos en la inscripción, no mostrar la calificación
+                $query = Calificacion::with(['inscripcion', 'inscripcion.pagos'])
+                    ->whereHas('inscripcion', function ($query) {
+                        $query->where('alumno_id', Auth()->user()->alumno->id)
+                            ->whereExists(function($subquery) {
+                                $subquery->select(DB::raw(1))
+                                    ->from('pagos')
+                                    ->whereColumn('pagos.inscripcion_id', 'inscripciones.id')
+                                    ->groupBy('pagos.inscripcion_id')
+                                    ->havingRaw('SUM(pagos.monto) >= inscripciones.monto_total');
+                            });
+                    });
                 break;
             default:
                 $query = Calificacion::with('inscripcion');
@@ -71,18 +83,6 @@ class CalificacionController extends Controller
         return DataTables::of($query)
             ->addColumn('inscripcion_nombre', function ($calificacion) {
                 return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoCiclo->nombre . ')' ?? '';
-            })
-            ->addColumn('tipo', function ($calificacion) {
-                switch ($calificacion->tipo) {
-                    case 'examen_1':
-                        return 'Examen 1';
-                    case 'examen_2':
-                        return 'Examen 2';
-                    case 'nota_final':
-                        return 'Nota Final';
-                    default:
-                        return '';
-                }
             })
             ->addColumn('actions', function ($calificacion) {
                 return view('calificaciones.partials._actions', compact('calificacion'))->render();

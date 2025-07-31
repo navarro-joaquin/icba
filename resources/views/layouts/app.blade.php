@@ -34,7 +34,7 @@
 
 @section('footer')
   <div class="float-right">
-    Version: {{ config('app.version', '1.0.2') }}
+    Version: {{ config('app.version', '1.0.3') }}
   </div>
 
   <strong>

@@ -23,7 +23,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="inscripcion_id">Inscripción <span class="text-danger" title="El campo es requerido">*</span></label>
+    <label for="inscripcion_id">Inscripción (Curso) <span class="text-danger" title="El campo es requerido">*</span></label>
     <select name="inscripcion_id" class="form-control" id="inscripcion_id">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($inscripciones as $inscripcion)

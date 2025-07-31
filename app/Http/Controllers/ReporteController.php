@@ -11,6 +11,7 @@ use App\Models\Calificacion;
 use App\Models\CursoCiclo;
 use Yajra\DataTables\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class ReporteController extends Controller
 {
@@ -35,7 +36,7 @@ class ReporteController extends Controller
                 'dataSrc' => 'data'
             ],
             'columns' => [
-                ['data' => 'id', 'name' => 'id'],
+                ['data' => 'fila_id', 'name' => 'fila_id'],
                 ['data' => 'fecha_pago', 'name' => 'fecha_pago'],
                 ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
                 ['data' => 'tipo', 'name' => 'tipo', 'orderable' => false, 'searchable' => false],
@@ -106,6 +107,13 @@ class ReporteController extends Controller
         // Combinar las colecciones
         $pagosCombinados = $pagosInscripciones->concat($pagosMatriculas);
 
+        // Agregar un ID autoincremental a cada pago
+        $pagosCombinados = $pagosCombinados->map(function ($item, $key) {
+            $item->fila_id = $key + 1;
+            $item->fecha_pago = Carbon::parse($item->fecha_pago)->format('d/m/Y');
+            return $item;
+        });
+
         // Crear una colección para DataTables
         return DataTables::of($pagosCombinados)
             ->addIndexColumn()
@@ -166,13 +174,25 @@ class ReporteController extends Controller
 
         $pagos = $pagosInscripciones->concat($pagosMatriculas);
 
-        $pdf = Pdf::loadView('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago'));
+        // Agregar un ID autoincremental a cada pago
+        $pagos = $pagos->map(function ($item, $key) {
+            $item->fila_id = $key + 1;
+            return $item;
+        });
+
+        $total = $pagos->sum('monto');
+
+        $fechaInicio = Carbon::parse($fechaInicio)->format('d/m/Y');
+        $fechaFin = Carbon::parse($fechaFin)->format('d/m/Y');
+
+        $pdf = Pdf::loadView('reportes.pdf.pagos-realizados', compact('pagos', 'fechaInicio', 'fechaFin', 'formaPago', 'total'));
         return $pdf->stream('pagos-realizados.pdf');
     }
 
     public function alumnosConDeuda()
     {
         $heads = [
+            'ID',
             'Alumno',
             'Concepto',
             'Tipo',
@@ -189,13 +209,14 @@ class ReporteController extends Controller
                 'dataSrc' => 'data'
             ],
             'columns' => [
+                ['data' => 'fila_id', 'name' => 'fila_id'],
                 ['data' => 'alumno_nombre', 'name' => 'alumno_nombre'],
                 ['data' => 'concepto', 'name' => 'concepto'],
                 ['data' => 'tipo', 'name' => 'tipo'],
                 ['data' => 'monto', 'name' => 'monto', 'className' => 'text-end'],
                 ['data' => 'descripcion', 'name' => 'descripcion']
             ],
-            'order' => [[3, 'desc']], // Ordenar por monto descendente por defecto
+            'order' => [[0, 'asc']], // Ordenar por monto descendente por defecto
             'language' => [
                 'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
             ]
@@ -281,6 +302,17 @@ class ReporteController extends Controller
                 ];
             });
 
+        $resultados = $deudasInscripciones->concat($deudasMatriculas)
+            ->sortByDesc('deuda')
+            ->values()
+            ->map(function ($item, $key) {
+                // Convertir a array si es un objeto
+                $itemArray = is_array($item) ? $item : $item->toArray();
+                // Agregar el ID de fila
+                $itemArray['fila_id'] = $key + 1;
+                return $itemArray;
+            });
+
         return DataTables::of($resultados)
             ->addIndexColumn()
             ->make(true);
@@ -347,9 +379,18 @@ class ReporteController extends Controller
         // Combinar y ordenar resultados
         $resultados = $deudasInscripciones->concat($deudasMatriculas)
             ->sortByDesc('deuda')
-            ->values();
+            ->values()
+            ->map(function ($item, $key) {
+                // Convertir a array si es un objeto
+                $itemArray = is_array($item) ? $item : $item->toArray();
+                // Agregar el ID de fila
+                $itemArray['fila_id'] = $key + 1;
+                return $itemArray;
+            });
 
-        $pdf = Pdf::loadView('reportes.pdf.alumnos-con-deuda', ['resultados' => $resultados]);
+        $totalDeuda = $resultados->sum('deuda');
+
+        $pdf = Pdf::loadView('reportes.pdf.alumnos-con-deuda', compact('resultados', 'totalDeuda'));
         return $pdf->stream();
     }
 
@@ -359,8 +400,9 @@ class ReporteController extends Controller
 
         $calificacionesHeads = [
             'Inscripción',
-            'Tipo',
-            'Nota'
+            'Examen 1',
+            'Examen 2',
+            'Nota Final'
         ];
 
         $inscripcionesHeads = [
@@ -380,8 +422,9 @@ class ReporteController extends Controller
             ],
             'columns' => [
                 ['data' => 'inscripcion_nombre', 'name' => 'inscripcion_nombre'],
-                ['data' => 'tipo', 'name' => 'tipo'],
-                ['data' => 'nota', 'name' => 'nota']
+                ['data' => 'examen_1', 'name' => 'examen_1'],
+                ['data' => 'examen_2', 'name' => 'examen_2'],
+                ['data' => 'nota_final', 'name' => 'nota_final']
             ],
             'language' => [
                 'url' => 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
@@ -410,6 +453,32 @@ class ReporteController extends Controller
         return view('reportes.planillas', compact('cursosCiclos', 'calificacionesHeads', 'calificacionesConfig', 'inscripcionesHeads', 'inscripcionesConfig'));
     }
 
+    public function planillasInscripcionesData(Request $request)
+    {
+        $cursoCiclo = $request->curso_ciclo;
+
+        $inscripciones = Inscripcion::whereHas('cursoCiclo', function ($query) use ($cursoCiclo) {
+            $query->where('id', $cursoCiclo);
+        })
+            ->get();
+
+        return DataTables::of($inscripciones)
+            ->addColumn('alumno_nombre', function ($inscripcion) {
+                return $inscripcion->alumno->nombre ?? '';
+            })
+            ->addColumn('curso', function ($inscripcion) {
+                return $inscripcion->cursoCiclo->nombre ?? '';
+            })
+            ->addColumn('fecha_inicio', function ($inscripcion) {
+                return Carbon::parse($inscripcion->cursoCiclo->fecha_inicio)->format('d/m/Y');
+            })
+            ->addColumn('fecha_fin', function ($inscripcion) {
+                return Carbon::parse($inscripcion->cursoCiclo->fecha_fin)->format('d/m/Y');
+            })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
     public function planillasCalificacionesData(Request $request)
     {
         $cursoCiclo = $request->curso_ciclo;
@@ -427,45 +496,7 @@ class ReporteController extends Controller
 
         return DataTables::of($calificaciones)
             ->addColumn('inscripcion_nombre', function ($calificacion) {
-                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoCiclo->nombre . ')' . ' ('. $calificacion->inscripcion->cursoCiclo->fecha_inicio . ' - '. $calificacion->inscripcion->cursoCiclo->fecha_fin . ')' ?? '';
-            })
-            ->addColumn('tipo', function ($calificacion) {
-                switch ($calificacion->tipo) {
-                    case 'examen_1':
-                        return 'Examen 1';
-                    case 'examen_2':
-                        return 'Examen 2';
-                    case 'nota_final':
-                        return 'Nota Final';
-                    default:
-                        return '';
-                }
-            })
-            ->addIndexColumn()
-            ->make(true);
-    }
-
-    public function planillasInscripcionesData(Request $request)
-    {
-        $cursoCiclo = $request->curso_ciclo;
-
-        $inscripciones = Inscripcion::whereHas('cursoCiclo', function ($query) use ($cursoCiclo) {
-            $query->where('id', $cursoCiclo);
-        })
-        ->get();
-
-        return DataTables::of($inscripciones)
-            ->addColumn('alumno_nombre', function ($inscripcion) {
-                return $inscripcion->alumno->nombre ?? '';
-            })
-            ->addColumn('curso', function ($inscripcion) {
-                return $inscripcion->cursoCiclo->nombre ?? '';
-            })
-            ->addColumn('fecha_inicio', function ($inscripcion) {
-                return $inscripcion->cursoCiclo->fecha_inicio ?? '';
-            })
-            ->addColumn('fecha_fin', function ($inscripcion) {
-                return $inscripcion->cursoCiclo->fecha_fin ?? '';
+                return $calificacion->inscripcion->alumno->nombre . ' - (' . $calificacion->inscripcion->cursoCiclo->nombre . ')' . ' ['. Carbon::parse($calificacion->inscripcion->cursoCiclo->fecha_inicio)->format('d/m/Y') . ' - '. Carbon::parse($calificacion->inscripcion->cursoCiclo->fecha_fin)->format('d/m/Y') . ']' ?? '';
             })
             ->addIndexColumn()
             ->make(true);

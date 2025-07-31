@@ -6,6 +6,7 @@ use App\Models\Ciclo;
 use App\Http\Requests\CicloRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class CicloController extends Controller
 {
@@ -52,6 +53,8 @@ class CicloController extends Controller
         $query = Ciclo::query();
 
         return DataTables::of($query)
+            ->addColumn('fecha_inicio', fn ($ciclo) => Carbon::parse($ciclo->fecha_inicio)->format('d/m/Y'))
+            ->addColumn('fecha_fin', fn ($ciclo) => Carbon::parse($ciclo->fecha_fin)->format('d/m/Y'))
             ->addColumn('estado', function ($ciclo) {
                 return match ($ciclo->estado) {
                     'activo' => '<span class="badge bg-success">Activo</span>',

@@ -8,6 +8,7 @@ use App\Models\Matricula;
 use App\Http\Requests\PagoMatriculaRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class PagoMatriculaController extends Controller
 {
@@ -66,6 +67,7 @@ class PagoMatriculaController extends Controller
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($pago_matricula) => $pago_matricula->alumno->nombre ?? '')
             ->addColumn('matricula_nombre', fn ($pago_matricula) => $pago_matricula->matricula->anio ?? '')
+            ->addColumn('fecha_pago', fn ($pago_matricula) => Carbon::parse($pago_matricula->fecha_pago)->format('d/m/Y'))
             ->addColumn('forma_pago', function ($pago_matricula) {
                 return match ($pago_matricula->forma_pago) {
                     'efectivo' => 'Efectivo',

@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             'username' => 'required|string|max:255',
             'email' =>'required|email|max:255|unique:users,email',
             'role' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:7',
             // Campos adicionales para el registro de alumnos y profesores
             'fecha_nacimiento' => 'nullable|date',
             'especialidad' => 'nullable|string|max:100'

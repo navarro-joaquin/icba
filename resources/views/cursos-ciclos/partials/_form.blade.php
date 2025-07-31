@@ -9,7 +9,7 @@
         <option value="">-- Seleccione una opción --</option>
         @forelse ($cursos as $curso)
             <option value="{{ $curso->id }}" {{ old('curso_id', $curso_ciclo->curso_id ?? '') == $curso->id ? 'selected' : '' }}>
-                {{ $curso->nombre }}
+                {{ $curso->nombre }} ({{ $curso->descripcion }})
             </option>
         @empty
             <option value="">-- No hay cursos disponibles --</option>

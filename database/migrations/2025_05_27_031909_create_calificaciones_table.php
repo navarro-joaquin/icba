@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inscripcion_id')->constrained('inscripciones');
-            $table->string('tipo');
-            $table->decimal('nota', 5, 2);
+            $table->decimal('examen_1', 5, 2)->nullable();
+            $table->decimal('examen_2', 5, 2)->nullable();
+            $table->decimal('nota_final', 5, 2)->nullable();
             $table->timestamps();
         });
     }

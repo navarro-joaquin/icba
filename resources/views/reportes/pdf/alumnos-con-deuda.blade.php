@@ -22,6 +22,7 @@
     <table class="tabla">
         <thead>
         <tr>
+            <td></td>
             <th>Alumno</th>
             <th>Concepto</th>
             <th>Tipo</th>
@@ -32,6 +33,7 @@
         <tbody>
             @foreach ($resultados as $resultado)
                 <tr>
+                    <td>{{ $resultado['fila_id'] }}</td>
                     <td>{{ $resultado['alumno_nombre'] }}</td>
                     <td>{{ $resultado['concepto'] }}</td>
                     <td>{{ $resultado['tipo'] }}</td>
@@ -39,6 +41,10 @@
                     <td>{{ $resultado['descripcion'] }}</td>
                 </tr>
             @endforeach
+        <tr>
+            <td colspan="4"><strong>Total Bs.:</strong></td>
+            <td class="monto" colspan="2">{{ number_format($totalDeuda, 2) }}</td>
+        </tr>
         </tbody>
     </table>
 </div>

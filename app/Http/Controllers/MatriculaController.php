@@ -20,7 +20,7 @@ class MatriculaController extends Controller
             'ID',
             'Alumno',
             'Año',
-            'Monto Total (Bs.)',
+            'Monto Total a pagar (Bs.)',
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
         ];

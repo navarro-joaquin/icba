@@ -9,6 +9,7 @@ use App\Models\Alumno;
 use App\Http\Requests\InscripcionRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class InscripcionController extends Controller
 {
@@ -22,7 +23,7 @@ class InscripcionController extends Controller
             'Alumno',
             'Curso-Ciclo',
             'Fecha de inscripción',
-            'Monto total (Bs.)',
+            'Monto total a pagar (Bs.)',
             'Estado',
             ['label' => 'Acciones', 'no-export' => true, 'orderable' => false, 'searchable' => false],
         ];
@@ -65,6 +66,7 @@ class InscripcionController extends Controller
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($inscripcion) => $inscripcion->alumno->nombre ?? '')
             ->addColumn('curso_ciclo_nombre', fn ($inscripcion) => $inscripcion->cursoCiclo->nombre ?? '')
+            ->addColumn('fecha_inscripcion', fn ($inscripcion) => Carbon::parse($inscripcion->fecha_inscripcion)->format('d/m/Y'))
             ->addColumn('estado', function ($inscripcion) {
                 return match ($inscripcion->estado) {
                     'activo' => '<span class="badge bg-success">Activo</span>',

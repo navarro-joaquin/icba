@@ -388,7 +388,7 @@ return [
             'can' => 'ver inscripciones'
         ],
         [
-            'text' => 'Pagos',
+            'text' => 'Pagos de Inscripciones',
             'url' => 'pagos',
             'icon' => 'fas fa-hand-holding-usd',
             'can' => 'ver pagos'

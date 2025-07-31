@@ -8,6 +8,7 @@ use App\Models\Ciclo;
 use App\Http\Requests\CursoCicloRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class CursoCicloController extends Controller
 {
@@ -59,6 +60,8 @@ class CursoCicloController extends Controller
 
         return DataTables::of($query)
             ->addColumn('nombre_curso', fn ($curso_ciclo) => $curso_ciclo->curso->nombre ?? '')
+            ->addColumn('fecha_inicio', fn ($curso_ciclo) => Carbon::parse($curso_ciclo->fecha_inicio)->format('d/m/Y'))
+            ->addColumn('fecha_fin', fn ($curso_ciclo) => Carbon::parse($curso_ciclo->fecha_fin)->format('d/m/Y'))
             ->addColumn('nombre_ciclo', fn ($curso_ciclo) => $curso_ciclo->ciclo->nombre ?? '')
             ->addColumn('estado', function ($curso_ciclo) {
                 return match ($curso_ciclo->estado) {

@@ -52,7 +52,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="monto_total">Monto Total (Bs.) <span class="text-danger" title="El campo es requerido">*</span></label>
+    <label for="monto_total">Monto Total a pagar (Bs.) <span class="text-danger" title="El campo es requerido">*</span></label>
     <input type="number" name="monto_total" id="monto_total" class="form-control" value="{{ old('monto_total', $inscripcion->monto_total ?? '') }}">
     @error('monto_total')
         <span class="text-danger">

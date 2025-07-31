@@ -8,6 +8,7 @@ use App\Models\Inscripcion;
 use App\Http\Requests\PagoRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class PagoController extends Controller
 {
@@ -66,6 +67,7 @@ class PagoController extends Controller
         return DataTables::of($query)
             ->addColumn('alumno_nombre', fn ($pago) => $pago->alumno->nombre ?? '')
             ->addColumn('inscripcion_nombre', fn ($pago) => $pago->inscripcion->cursoCiclo->nombre ?? '')
+            ->addColumn('fecha_pago', fn ($pago) => Carbon::parse($pago->fecha_pago)->format('d/m/Y'))
             ->addColumn('forma_pago', function ($pago) {
                 switch ($pago->forma_pago) {
                     case 'efectivo':

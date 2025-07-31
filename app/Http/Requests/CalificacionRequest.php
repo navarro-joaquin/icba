@@ -22,18 +22,20 @@ class CalificacionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tipo' => 'required',
-            'nota' => 'required|numeric',
-            'inscripcion_id' => 'required|exists:inscripciones,id'
+            'inscripcion_id' => 'required|exists:inscripciones,id',
+            'examen_1' => 'nullable|numeric',
+            'examen_2' => 'nullable|numeric',
+            'nota_final' => 'nullable|numeric',
         ];
     }
 
     public function attributes()
     {
         return [
-            'tipo' => 'Tipo',
-            'nota' => 'Nota',
-            'inscripcion_id' => 'Inscripción'
+            'inscripcion_id' => 'Inscripción',
+            'examen_1' => 'Examen 1',
+            'examen_2' => 'Examen 2',
+            'nota_final' => 'Nota Final',
         ];
     }
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Pagos')
-@section('content_header_title', 'Pagos')
+@section('content_header_title', 'Pagos de Inscripciones')
 @section('content_header_subtitle', 'Listado')
 
 @section('content_body')
@@ -9,11 +9,11 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
-                <h3 class="card-title mb-0">Listado de Pagos</h3>
+                <h3 class="card-title mb-0">Listado de Pagos de Inscripciones</h3>
             </div>
             @can('crear pagos')
                 <a href="{{ route('pagos.create') }}" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Nuevo Pago
+                    <i class="fas fa-plus"></i> Nuevo Pago de Inscripción
                 </a>
             @endcan
         </div>

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlumnoRequest;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class AlumnoController extends Controller
 {
@@ -54,6 +55,7 @@ class AlumnoController extends Controller
 
         return Datatables::of($query)
             ->addColumn('nombre_usuario', fn ($alumno) => $alumno->user->email ?? '')
+            ->addColumn('fecha_nacimiento', fn ($alumno) => Carbon::parse($alumno->fecha_nacimiento)->format('d/m/Y'))
             ->addColumn('estado', function ($alumno) {
                 return match ($alumno->estado) {
                     'activo' => '<span class="badge bg-success">Activo</span>',

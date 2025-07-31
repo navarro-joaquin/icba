@@ -16,8 +16,9 @@ class Calificacion extends Model implements Auditable
 
     protected $fillable = [
         'inscripcion_id',
-        'tipo',
-        'nota',
+        'examen_1',
+        'examen_2',
+        'nota_final'
     ];
 
     public function inscripcion()

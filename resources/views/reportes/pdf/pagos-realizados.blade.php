@@ -26,7 +26,7 @@
     <table class="tabla">
         <thead>
         <tr>
-            <td>ID</td>
+            <th></th>
             <th>Fecha</th>
             <th>Alumno</th>
             <th>Tipo</th>
@@ -38,8 +38,8 @@
         <tbody>
         @foreach ($pagos as $pago)
             <tr>
-                <td>{{ $pago->id }}</td>
-                <td>{{ $pago->fecha_pago }}</td>
+                <td>{{ $pago->fila_id }}</td>
+                <td>{{ \Carbon\Carbon::parse($pago->fecha_pago)->format('d/m/Y') }}</td>
                 <td>{{ $pago->alumno_nombre }}</td>
                 <td>{{ $pago->tipo }}</td>
                 <td class="monto">{{ $pago->monto }}</td>
@@ -47,6 +47,10 @@
                 <td>{{ $pago->descripcion }}</td>
             </tr>
         @endforeach
+        <tr>
+            <td colspan="4"><strong>Total Bs.:</strong></td>
+            <td class="monto" colspan="3">{{ number_format($total, 2) }}</td>
+        </tr>
         </tbody>
     </table>
 </div>

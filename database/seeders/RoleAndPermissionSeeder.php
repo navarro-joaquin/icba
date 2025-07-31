@@ -40,6 +40,7 @@ class RoleAndPermissionSeeder extends Seeder
             'ver asignaciones',
             'ver cursos-ciclos',
             'crear cursos-ciclos',
+            'editar cursos-ciclos',
             'ver cursos-profesores',
             'crear cursos-profesores',
             'ver gestion-academica',
