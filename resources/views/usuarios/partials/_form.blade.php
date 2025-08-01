@@ -30,7 +30,9 @@
     <select name="role" class="form-control" id="role">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($roles as $role)
-            @if (auth()->user()->hasRole('gestor') && ($role->name == 'admin' || $role->name == 'gestor'))
+            @if (auth()->user()->hasRole('gestor1') && ($role->name == 'admin' || $role->name == 'gestor1'))
+                <!-- Skip admin and gestor roles for users with gestor role -->
+            @elseif (auth()->user()->hasRole('gestor2') && ($role->name == 'admin' || $role->name == 'gestor1' || $role->name == 'gestor2'))
                 <!-- Skip admin and gestor roles for users with gestor role -->
             @else
                 <option value="{{ $role->name }}" {{ old('role', $user->role?? '') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>

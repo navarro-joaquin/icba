@@ -20,29 +20,74 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Crear roles y asignar permisos
         $roleAdmin = Role::create(['name' => 'admin']);
-        $roleGestor = Role::create(['name' => 'gestor']);
+        $roleGestor1 = Role::create(['name' => 'gestor1']);
+        $roleGestor2 = Role::create(['name' => 'gestor2']);
         $roleAlumno = Role::create(['name' => 'alumno']);
         $roleProfesor = Role::create(['name' => 'profesor']);
 
         $roleAdmin->givePermissionTo(Permission::all());
-        $roleGestor->givePermissionTo([
+        $roleGestor1->givePermissionTo(
+            [
+                'ver operaciones',
+                'ver usuarios',
+                'crear usuarios',
+                'ver alumnos',
+                'crear alumnos',
+                'editar alumnos',
+                'ver profesores',
+                'crear profesores',
+                'editar profesores',
+                'ver ciclos',
+                'crear ciclos',
+                'editar ciclos',
+                'ver cursos',
+                'crear cursos',
+                'editar cursos',
+                'ver asignaciones',
+                'ver cursos-ciclos',
+                'crear cursos-ciclos',
+                'editar cursos-ciclos',
+                'ver cursos-profesores',
+                'crear cursos-profesores',
+                'editar cursos-profesores',
+                'ver gestion-academica',
+                'ver matriculas',
+                'crear matriculas',
+                'ver pagos-matriculas',
+                'crear pagos-matriculas',
+                'ver inscripciones',
+                'crear inscripciones',
+                'ver pagos',
+                'crear pagos',
+                'ver calificaciones',
+                'crear calificaciones',
+                'ver reportes',
+
+            ]
+        );
+        $roleGestor2->givePermissionTo([
             'ver operaciones',
             'ver usuarios',
             'crear usuarios',
             'ver alumnos',
             'crear alumnos',
+            'editar alumnos',
             'ver profesores',
             'crear profesores',
+            'editar profesores',
             'ver ciclos',
             'crear ciclos',
+            'editar ciclos',
             'ver cursos',
             'crear cursos',
+            'editar cursos',
             'ver asignaciones',
             'ver cursos-ciclos',
             'crear cursos-ciclos',
             'editar cursos-ciclos',
             'ver cursos-profesores',
             'crear cursos-profesores',
+            'editar cursos-profesores',
             'ver gestion-academica',
             'ver matriculas',
             'crear matriculas',
@@ -72,13 +117,13 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Asignar roles a los usuarios
         $adminUser = User::find(1);
-        $profesorUser = User::find(2);
-        $alumnoUser = User::find(3);
-        $gestorUser = User::find(4);
+//        $profesorUser = User::find(2);
+//        $alumnoUser = User::find(3);
+//        $gestorUser = User::find(4);
 
         $adminUser->assignRole($roleAdmin);
-        $profesorUser->assignRole($roleProfesor);
-        $alumnoUser->assignRole($roleAlumno);
-        $gestorUser->assignRole($roleGestor);
+//        $profesorUser->assignRole($roleProfesor);
+//        $alumnoUser->assignRole($roleAlumno);
+//        $gestorUser->assignRole($roleGestor);
     }
 }
