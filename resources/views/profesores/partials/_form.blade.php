@@ -28,7 +28,7 @@
     <select name="user_id" class="form-control" id="user_id">
         <option value="">-- Seleccione una opción --</option>
         @forelse ($usuarios as $usuario)
-            <option value="{{ $usuario->id }}" {{ old('user_id', $alumno->user_id ?? '') == $usuario->id ? 'selected' : '' }}>
+            <option value="{{ $usuario->id }}" {{ old('user_id', $profesor->user_id ?? '') == $usuario->id ? 'selected' : '' }}>
                 {{ $usuario->email }}
             </option>
         @empty

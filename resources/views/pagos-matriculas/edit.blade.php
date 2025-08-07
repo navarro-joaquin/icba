@@ -25,3 +25,32 @@
     </div>
 
 @stop
+
+@push('js')
+    <script>
+        $(document).on('change', '#alumno_id', function (e) {
+            const alumno_id = e.target.value
+            const matriculaSelect = $('#matricula_id')
+
+            if (alumno_id) {
+                matriculaSelect.empty()
+                matriculaSelect.append('<option value="">-- Seleccione una Matricula --</option>')
+                $.get('/matriculas/obtener/' + alumno_id, function (data) {
+                    $.each(data, function (index, matriculas) {
+                        if (matriculas.length === 0) {
+                            matriculaSelect.empty()
+                            matriculaSelect.append('<option value="">-- El alumno no tiene matriculas activas o pendientes --</option>')
+                        } else {
+                            matriculas.map((matricula) => {
+                                matriculaSelect.append('<option value="' + matricula.id + '">' + matricula.anio + '</option>')
+                            })
+                        }
+                    })
+                })
+            } else {
+                matriculaSelect.empty()
+                matriculaSelect.append('<option value="">-- Seleccione una opción --</option>')
+            }
+        })
+    </script>
+@endpush

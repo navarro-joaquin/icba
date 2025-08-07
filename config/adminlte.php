@@ -309,6 +309,11 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => false,
         ],
+        [
+            'text' => 'Manual',
+            'url' => 'assets/docs/manual.pdf',
+            'topnav_right' => true
+        ],
 
         // Sidebar items:
         [

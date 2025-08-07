@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pagos')
+@section('title', 'Pagos de Inscripciones')
 @section('content_header_title', 'Pagos de Inscripciones')
 @section('content_header_subtitle', 'Listado')
 
@@ -34,6 +34,7 @@
                 title: title,
                 icon: 'warning',
                 showConfirmButton: true,
+                showCancelButton: true,
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: confirmText
             }).then((result) => {

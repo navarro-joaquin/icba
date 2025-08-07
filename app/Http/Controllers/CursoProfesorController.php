@@ -122,7 +122,7 @@ class CursoProfesorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CursoProfesor $curso_profesor)
+    public function update(CursoProfesorRequest $request, CursoProfesor $curso_profesor)
     {
         $cursoCiclo = CursoCiclo::find($request->curso_ciclo_id);
         $profesor = Profesor::find($request->profesor_id);

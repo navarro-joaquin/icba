@@ -4,6 +4,6 @@
 
 @can('eliminar ciclos')
     <button class="btn btn-sm @if($ciclo->estado == 'activo') btn-danger @else btn-success @endif btn-delete" data-id="{{ $ciclo->id }}" data-estado="{{ $ciclo->estado }}">
-        <i class="fas @if($ciclo->estado == 'activo') fa-ban @else fa-eye @endif"></i>
+        <i class="fas @if($ciclo->estado == 'activo') fa-ban @else fa-check @endif"></i>
     </button>
 @endcan

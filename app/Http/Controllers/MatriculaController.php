@@ -63,8 +63,8 @@ class MatriculaController extends Controller
             ->addColumn('alumno_nombre', fn ($matricula) => $matricula->alumno->nombre ?? '')
             ->addColumn('estado', function ($matricula) {
                 return match ($matricula->estado) {
-                    'activo' => '<span class="badge bg-success">Activo</span>',
-                    'inactivo' => '<span class="badge bg-secondary">Inactivo</span>',
+                    'pendiente' => '<span class="badge bg-secondary">Pendiente</span>',
+                    'pagada' => '<span class="badge bg-success">Pagada</span>',
                     default => '<span class="badge bg-danger">Cancelada</span>',
                 };
             })
@@ -111,7 +111,7 @@ class MatriculaController extends Controller
             ->toArray();
 
         $matriculas = Matricula::where('alumno_id', $alumno_id)
-            ->where('estado', 'activo')
+            ->where('estado', 'pendiente')
             ->whereNotIn('id', $matriculas_pagadas)
             ->get();
 

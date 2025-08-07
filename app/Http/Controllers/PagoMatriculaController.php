@@ -88,7 +88,7 @@ class PagoMatriculaController extends Controller
     public function create()
     {
         $alumnos = Alumno::where('estado', 'activo')->get();
-        $matriculas = Matricula::where('estado', 'activo')->get();
+        $matriculas = Matricula::where('estado', 'pendiente')->get();
 
         return view('pagos-matriculas.create', compact('alumnos', 'matriculas'));
     }
@@ -99,6 +99,21 @@ class PagoMatriculaController extends Controller
     public function store(PagoMatriculaRequest $request)
     {
         PagoMatricula::create($request->validated());
+
+        $alumno_id = $request->alumno_id;
+        $matricula_id = $request->matricula_id;
+
+        $pagos = PagoMatricula::where('alumno_id', $alumno_id)
+            ->where('matricula_id', $matricula_id)
+            ->get();
+
+        $monto_total = $pagos->sum('monto');
+
+        $matricula = Matricula::find($matricula_id);
+
+        if ($monto_total >= $matricula->monto_total) {
+            $matricula->update(['estado' => 'pagada']);
+        }
 
         return redirect()
             ->route('pagos-matriculas.index')
@@ -131,6 +146,21 @@ class PagoMatriculaController extends Controller
     {
         $pago_matricula->update($request->validated());
 
+        $alumno_id = $request->alumno_id;
+        $matricula_id = $request->matricula_id;
+
+        $pagos = PagoMatricula::where('alumno_id', $alumno_id)
+            ->where('matricula_id', $matricula_id)
+            ->get();
+
+        $monto_total = $pagos->sum('monto');
+
+        $matricula = Matricula::find($matricula_id);
+
+        if ($monto_total >= $matricula->monto_total) {
+            $matricula->update(['estado' => 'pagada']);
+        }
+
         return redirect()
             ->route('pagos-matriculas.index')
             ->with('success', 'Pago de matricula actualizado correctamente');
@@ -142,6 +172,11 @@ class PagoMatriculaController extends Controller
     public function destroy(PagoMatricula $pago_matricula)
     {
         $pago_matricula->delete();
+
+        $matricula_id = $pago_matricula->matricula_id;
+        $matricula = Matricula::find($matricula_id);
+
+        $matricula->update(['estado' => 'pendiente']);
 
         return response()->json([
             'success' => true,

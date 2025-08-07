@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pagos')
+@section('title', 'Pagos de Inscripciones')
 @section('content_header_title', 'Pagos de Inscripciones')
 @section('content_header_subtitle', 'Registro')
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('alumno_id')->constrained('alumnos');
             $table->string('anio');
             $table->decimal('monto_total', 10, 2);
-            $table->string('estado')->default('activo');
+            $table->string('estado')->default('pendiente');
             $table->timestamps();
         });
     }
